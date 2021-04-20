@@ -54,7 +54,7 @@ $ git clone https://lab.ssafy.com/s04-final/s04p31b201.git
 |   분류   |              기술              |
 | :------: | :----------------------------: |
 | Backend  |       Node.js, Electron        |
-| Frontend |             Vue.js             |
+| Frontend |        Vue.js, Electron        |
 |  DevOps  | Jira,  Mattermost, Gitlab, AWS |
 
 

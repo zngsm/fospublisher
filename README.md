@@ -10,13 +10,13 @@
 
 ## 팀소개
 
-|  이름  |       담당역할       |
-| :----: | :------------------: |
-| 김문정 | 프론트엔드, 디자이너 |
-| 윤지해 | 프론트엔드, JIRA, QA |
-| 이동훈 |     백엔드, UCC      |
-| 장수민 |   백엔드, IT Infra   |
-| 조우리 | 프론트엔드, GIT, PPT |
+|  이름  |            담당역할            |
+| :----: | :----------------------------: |
+| 김문정 | **팀장**, 프론트엔드, 디자이너 |
+| 윤지해 |      프론트엔드, JIRA, QA      |
+| 이동훈 |          백엔드, UCC           |
+| 장수민 |        백엔드, IT Infra        |
+| 조우리 |      프론트엔드, GIT, PPT      |
 
 
 
@@ -56,6 +56,11 @@ $ git clone https://lab.ssafy.com/s04-final/s04p31b201.git
 | Backend  |       Node.js, Electron        |
 | Frontend |        Vue.js, Electron        |
 |  DevOps  | Jira,  Mattermost, Gitlab, AWS |
+
+**버전**
+
+- `node` : 14.16.0
+- `npm` : 6.14.11
 
 
 

@@ -31,18 +31,17 @@ class App {
 
   dbConnection() {
     // DB authentication
-    // db.sequelize
-    //   .authenticate()
-    //   .then(() => {
-    //     console.log("Connection has been established successfully.");
-    //     return db.sequelize.sync();
-    //   })
-    //   .then(() => {
-    //     console.log("DB Sync compconste.");
-    //   })
-    //   .catch((err) => {
-    //     console.error("Unable to connect to the database:", err);
-    //   });
+    db.sequelize.authenticate()
+      .then(() => {
+        console.log("Connection has been established successfully.");
+        return db.sequelize.sync();
+      })
+      .then(() => {
+        console.log("DB Sync compconste.");
+      })
+      .catch((err) => {
+        console.error("Unable to connect to the database:", err);
+      });
   }
 
   setMiddleWare() {

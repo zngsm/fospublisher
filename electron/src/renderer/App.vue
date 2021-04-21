@@ -6,8 +6,8 @@
 
 <script>
   export default {
-    name: 'electron',
-  };
+    name: 'electron'
+  }
 </script>
 
 <style>

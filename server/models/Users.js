@@ -1,16 +1,17 @@
 const moment = require('moment');
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define('Users',
     {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-      email: { type: DataTypes.STRING },
+      username: { type: DataTypes.STRING },
       password: { type: DataTypes.STRING },
       birthday: { type: DataTypes.DATE },
-      auth: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
-      name: { type: DataTypes.STRING },
+      nickname: { type: DataTypes.STRING },
       introduce: { type: DataTypes.TEXT },
-      img: { type: DataTypes.STRING }
+      img: { type: DataTypes.STRING },
+      question: { type: DataTypes.INTEGER },
+      answer: { type: DataTypes.STRING }
     }
   );
 

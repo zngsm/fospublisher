@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   const ChapterPasts = sequelize.define('ChapterPasts',
     {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },

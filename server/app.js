@@ -61,6 +61,7 @@ class App {
 
   setStatic() {
     //static 폴더
+    this.app.use(express.static(__dirname + '/public/'));
   }
 
   setLocals() {

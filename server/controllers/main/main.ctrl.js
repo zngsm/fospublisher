@@ -1,3 +1,3 @@
-exports.index = (_, res) => {
+exports.get_main_index = (_, res) => {
   res.render("main/home.html");
 }

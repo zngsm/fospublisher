@@ -1,5 +1,5 @@
 // const models = require('../../models');
 
-exports.index = (_, res) => {
-  console.log("success");
+exports.get_admin_index = (_, res) => {
+
 }

@@ -6,7 +6,8 @@
 
 - 기획 의도: 자서전 작성을 통해 자신을 돌아보는 시간을 갖고, 이를 E-book화할 수 있도록 함
 
-  
+
+
 
 ## 팀소개
 
@@ -17,6 +18,18 @@
 | 이동훈 |          백엔드, UCC           |
 | 장수민 |        백엔드, IT Infra        |
 | 조우리 |      프론트엔드, GIT, PPT      |
+
+
+
+## 스택
+
+Backend: <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=black"> <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white"> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black"> <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat-square&logo=Mysql&logoColor=white"> <img src="https://img.shields.io/badge/nodemon-76D04B?style=flat-square&logo=Nodemon&logoColor=black">
+
+Frontend:<img src="https://img.shields.io/badge/Electron-47848F?style=flat-square&logo=electron&logoColor=black"> <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=vue.js&logoColor=white">  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white">
+
+DevOps: <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=black"> img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon%20AWS-232F3E?style=flat-square&logo=amazon-aws&logoColor=white"> <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat-square&logo=Jenkins&logoColor=black"/> <img src="https://img.shields.io/badge/NGINX-269539?style=flat-square&logo=NGINX&logoColor=black"/>
+
+Common: <img src="https://img.shields.io/badge/GitLab-FCA121?style=flat-square&logo=GitLab&logoColor=black"/> <img src="https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=Jira&logoColor=white"/> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=black"> <img src="https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white">
 
 
 

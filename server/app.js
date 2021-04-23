@@ -5,6 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const db = require("./models");
 
@@ -31,7 +32,8 @@ class App {
 
   dbConnection() {
     // DB authentication
-    db.sequelize.authenticate()
+    db.sequelize
+      .authenticate()
       .then(() => {
         console.log("Connection has been established successfully.");
         // return db.sequelize.sync();
@@ -48,8 +50,9 @@ class App {
     // 미들웨어 셋팅
     this.app.use(logger("dev"));
     this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(cors());
   }
 
   setViewEngine() {
@@ -61,7 +64,7 @@ class App {
 
   setStatic() {
     //static 폴더
-    this.app.use(express.static(__dirname + '/public/'));
+    this.app.use(express.static(__dirname + "/public/"));
   }
 
   setLocals() {

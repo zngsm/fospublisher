@@ -1,4 +1,3 @@
-const { forEach } = require("../../models");
 const models = require("../../models");
 
 exports.post_pasts_write = async (req, res) => {
@@ -8,9 +7,7 @@ exports.post_pasts_write = async (req, res) => {
       // UserId : "내아이디!!"
     },
   });
-  console.log("BOOK", book);
   let bookId = 0;
-  console.log(bookId);
   if (!book) {
     const nickname = "유저닉네임";
     const context = {

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     month: { type: DataTypes.INTEGER },
     day: { type: DataTypes.INTEGER },
     page: { type: DataTypes.INTEGER },
-    save: { type: DataTypes.BOOLEAN },
+    check: { type: DataTypes.BOOLEAN },
   });
 
   ChapterFutures.associate = (models) => {

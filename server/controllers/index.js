@@ -7,8 +7,6 @@ router.use("/admin", require("./admin"));
 
 router.use("/api/accounts", require("./accounts"));
 
-router.use("/api/tokens", require("./tokens"));
-
 router.use("/api/pasts", require("./pasts"));
 
 router.use("/api/futures", require("./futures"));

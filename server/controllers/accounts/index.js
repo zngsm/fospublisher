@@ -16,5 +16,7 @@ router.put("/password-question-edit", ctrl.put_accounts_password_question_edit);
 
 router.post("/question-answer-confirm", ctrl.post_accounts_question_answer_confirm);
 
+router.post("/username-confirm", ctrl.post_accounts_username_confirm);
+
 
 module.exports = router;

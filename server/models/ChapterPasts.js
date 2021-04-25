@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     year: { type: DataTypes.INTEGER },
     order: { type: DataTypes.INTEGER },
     page: { type: DataTypes.INTEGER },
-    save: { type: DataTypes.BOOLEAN },
+    check: { type: DataTypes.BOOLEAN },
   });
 
   ChapterPasts.associate = (models) => {

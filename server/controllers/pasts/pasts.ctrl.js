@@ -88,13 +88,13 @@ exports.put_pasts_edit = async (req, res) => {
     return;
   }
 
-  let saveStatus = req.body.save;
-  let save = false;
-  if (saveStatus === "true") {
-    save = true;
+  let checkStatus = req.body.check;
+  let check = false;
+  if (checkStatus === "true") {
+    check = true;
   }
-  req.body.save = save;
-  if (save) {
+  req.body.check = check;
+  if (check) {
     if (!req.body.title) {
       res.status(400).send({ error: "제목을 입력해주세요" });
       return;

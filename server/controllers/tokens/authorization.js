@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
     const decoded = jwt.verify(clientToken, YOUR_SECRET_KEY);
 
     if (decoded) {
-      res.locals.username = decoded.username;
+      res.locals.userId = decoded.userId;
       next();
     } else {
       res.status(401).json({error: '승인되지 않았습니다.'});

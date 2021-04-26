@@ -1,0 +1,276 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: "역전출판사 API"
+  description: "역전출판사 API"
+servers:
+  - description: 역전출판사 API
+    url: http://localhost:3000/
+paths:
+  /api/accounts/signup:
+    post:
+      tags:
+        - accounts
+      summary: 회원가입 API
+      description: birthday의 경우 "1990-01-01"과 같은 형식으로, question의 경우 인덱스 값을 설정해서 정수값으로 넣어주셔야 합니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                birthday:
+                  type: string
+                nickname:
+                  type: string
+                introduce:
+                  type: string
+                img:
+                  type: string
+                question:
+                  type: integer
+                answer:
+                  type: string
+              required:
+                - username
+                - password
+                - birthday
+                - nickname
+                - question
+                - answer
+      responses:
+        "200":
+          description: 회원가입 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              userId:
+                type: integer
+  /api/accounts/login:
+    post:
+      tags:
+        - accounts
+      summary: 로그인 API
+      description: username과 password 입력
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        "200":
+          description: 로그인 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              userId:
+                type: integer
+              token:
+                type: string
+  /api/accounts/user-edit:
+    put:
+      tags:
+        - accounts
+      summary: 회원정보 수정 API
+      description: img, introduce는 null값 허용입니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                birthday:
+                  type: string
+                img:
+                  type: string
+                introduce:
+                  type: string
+              required:
+                - nickname
+                - birthday
+      responses:
+        "200":
+          description: 회원정보 수정 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+  /api/accounts/password-confirm:
+    post:
+      tags:
+        - accounts
+      summary: 비밀번호 확인 API
+      description: password를 입력하세요.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              required:
+                - password
+      responses:
+        "200":
+          description: 비밀번호 확인 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              userId:
+                type: integer
+  /api/accounts/password-edit:
+    put:
+      tags:
+        - accounts
+      summary: 비밀번호만 변경 API
+      description: userId(pk)와 password를 입력하세요.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                password:
+                  type: string
+              required:
+                - userId
+                - password
+      responses:
+        "200":
+          description: 비밀번호 변경 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+  /api/accounts/password-question-edit:
+    put:
+      tags:
+        - accounts
+      summary: 비밀번호 + 질문 답변 변경 API
+      description: question은 인덱스값을 넣어야 합니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                question:
+                  type: integer
+                answer:
+                  type: string
+              required:
+                - password
+                - question
+                - answer
+      responses:
+        "200":
+          description: 비밀번호 + 질문 답변 변경 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+  /api/accounts/question-answer-confirm:
+    post:
+      tags:
+        - accounts
+      summary: 질문과 답변 확인 API
+      description: question은 인덱스값을 넣어야 합니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                question:
+                  type: integer
+                answer:
+                  type: string
+              required:
+                - username
+                - question
+                - answer
+      responses:
+        "200":
+          description: 질문과 답변 확인 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              userId:
+                type: integer
+  /api/accounts/username-confirm:
+    post:
+      tags:
+        - accounts
+      summary: 아이디 중복체크 API
+      description: username 입력
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+              required:
+                - username
+      responses:
+        "200":
+          description: 아이디 중복체크 확인 성공
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+  /api/accounts/user-info:
+    get:
+      tags:
+        - accounts
+      summary: 유저정보 API
+      responses:
+        "200":
+          description: 유저정보 가져오기 성공
+          schema:
+            type: object
+            properties:
+              user:
+                type: object

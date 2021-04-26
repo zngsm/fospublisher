@@ -9,7 +9,7 @@ router.post("/login", ctrl.post_accounts_login);
 
 router.put("/user-edit", verifyToken, ctrl.put_accounts_user_edit);
 
-router.post("/password-confirm", ctrl.post_accounts_password_confirm);
+router.post("/password-confirm", verifyToken, ctrl.post_accounts_password_confirm);
 
 router.put("/password-edit", ctrl.put_accounts_password_edit);
 

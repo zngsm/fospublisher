@@ -32,7 +32,7 @@ exports.post_accounts_signup = async (req, res) => {
     });
     res.status(201).json({
       result: '회원가입에 성공하였습니다.',
-      username: result.dataValues.username
+      userId: result.dataValues.id
     });
   })
   .catch(() => {
@@ -58,7 +58,7 @@ exports.post_accounts_login = async (req, res) => {
 
       if (dbPassword === hashPassword) {
         const token = jwt.sign({
-          username: result.dataValues.username
+          userId: result.dataValues.id
         }, YOUR_SECRET_KEY, {
           expiresIn: '1h'
         });
@@ -66,7 +66,7 @@ exports.post_accounts_login = async (req, res) => {
         res.cookie('user', token);
         res.status(201).json({
           result: '로그인에 성공하였습니다.',
-          username: result.dataValues.username,
+          userId: result.dataValues.id,
           token
         });
       } else {
@@ -90,7 +90,7 @@ exports.put_accounts_user_edit = async (req, res) => {
     introduce: body.introduce
   }, {
     where: {
-      username: res.locals.username
+      id: res.locals.userId
     }
   }).then(() => {
     res.status(201).json({result: "정보 업데이트 성공"});
@@ -99,8 +99,23 @@ exports.put_accounts_user_edit = async (req, res) => {
   });
 }
 
-exports.post_accounts_password_confirm = (req, res) => {
-
+exports.post_accounts_password_confirm = async (req, res) => {
+  let body = await req.body;
+  let inputPassword = await body.password;
+  
+  const user = await models.Users.findOne({
+    where: {
+      id: res.locals.userId
+    }
+  });
+  
+  let hashPassword = await crypto.createHash("sha512").update(inputPassword + user.dataValues.salt).digest("hex");
+  
+  if (hashPassword === user.dataValues.password) {
+    res.status(200).json({result: "OK", userId: user.dataValues.id});
+  } else {
+    res.status(400).json({result: "BAD REQUEST"});
+  }
 }
 
 exports.put_accounts_password_edit = async (req, res) => {
@@ -114,7 +129,7 @@ exports.put_accounts_password_edit = async (req, res) => {
     salt: salt,
   }, {
     where: {
-      username: body.username
+      id: body.userId
     }
   }).then(() => {
     res.status(201).json({result: "비밀번호 업데이트 성공"});
@@ -136,7 +151,7 @@ exports.put_accounts_password_question_edit = async (req, res) => {
     answer: body.answer
   }, {
     where: {
-      username: res.locals.username
+      id: res.locals.userId
     }
   }).then(() => {
     res.status(201).json({result: "정보 업데이트 성공"});
@@ -155,7 +170,7 @@ exports.post_accounts_question_answer_confirm = async (req, res) => {
   });
 
   if (user.dataValues.question === body.question && user.dataValues.answer === body.answer) {
-    res.status(200).json({result: "OK", username: body.username});
+    res.status(200).json({result: "OK", userId: user.dataValues.id});
   } else {
     res.status(400).json({result: "BAD REQUEST"});
   }
@@ -180,7 +195,7 @@ exports.get_accounts_user_info = async (req, res) => {
   try {
     const user = await models.Users.findOne({
       where: {
-        username: res.locals.username
+        id: res.locals.userId
       }
     });
     res.status(200).json({user});

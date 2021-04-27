@@ -1,13 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
   const BookFutures = sequelize.define("BookFutures", {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    page: { type: DataTypes.INTEGER },
-    title: { type: DataTypes.STRING },
-    size: { type: DataTypes.INTEGER },
-    skin: { type: DataTypes.INTEGER },
-    font: { type: DataTypes.INTEGER },
-    skin_color: { type: DataTypes.STRING },
-    font_color: { type: DataTypes.STRING },
+    page: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
+    title: { type: DataTypes.STRING, allowNull: false },
+    size: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
+    skin: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
+    font: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
+    skin_color: {
+      type: DataTypes.STRING,
+      defaultValue: "#654321",
+      allowNull: false,
+    },
+    font_color: {
+      type: DataTypes.STRING,
+      defaultValue: "#000000",
+      allowNull: false,
+    },
   });
 
   BookFutures.associate = (models) => {

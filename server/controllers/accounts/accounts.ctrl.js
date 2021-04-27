@@ -30,6 +30,19 @@ exports.post_accounts_signup = async (req, res) => {
         username: body.username
       }
     });
+
+    const nickname = result.dataValues.nickname;
+
+    await models.BookPasts.create({
+      title: `${nickname}님의 자서전`,
+      UserId: result.dataValues.id,
+    });
+    
+    await models.BookFutures.create({
+      title: `${nickname}님의 미래예측 자서전`,
+      UserId: result.dataValues.id,
+    });
+
     res.status(201).json({
       result: '회원가입에 성공하였습니다.',
       userId: result.dataValues.id

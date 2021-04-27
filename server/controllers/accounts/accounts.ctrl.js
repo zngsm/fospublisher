@@ -14,6 +14,13 @@ exports.post_accounts_signup = async (req, res) => {
   let inputPassword = await body.password;
   let salt = await Math.round((new Date().valueOf() * Math.random())) + "";
   let hashPassword = await crypto.createHash("sha512").update(inputPassword + salt).digest("hex");
+  
+  let imgUrl = "";
+  if (body.img === "") {
+    imgUrl = "https://autobiography.s3.ap-northeast-2.amazonaws.com/1619527735710.png";
+  } else {
+    imgUrl = body.img;
+  }
 
   await models.Users.create({
     username: body.username,
@@ -22,7 +29,7 @@ exports.post_accounts_signup = async (req, res) => {
     birthday: body.birthday,
     nickname: body.nickname,
     introduce: body.introduce,
-    img: body.img,
+    img: imgUrl,
     question: body.question,
     answer: body.answer
   })

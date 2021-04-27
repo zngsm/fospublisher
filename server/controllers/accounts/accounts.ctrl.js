@@ -120,10 +120,17 @@ exports.post_accounts_login = async (req, res) => {
 exports.put_accounts_user_edit = async (req, res) => {
   let body = await req.body;
 
+  let imgUrl = "";
+  if (body.img === "") {
+    imgUrl = "https://autobiography.s3.ap-northeast-2.amazonaws.com/1619527735710.png";
+  } else {
+    imgUrl = body.img;
+  }
+
   await models.Users.update({
     nickname: body.nickname,
     birthday: body.birthday,
-    img: body.img,
+    img: imgUrl,
     introduce: body.introduce
   }, {
     where: {

@@ -13,4 +13,6 @@ router.use("/api/futures", require("./futures"));
 
 router.use("/api/timelines", require("./timelines"));
 
+router.use("/api/images", require("./images"));
+
 module.exports = router;

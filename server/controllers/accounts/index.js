@@ -21,5 +21,6 @@ router.post("/username-confirm", ctrl.post_accounts_username_confirm);
 
 router.get("/user-info", verifyToken, ctrl.get_accounts_user_info);
 
+router.post("/token", ctrl.post_accounts_token);
 
 module.exports = router;

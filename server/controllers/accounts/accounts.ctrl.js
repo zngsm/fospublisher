@@ -2,10 +2,12 @@ const models = require('../../models');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const tokenList = {}
 
 dotenv.config(); //LOAD CONFIG
 
 const YOUR_SECRET_KEY = process.env.SECRET_KEY;
+const YOUR_REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY;
 
 exports.post_accounts_signup = async (req, res) => {
   let body = await req.body;
@@ -73,14 +75,29 @@ exports.post_accounts_login = async (req, res) => {
         const token = jwt.sign({
           userId: result.dataValues.id
         }, YOUR_SECRET_KEY, {
-          expiresIn: '1h'
+          expiresIn: '24h'
         });
+
+        const refreshToken = jwt.sign({
+          userId: result.dataValues.id
+        }, YOUR_REFRESH_SECRET_KEY, {
+          expiresIn: '168h'
+        });
+
+        const response = {
+          "status": "Logged in",
+          "token": token,
+          "refreshToken": refreshToken
+        };
+
+        tokenList[refreshToken] = response;
 
         res.cookie('user', token);
         res.status(201).json({
           result: '로그인에 성공하였습니다.',
           userId: result.dataValues.id,
-          token
+          token,
+          refreshToken
         });
       } else {
         res.status(400).json({error: '비밀번호가 잘못되었습니다.'});
@@ -214,5 +231,24 @@ exports.get_accounts_user_info = async (req, res) => {
     res.status(200).json({user});
   } catch {
     res.status(400).send("잘못된 요청입니다.");
+  }
+}
+
+exports.post_accounts_token = async (req, res) => {
+  let body = await req.body;
+
+  if ((body.refreshToken) && (body.refreshToken in tokenList)) {
+    const token = jwt.sign({
+      userId: body.userId
+    }, YOUR_SECRET_KEY, {
+      expiresIn: '24h'
+    }); 
+
+    tokenList[body.refreshToken].token = token;
+
+    res.cookie('user', token);
+    res.status(200).json({"token": token});
+  } else {
+    res.status(404).send("잘못된 요청 혹은 리프레시 토큰이 만료되었습니다.");
   }
 }

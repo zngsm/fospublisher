@@ -2,10 +2,18 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "역전출판사 API"
-  description: "역전출판사 API"
+  description: "토큰이 필요한 api의 경우, 로그인 api에서 토큰을 발급받아 우측 Authorize 부분에 입력하시면 됩니다. (외부에서 로그인 한 것은 적용 안됩니다.)"
 servers:
-  - description: 역전출판사 API
+  - description: "역전출판사 API"
     url: http://localhost:3000/
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: user
+security:
+  - ApiKeyAuth: []
 paths:
   /api/accounts/signup:
     post:
@@ -85,11 +93,13 @@ paths:
                 type: integer
               token:
                 type: string
+              refreshToken:
+                type: string
   /api/accounts/user-edit:
     put:
       tags:
         - accounts
-      summary: 회원정보 수정 API
+      summary: (토큰 필요) 회원정보 수정 API
       description: img, introduce는 null값 허용입니다.
       requestBody:
         required: true
@@ -121,7 +131,7 @@ paths:
     post:
       tags:
         - accounts
-      summary: 비밀번호 확인 API
+      summary: (토큰 필요) 비밀번호 확인 API
       description: password를 입력하세요.
       requestBody:
         required: true
@@ -176,7 +186,7 @@ paths:
     put:
       tags:
         - accounts
-      summary: 비밀번호 + 질문 답변 변경 API
+      summary: (토큰 필요) 비밀번호 + 질문 답변 변경 API
       description: question은 인덱스값을 넣어야 합니다.
       requestBody:
         required: true
@@ -265,7 +275,7 @@ paths:
     get:
       tags:
         - accounts
-      summary: 유저정보 API
+      summary: (토큰 필요) 유저정보 API
       responses:
         "200":
           description: 유저정보 가져오기 성공
@@ -274,3 +284,31 @@ paths:
             properties:
               user:
                 type: object
+  /api/accounts/token:
+    post:
+      tags:
+        - accounts
+      summary: 리프레시토큰 유효 체크 API
+      description: refreshToken과 userId 입력
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                userId:
+                  type: integer
+              required:
+                - refreshToken
+                - userId
+      responses:
+        "200":
+          description: 유효체크 성공
+          schema:
+            type: object
+            properties:
+              token:
+                type: string

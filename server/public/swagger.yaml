@@ -312,3 +312,375 @@ paths:
             properties:
               token:
                 type: string
+  /api/pasts/:
+    get:
+      tags:
+        - pasts
+      summary: (토큰 필요) 과거 자서전 정보 API
+      description: 표지정보, 챕터내용, 목차 정보
+      responses:
+        "200":
+          description: 과거 자서전 정보
+          schema:
+            type: object
+            properties:
+              cover:
+                type: object
+              content:
+                type: array
+              list:
+                type: object
+    put:
+      tags:
+        - pasts
+      summary: (토큰 필요) 과거 자서전 수정 API
+      description: cover 정보 수정
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: "string"
+                size:
+                  type: "integer"
+                skin:
+                  type: "integer"
+                font:
+                  type: "integer"
+                skin_color:
+                  type: "string"
+                font_color:
+                  type: "string"
+      responses:
+        "201":
+          description: 표지 정보 수정 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+    post:
+      tags:
+        - pasts
+      summary: (토큰 필요) 과거 자서전 챕터 작성 API
+      description: 자동저장시 check를 false, 확정저장시 check를 true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: "string"
+                content:
+                  type: "string"
+                year:
+                  type: "integer"
+                check:
+                  type: "boolean"
+              required:
+                - check
+      responses:
+        "201":
+          description: 글 작성완료, 해당 글의 id 값 반환
+          schema:
+            type: object
+            properties:
+              id:
+                type: "integer"
+  /api/pasts/{chapter_id}:
+    get:
+      tags:
+        - pasts
+      summary: (토큰 필요) 과거 자서전 챕터 정보 API
+      description: 해당 챕터 정보
+      parameters:
+        - in: path
+          name: chapter_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 챕터 id
+      responses:
+        "200":
+          description: 과거 자서전 정보
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+              year:
+                type: integer
+              order:
+                type: integer
+              page:
+                type: integer
+              check:
+                type: boolean
+              createdAt:
+                type: date
+    put:
+      tags:
+        - pasts
+      summary: (토큰 필요) 과거 자서전 챕터 수정 API
+      description:
+      parameters:
+        - in: path
+          name: chapter_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 챕터 id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: "string"
+                content:
+                  type: "string"
+                year:
+                  type: "integer"
+                check:
+                  type: "boolean"
+              required:
+                - check
+      responses:
+        "201":
+          description: 글 확정저장 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+        "203":
+          description: 글 자동저장 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+    delete:
+      tags:
+        - pasts
+      summary: (토큰 필요) 과거 자서전 챕터 삭제 API
+      description:
+      parameters:
+        - in: path
+          name: chapter_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 챕터 id
+      responses:
+        "200":
+          description: 글 삭제 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+  /api/futures/:
+    get:
+      tags:
+        - futures
+      summary: (토큰 필요) 미래 자서전 정보 API
+      description: 표지정보, 챕터내용, 목차 정보
+      responses:
+        "200":
+          description: 미래 자서전 정보
+          schema:
+            type: object
+            properties:
+              cover:
+                type: object
+              content:
+                type: array
+              list:
+                type: object
+    put:
+      tags:
+        - futures
+      summary: (토큰 필요) 미래 자서전 수정 API
+      description: cover 정보 수정
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: "string"
+                size:
+                  type: "integer"
+                skin:
+                  type: "integer"
+                font:
+                  type: "integer"
+                skin_color:
+                  type: "string"
+                font_color:
+                  type: "string"
+      responses:
+        "201":
+          description: 표지 정보 수정 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+    post:
+      tags:
+        - futures
+      summary: (토큰 필요) 미래 자서전 챕터 작성 API
+      description: 자동저장시 check를 false, 확정저장시 check를 true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: "string"
+                content:
+                  type: "string"
+                year:
+                  type: "integer"
+                month:
+                  type: "integer"
+                day:
+                  type: "integer"
+                check:
+                  type: "boolean"
+              required:
+                - check
+      responses:
+        "201":
+          description: 글 작성완료, 해당 글의 id 값 반환
+          schema:
+            type: object
+            properties:
+              id:
+                type: "integer"
+  /api/futures/{chapter_id}:
+    get:
+      tags:
+        - futures
+      summary: (토큰 필요) 미래 자서전 챕터 정보 API
+      description: 해당 챕터 정보
+      parameters:
+        - in: path
+          name: chapter_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 챕터 id
+      responses:
+        "200":
+          description: 미래 자서전 정보
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+              year:
+                type: integer
+              month:
+                type: integer
+              day:
+                type: integer
+              order:
+                type: integer
+              page:
+                type: integer
+              check:
+                type: boolean
+              createdAt:
+                type: date
+    put:
+      tags:
+        - futures
+      summary: (토큰 필요) 미래 자서전 챕터 수정 API
+      description:
+      parameters:
+        - in: path
+          name: chapter_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 챕터 id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: "string"
+                content:
+                  type: "string"
+                year:
+                  type: "integer"
+                month:
+                  type: "integer"
+                day:
+                  type: "integer"
+                check:
+                  type: "boolean"
+              required:
+                - check
+      responses:
+        "201":
+          description: 글 확정저장 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+        "203":
+          description: 글 자동저장 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+    delete:
+      tags:
+        - futures
+      summary: (토큰 필요) 미래 자서전 챕터 삭제 API
+      description:
+      parameters:
+        - in: path
+          name: chapter_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 챕터 id
+      responses:
+        "200":
+          description: 글 삭제 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"

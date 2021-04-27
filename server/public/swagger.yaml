@@ -15,6 +15,28 @@ components:
 security:
   - ApiKeyAuth: []
 paths:
+  /api/images/upload:
+    post:
+      tags:
+        - images
+      summary: 파일 업로드(S3) API
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                imgFile:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: 파일 업로드 성공
+          schema:
+            type: object
+            properties:
+              imgUrl:
+                type: string
   /api/accounts/signup:
     post:
       tags:

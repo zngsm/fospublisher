@@ -1,9 +1,10 @@
 const { Router } = require("express");
+const { verifyToken } = require("../tokens/authorization");
 const router = Router();
 const ctrl = require("./timelines.ctrl");
 
-router.get("/", ctrl.get_timelines_read);
+router.get("/", verifyToken, ctrl.get_timelines_read);
 
-router.put("/", ctrl.put_timelines_edit);
+router.put("/", verifyToken, ctrl.put_timelines_edit);
 
 module.exports = router;

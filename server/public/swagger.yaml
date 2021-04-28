@@ -522,7 +522,7 @@ paths:
       description: 표지정보, 챕터내용, 목차 정보
       responses:
         "200":
-          description: 미래 자서전 정보
+          description: OK
           schema:
             type: object
             properties:
@@ -558,12 +558,14 @@ paths:
                   type: "string"
       responses:
         "201":
-          description: 표지 정보 수정 완료
+          description: Created
           schema:
             type: object
             properties:
               success:
                 type: "string"
+        "400":
+          description: Bad Request
     post:
       tags:
         - futures
@@ -592,7 +594,7 @@ paths:
                 - check
       responses:
         "201":
-          description: 글 작성완료, 해당 글의 id 값 반환
+          description: Created
           schema:
             type: object
             properties:
@@ -614,7 +616,7 @@ paths:
           description: 챕터 id
       responses:
         "200":
-          description: 미래 자서전 정보
+          description: Created
           schema:
             type: object
             properties:
@@ -672,14 +674,14 @@ paths:
                 - check
       responses:
         "201":
-          description: 글 확정저장 완료
+          description: Created
           schema:
             type: object
             properties:
               success:
                 type: "string"
-        "203":
-          description: 글 자동저장 완료
+        "202":
+          description: Accepted
           schema:
             type: object
             properties:
@@ -701,6 +703,63 @@ paths:
       responses:
         "200":
           description: 글 삭제 완료
+          schema:
+            type: object
+            properties:
+              success:
+                type: "string"
+  /api/timelines/:
+    get:
+      tags:
+        - timelines
+      summary: (토큰 필요) 인생 연표 정보 조회
+      description: 연도별, 각 챕터를 order에 따라 id 값과 title을 정렬하여 반환
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              year:
+                type: integer
+                properties:
+                  title:
+                    type: string
+                  id:
+                    type: integer
+                  order:
+                    type: integer
+                  check:
+                    type: boolean
+    put:
+      tags:
+        - timelines
+      summary: (토큰 필요) 인생 연표 정보 수정
+      description: 수정이 필요한 연도와 순서 입력하여 연표의 순서를 수정
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "integer"
+                      order:
+                        type: "integer"
+              required:
+                - year
+                - id
+                - order
+
+      responses:
+        "201":
+          description: Created
           schema:
             type: object
             properties:

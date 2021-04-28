@@ -133,7 +133,7 @@ exports.put_pasts_edit = async (req, res) => {
       if (check) {
         res.status(201).json({ success: "저장되었습니다." });
       } else {
-        res.status(203).json({ success: "자동 저장되었습니다." });
+        res.status(202).json({ success: "자동 저장되었습니다." });
       }
       return;
     })

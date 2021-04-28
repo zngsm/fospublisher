@@ -145,7 +145,7 @@ exports.put_futures_edit = async (req, res) => {
       if (check) {
         res.status(201).json({ success: "저장되었습니다." });
       } else {
-        res.status(203).json({ success: "자동저장되었습니다." });
+        res.status(202).json({ success: "자동저장되었습니다." });
       }
     })
     .catch(() => {

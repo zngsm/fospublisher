@@ -1,0 +1,48 @@
+<template>
+  <v-card
+    class="member-kukde-light justify-center d-flex align-content-space-around flex-wrap"
+    min-height="20vh"
+  >
+    <!-- 여기다 아이콘 아이콘 못찾았... -->
+
+    <v-card-title>
+      <v-row class="justify-center">
+        {{ headerTitle }}
+      </v-row>
+    </v-card-title>
+
+    <v-card-text>
+      <v-row class="justify-center">
+        {{ bodyContent }}
+      </v-row>
+    </v-card-text>
+
+    <v-row class="justify-center" no-gutters>
+      <v-card-actions>
+        <v-btn small color="#231815" outlined @click="$emit('submit')">
+          확인
+        </v-btn>
+      </v-card-actions>
+    </v-row>
+  </v-card>
+</template>
+
+<script>
+export default {
+  name: "MessageModal",
+  props: {
+    headerTitle: {
+      type: String,
+      require: false,
+    },
+    bodyContent: {
+      type: String,
+      require: false,
+    },
+    moveTo: {
+      type: String,
+      require: false,
+    },
+  },
+};
+</script>

@@ -372,16 +372,15 @@
       </template>
       <span>PDF 추출</span>
     </v-tooltip>
-    <v-tooltip bottom>
+    <!-- <v-tooltip bottom>
       <template v-slot:activator="{ on, attrs }">
         <v-btn text tile small v-bind="attrs" v-on="on" class="py-5" @click="exportToWord()">
           <i class="fas fa-file-word pr-1"></i>Word
         </v-btn>
       </template>
       <span>Word 추출</span>
-    </v-tooltip>
+    </v-tooltip> -->
    
-    <v-btn text tile small class="py-5" @click="test()">test</v-btn>
   </div>
 
   <iframe name="richTextField" style="width: 1000px; height: 500px; border: solid #D1D1D1 1px; border-radius: 3px;"></iframe>
@@ -405,6 +404,7 @@ export default {
       imageModal: false,
       imageFile: [],
       imageLink: '',
+      imageNum: 0,
       linkModal: false,
       pageLink: '',
       width: 0,
@@ -414,14 +414,6 @@ export default {
     }
   },
   methods: {
-    test() {
-      console.log($('iframe[name="richTextField"]').contents().find('img'))
-      $('iframe[name="richTextField"]').contents().find('img').wrap('<div id="draggableHelper" style="display:inline-block"></div>')
-      $('iframe[name="richTextField"]').contents().find('#draggableHelper').draggable()
-      $('iframe[name="richTextField"]').contents().find('img').resizable()
-    
-    },
-    
     inserLink() {
       this.linkModal = false
       if (this.pageLink != '') {
@@ -439,60 +431,122 @@ export default {
         this.pageLink = ''
       }
     },
-    async insertImage() {
+    insertImage() {
       this.imageModal = false
-      if (this.imageFile != []) {
+      if (this.imageFile.length != 0) {
         var file = this.imageFile
         var reader = new FileReader();
         var image = new Image();
-
+        var vm = this
         reader.onloadend = function() {
           image.src = reader.result
           window.richTextField.document.getElementsByTagName('body')[0].appendChild(image)
           image.style.maxWidth = '100%'
-          console.log($('iframe[name="richTextField"]').contents().find('img'))
-          $('iframe[name="richTextField"]').contents().find('img').wrap('<div id="draggableHelper" style="display:inline-block"></div>')
-          $('iframe[name="richTextField"]').contents().find('#draggableHelper').draggable({containment: window.richTextField.document.getElementsByTagName('body')})
-    
-        
-          // $('iframe[name="richTextField"]').contents().find('#draggableHelper').addEventListener('mouseover', function(){ 
-          //   $('iframe[name="richTextField"]').contents().find('#draggableHelper').style.border = 'solid black 10px' 
-          // })
-          // $('iframe[name="richTextField"]').contents().find('#draggableHelper').addEventListener('mouseout', function(){ 
-          //   $('iframe[name="richTextField"]').contents().find('#draggableHelper').style.border = 'none' 
-          // })
+          image.setAttribute('id', vm.imageNum)
 
-          $('iframe[name="richTextField"]').contents().find('img').resizable({aspectRatio: true})
-          $('iframe[name="richTextField"]').contents().find('.ui-resizable-handle').css({
+          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).wrap(`<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`)
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<br>');
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<br>');
+
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).draggable({
+            containment: window.richTextField.document.getElementsByTagName('body'), 
+            axis: "x"
+          })
+
+          // 리사이즈 기능을 위한 스타일링 적용(ifram은 css직접적으로 수정 불가)
+          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).resizable({aspectRatio: true})
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-handle').css({
             'position': 'absolute',
             'font-size': '0.1px',
             'display': 'block',
             '-ms-touch-action': 'none',
             'touch-action': 'none'})
-          $('iframe[name="richTextField"]').contents().find('.ui-resizable-e').css({
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-e').css({
             'cursor': 'e-resize',
             'width': '7px',
             'right': '-5px',
             'top': '0',
             'height': '100%'})
-          $('iframe[name="richTextField"]').contents().find('.ui-resizable-s').css({
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-s').css({
             'cursor': 's-resize',
             'height': '7px',
             'bottom': '-5px',
             'left': '0',
             'width': '100%'})
-          $('iframe[name="richTextField"]').contents().find('.ui-resizable-se').css({
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-se').css({
             'cursor': 'se-resize',
             'height': '12px',
             'bottom': '1px',
             'right': '1px',
             'width': '12px'})
+
+          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseenter(function(event) {
+              event.target.style.cursor = 'pointer'
+              event.target.style.border = 'solid white 3px'
+              event.target.style.boxSizing = 'border-box'
+          });
+          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseout(function(event) {
+              event.target.style.border = 'none'
+          });
+          
+          vm.imageNum += 1
         }
         reader.readAsDataURL(file);
         this.imageFile = []
       } else if (this.imageLink != '') {
-        console.log(this.imageLink)
         this.execCommandWithArg('insertImage', this.imageLink)
+        const vm = this
+        const imgTags = $('iframe[name="richTextField"]').contents().find('img')
+        imgTags.each(function (index, imgTag) {
+          if (imgTag.id == '') {
+            imgTag.setAttribute('id', vm.imageNum)
+          }
+        })
+        $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).wrap(`<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`)
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<br>');
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<br>');
+
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).draggable({
+          containment: window.richTextField.document.getElementsByTagName('body'), 
+          axis: "x"
+        })
+
+        // 리사이즈 기능을 위한 스타일링 적용(ifram은 css직접적으로 수정 불가)
+        $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).resizable({aspectRatio: true})
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-handle').css({
+          'position': 'absolute',
+          'font-size': '0.1px',
+          'display': 'block',
+          '-ms-touch-action': 'none',
+          'touch-action': 'none'})
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-e').css({
+          'cursor': 'e-resize',
+          'width': '7px',
+          'right': '-5px',
+          'top': '0',
+          'height': '100%'})
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-s').css({
+          'cursor': 's-resize',
+          'height': '7px',
+          'bottom': '-5px',
+          'left': '0',
+          'width': '100%'})
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-se').css({
+          'cursor': 'se-resize',
+          'height': '12px',
+          'bottom': '1px',
+          'right': '1px',
+          'width': '12px'})
+        $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseenter(function(event) {
+              event.target.style.cursor = 'pointer'
+              event.target.style.border = 'solid white 3px'
+              event.target.style.boxSizing = 'border-box'
+          });
+          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseout(function(event) {
+              event.target.style.border = 'none'
+          });
+        vm.imageNum += 1
+        this.imageLink = ''
       }
     },
     execCmd(command) {
@@ -511,40 +565,40 @@ export default {
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       })
     },
-    exportToWord(){
-        var html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
-        var footer = "</body></html>";
-        var content = html+ window.richTextField.document.getElementsByTagName('body')[0].innerHTML+footer;
+    // exportToWord(){
+    //     var html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+    //     var footer = "</body></html>";
+    //     var content = html+ window.richTextField.document.getElementsByTagName('body')[0].innerHTML+footer;
     
-        //link url
-        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(content);
+    //     //link url
+    //     var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(content);
         
-        //file name
-        var filename = 'sample_A4'+'.doc';
+    //     //file name
+    //     var filename = 'sample_A4'+'.doc';
         
-        // Creates the  download link element dynamically
-        var downloadLink = document.createElement("a");
+    //     // Creates the  download link element dynamically
+    //     var downloadLink = document.createElement("a");
     
-        document.body.appendChild(downloadLink);
+    //     document.body.appendChild(downloadLink);
         
-        //Link to the file
-        downloadLink.href = url;
+    //     //Link to the file
+    //     downloadLink.href = url;
             
-        //Setting up file name
-        downloadLink.download = filename;
+    //     //Setting up file name
+    //     downloadLink.download = filename;
             
-        //triggering the function
-        downloadLink.click();
-        //Remove the a tag after donwload starts.
-        document.body.removeChild(downloadLink);
-    }
+    //     //triggering the function
+    //     downloadLink.click();
+    //     //Remove the a tag after donwload starts.
+    //     document.body.removeChild(downloadLink);
+    // }
   },
   mounted() {
     window.richTextField.document.designMode = 'On'
     window.richTextField.document.getElementsByTagName('body')[0].style.wordBreak = "break-all"
     const picker = new EmojiButton();
     const trigger = document.querySelector('#emoji-trigger');
-    document.querySelector('.emoji-picker').style.animation = 'none'
+    // document.querySelector('.emoji-picker').style.animation = 'none'
 
     picker.on('emoji', selection => {
       this.execCommandWithArg('insertHTML', selection.emoji);

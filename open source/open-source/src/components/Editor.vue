@@ -445,8 +445,8 @@ export default {
           image.setAttribute('id', vm.imageNum)
 
           $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).wrap(`<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`)
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<div><br></div>');
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<div><br></div>');
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<br>');
+          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<br>');
 
           $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).draggable({
             containment: window.richTextField.document.getElementsByTagName('body'), 
@@ -503,8 +503,8 @@ export default {
           }
         })
         $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).wrap(`<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`)
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<div><br></div>');
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<div><br></div>');
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<br>');
+        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<br>');
 
         $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).draggable({
           containment: window.richTextField.document.getElementsByTagName('body'), 

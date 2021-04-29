@@ -5,7 +5,7 @@ info:
   description: "토큰이 필요한 api의 경우, 로그인 api에서 토큰을 발급받아 우측 Authorize 부분에 입력하시면 됩니다. (외부에서 로그인 한 것은 적용 안됩니다.)"
 servers:
   - description: "역전출판사 API"
-    url: http://localhost:3000/
+    url: http://k4b201.p.ssafy.io/
 components:
   securitySchemes:
     ApiKeyAuth:

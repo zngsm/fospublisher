@@ -1,13 +1,45 @@
+const AdminBro = require('admin-bro');
+const AdminBroSequelize = require('@admin-bro/sequelize');
+const AdminBroExpress = require('@admin-bro/express');
 const createError = require("http-errors");
 const express = require("express");
+const dotenv = require('dotenv');
+
+dotenv.config(); //LOAD CONFIG
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+AdminBro.registerAdapter(AdminBroSequelize);
+
+const db = require("./models");
+const adminBro = new AdminBro({
+  databases: [db],
+  rootPath: '/admin',
+});
+
+const ADMIN = {
+  email: ADMIN_EMAIL,
+  password: ADMIN_PASSWORD
+};
+
+const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+  authenticate: async (email, password) => {
+    if (ADMIN.password === password && ADMIN.email === email) {
+      return ADMIN
+    }
+      return null
+    },
+  cookieName: 'adminBro',
+  cookiePassword: 'testtest'
+});
+
 const nunjucks = require("nunjucks");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
-const db = require("./models");
 
 class App {
   constructor() {
@@ -49,6 +81,7 @@ class App {
   setMiddleWare() {
     // 미들웨어 셋팅
     this.app.use(logger("dev"));
+    this.app.use(adminBro.options.rootPath, router);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(cookieParser());

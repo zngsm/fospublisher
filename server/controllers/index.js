@@ -3,8 +3,6 @@ const router = Router();
 
 router.use("/", require("./main"));
 
-router.use("/admin", require("./admin"));
-
 router.use("/api/accounts", require("./accounts"));
 
 router.use("/api/pasts", require("./pasts"));

@@ -3,7 +3,17 @@
     class="member-kukde-light justify-center d-flex align-content-space-around flex-wrap"
     min-height="20vh"
   >
-    <!-- 여기다 아이콘 아이콘 못찾았... -->
+    <v-col cols="12">
+      <v-card-title v-if="headerTitle !== 'email'">
+        <v-row class="justify-center">
+          <v-img
+            src="../assets/letter.png"
+            alt="편지 이미지"
+            max-width="15vw"
+          />
+        </v-row>
+      </v-card-title>
+    </v-col>
 
     <v-card-title>
       <v-row class="justify-center">

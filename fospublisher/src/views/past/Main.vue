@@ -40,12 +40,14 @@
         글작성 버튼
       </button>
     </div>
+    <message-modal />
   </div>
 </template>
 
 <script>
 import { userLogin } from "@/api/account";
 import { pastWrite } from "@/api/past";
+import MessageModal from "../../components/MessageModal.vue";
 // import { mapState } from "vuex";
 export default {
   name: "Main",
@@ -63,6 +65,8 @@ export default {
       },
     };
   },
+  components: { MessageModal },
+
   // computed: {
   //   ...mapState("error", {
   //     validationErrors: (state) => state.validations,

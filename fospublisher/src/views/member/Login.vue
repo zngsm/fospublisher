@@ -15,14 +15,13 @@
             </p>
             <div class="d-flex align-center flex-column">
               <div style="width: 25vw">
-                <v-text-field label="아이디"></v-text-field>
+                <v-text-field color="#231815" label="아이디"></v-text-field>
                 <v-text-field label="비밀번호"></v-text-field>
                 <div class="text-center">
                   <v-btn
-                    class="font-xl"
+                    class="font-xl my-7"
                     block
                     color="#231815"
-                    style="margin-top: 3vh; margin-bottom: 3vh"
                     dark
                     depressed
                     x-large

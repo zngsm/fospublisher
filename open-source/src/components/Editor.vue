@@ -372,15 +372,6 @@
       </template>
       <span>PDF 추출</span>
     </v-tooltip>
-    <!-- <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile small v-bind="attrs" v-on="on" class="py-5" @click="exportToWord()">
-          <i class="fas fa-file-word pr-1"></i>Word
-        </v-btn>
-      </template>
-      <span>Word 추출</span>
-    </v-tooltip> -->
-   
   </div>
 
   <iframe name="richTextField" style="width: 1000px; height: 500px; border: solid #D1D1D1 1px; border-radius: 3px;"></iframe>
@@ -407,13 +398,60 @@ export default {
       imageNum: 0,
       linkModal: false,
       pageLink: '',
-      width: 0,
-      height: 0,
-      x: 0,
-      y: 0
     }
   },
   methods: {
+    // 이미지 삽입 후 드래그 및 리사이즈 기능 추가 함수
+    imageDragResize() {
+      const vm = this
+      $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).wrap(`<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`)
+      // 이미지 위 아래로 빈 칸 추가
+      $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<br>');
+      $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<br>');
+      
+      // x축 방향으로만 이미지 드래그 가능, richtextField 내에서만 움직일 수 있음
+      $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).draggable({
+        containment: window.richTextField.document.getElementsByTagName('body'), 
+        axis: "x"
+      })
+
+      // 리사이즈 기능을 위한 스타일링 적용(ifram은 css직접적으로 수정 불가)
+      // 리사이즈 핸들러 css 
+      $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).resizable({aspectRatio: true, minWidth: 300 })
+      $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-handle').css({
+        'position': 'absolute',
+        'font-size': '0.1px',
+        'display': 'block',
+        '-ms-touch-action': 'none',
+        'touch-action': 'none'})
+      $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-e').css({
+        'cursor': 'e-resize',
+        'width': '7px',
+        'right': '-5px',
+        'top': '0',
+        'height': '100%'})
+      $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-s').css({
+        'cursor': 's-resize',
+        'height': '7px',
+        'bottom': '-5px',
+        'left': '0',
+        'width': '100%'})
+      $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-se').css({
+        'cursor': 'se-resize',
+        'height': '12px',
+        'bottom': '1px',
+        'right': '1px',
+        'width': '12px'})
+      $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseenter(function(event) {
+            event.target.style.cursor = 'pointer'
+            event.target.style.border = 'solid white 3px'
+            event.target.style.boxSizing = 'border-box'
+      });
+      $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseout(function(event) {
+          event.target.style.border = 'none'
+      });
+      vm.imageNum += 1
+    },
     inserLink() {
       this.linkModal = false
       if (this.pageLink != '') {
@@ -421,9 +459,11 @@ export default {
         const links = window.richTextField.document.querySelectorAll('a')
         links.forEach(item => {
           item.target = '_blank';
+          // 링크 삽입 후 클릭하면 링크로 이동할 수 있도록 디자인 모드 끔
           item.addEventListener('mouseover', () => {
             window.richTextField.document.designMode = 'Off'
           });
+          // 링크 삽입 후 다른 작업이 가능하도록 디자인 모드 다시 킴 
           item.addEventListener('mouseout', () => {
             window.richTextField.document.designMode = 'On'
           });
@@ -433,6 +473,7 @@ export default {
     },
     insertImage() {
       this.imageModal = false
+      // 로컬에서 이미지를 직접 올리는 경우
       if (this.imageFile.length != 0) {
         var file = this.imageFile
         var reader = new FileReader();
@@ -442,57 +483,19 @@ export default {
           image.src = reader.result
           window.richTextField.document.getElementsByTagName('body')[0].appendChild(image)
           image.style.maxWidth = '100%'
+          // 이미지마다 개별 id를 부여함으로써 imageDragResize 함수에서 이미 기능이 적용된 이미지에는 추가로 작동하지 않도록 조정
           image.setAttribute('id', vm.imageNum)
-
-          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).wrap(`<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`)
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<br>');
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<br>');
-
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).draggable({
-            containment: window.richTextField.document.getElementsByTagName('body'), 
-            axis: "x"
-          })
-
-          // 리사이즈 기능을 위한 스타일링 적용(ifram은 css직접적으로 수정 불가)
-          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).resizable({aspectRatio: true})
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-handle').css({
-            'position': 'absolute',
-            'font-size': '0.1px',
-            'display': 'block',
-            '-ms-touch-action': 'none',
-            'touch-action': 'none'})
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-e').css({
-            'cursor': 'e-resize',
-            'width': '7px',
-            'right': '-5px',
-            'top': '0',
-            'height': '100%'})
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-s').css({
-            'cursor': 's-resize',
-            'height': '7px',
-            'bottom': '-5px',
-            'left': '0',
-            'width': '100%'})
-          $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-se').css({
-            'cursor': 'se-resize',
-            'height': '12px',
-            'bottom': '1px',
-            'right': '1px',
-            'width': '12px'})
-
-          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseenter(function(event) {
-              event.target.style.cursor = 'pointer'
-              event.target.style.border = 'solid white 3px'
-              event.target.style.boxSizing = 'border-box'
-          });
-          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseout(function(event) {
-              event.target.style.border = 'none'
-          });
-          
-          vm.imageNum += 1
+          image.onload = function() {
+            // 이미지가 로드되고 아래 함수가 실행되도록 onload 명령어 사용
+            vm.imageDragResize()
+          }
         }
         reader.readAsDataURL(file);
+        // 문제점: 현재 같은 이미지를 두 번 올릴 수 없음 
+        // 찾아보니 vuetify 자체적인 오류인듯함...추후 수정 필요
         this.imageFile = []
+
+        // 이미지 링크로 올리는 경우
       } else if (this.imageLink != '') {
         this.execCommandWithArg('insertImage', this.imageLink)
         const vm = this
@@ -500,106 +503,52 @@ export default {
         imgTags.each(function (index, imgTag) {
           if (imgTag.id == '') {
             imgTag.setAttribute('id', vm.imageNum)
+            imgTag.style.maxWidth = '100%'
+            imgTag.onload = function() {
+              vm.imageDragResize()
+            }
           }
         })
-        $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).wrap(`<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`)
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).after('<br>');
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).before('<br>');
-
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum}`).draggable({
-          containment: window.richTextField.document.getElementsByTagName('body'), 
-          axis: "x"
-        })
-
-        // 리사이즈 기능을 위한 스타일링 적용(ifram은 css직접적으로 수정 불가)
-        $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).resizable({aspectRatio: true})
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-handle').css({
-          'position': 'absolute',
-          'font-size': '0.1px',
-          'display': 'block',
-          '-ms-touch-action': 'none',
-          'touch-action': 'none'})
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-e').css({
-          'cursor': 'e-resize',
-          'width': '7px',
-          'right': '-5px',
-          'top': '0',
-          'height': '100%'})
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-s').css({
-          'cursor': 's-resize',
-          'height': '7px',
-          'bottom': '-5px',
-          'left': '0',
-          'width': '100%'})
-        $('iframe[name="richTextField"]').contents().find(`#draggableHelper${vm.imageNum} > .ui-wrapper`).children('.ui-resizable-se').css({
-          'cursor': 'se-resize',
-          'height': '12px',
-          'bottom': '1px',
-          'right': '1px',
-          'width': '12px'})
-        $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseenter(function(event) {
-              event.target.style.cursor = 'pointer'
-              event.target.style.border = 'solid white 3px'
-              event.target.style.boxSizing = 'border-box'
-          });
-          $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseout(function(event) {
-              event.target.style.border = 'none'
-          });
-        vm.imageNum += 1
         this.imageLink = ''
       }
     },
     execCmd(command) {
+      // 인자가 필요없는 명령어인 경우
+      // ex. 글씨 굵게 하기, 가로선 넣기 등
       window.richTextField.document.execCommand(command, false, null);
     },
     execCommandWithArg(command, arg) {
+      // 인자가 필요한 명령어인 경우
+      // ex. 이미지 삽입시 링크
       window.richTextField.document.execCommand(command, false, arg);
     },
  
     exportToPDF() {
+      // html2pdf npm 모듈 사용
       html2pdf(window.richTextField.document.getElementsByTagName('body')[0], {
-        margin: [22,10, 15, 10],
+        margin: 0,
         filename: 'document.pdf',
         image: { type: 'jpeg', quality: 1 },
-        html2canvas: { dpi: 192, letterRendering: true },
+        html2canvas: { width: 976, height: 1600 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       })
+      
+      // .from(element).set({
+      //   pagebreak: { mode: 'avoid-all', after: '#root' },
+      // })
+
     },
-    // exportToWord(){
-    //     var html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
-    //     var footer = "</body></html>";
-    //     var content = html+ window.richTextField.document.getElementsByTagName('body')[0].innerHTML+footer;
-    
-    //     //link url
-    //     var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(content);
-        
-    //     //file name
-    //     var filename = 'sample_A4'+'.doc';
-        
-    //     // Creates the  download link element dynamically
-    //     var downloadLink = document.createElement("a");
-    
-    //     document.body.appendChild(downloadLink);
-        
-    //     //Link to the file
-    //     downloadLink.href = url;
-            
-    //     //Setting up file name
-    //     downloadLink.download = filename;
-            
-    //     //triggering the function
-    //     downloadLink.click();
-    //     //Remove the a tag after donwload starts.
-    //     document.body.removeChild(downloadLink);
-    // }
   },
   mounted() {
+    // richTextField의 내용을 수정할 수 있도록 디자인 모드를 켜줌
     window.richTextField.document.designMode = 'On'
+
+    // 문자가 richTextField의 너비를 넘어섰을 때 자동으로 줄바꿈
     window.richTextField.document.getElementsByTagName('body')[0].style.wordBreak = "break-all"
+
+    // 이모티콘 선택하면 커서 위치에 삽입할 수 있도록 하는 코드
     const picker = new EmojiButton();
     const trigger = document.querySelector('#emoji-trigger');
-    // document.querySelector('.emoji-picker').style.animation = 'none'
-
     picker.on('emoji', selection => {
       this.execCommandWithArg('insertHTML', selection.emoji);
     });

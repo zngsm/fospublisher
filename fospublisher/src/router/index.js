@@ -6,6 +6,7 @@ import Login from "../views/member/Login.vue";
 import FindPassword from "../views/member/FindPassword.vue";
 import ChangePassword from "../views/member/ChangePassword.vue";
 import Register from "../views/member/Register.vue";
+import Main from "../views/past/Main.vue";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+  },
+  {
+    path: "/main",
+    name: "Main",
+    component: Main,
   },
 ];
 

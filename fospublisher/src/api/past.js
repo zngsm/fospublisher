@@ -1,11 +1,20 @@
-import http from "./http";
+import { authorizationInstance } from "./index.js";
 
-export async function write(title, contenet) {
-  return http.post({
-    url: "/board",
-    data: {
-      title,
-      content,
-    },
-  });
+const instance = authorizationInstance();
+// const instance = createInstance();
+
+function pastWrite(article, success, fail) {
+  instance
+    .post("api/pasts/", article, {})
+    .then(success)
+    .catch(fail);
 }
+
+function pastRead(article, success, fail) {
+  instance
+    .get("api/pasts/", article, {})
+    .then(success)
+    .catch(fail);
+}
+
+export { pastWrite, pastRead };

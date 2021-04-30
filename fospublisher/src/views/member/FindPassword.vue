@@ -13,13 +13,13 @@
             <div class="d-flex align-center flex-column">
               <div style="width: 25vw">
                 <v-text-field label="아이디"></v-text-field>
-                <v-select label="비밀번호 찾기 질문"></v-select>
+                <password-question />
                 <v-text-field label="비밀번호 찾기 답변"></v-text-field>
                 <div class="text-center">
                   <v-btn
                     block
                     color="#231815"
-                    style="margin-top: 2rem; margin-bottom: 2rem"
+                    class="my-6"
                     dark
                     depressed
                     to="/changePassword"
@@ -56,7 +56,8 @@
 <script>
 import "../../assets/css/font.css";
 import LeftSide from "../../components/member/LeftSide";
+import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 export default {
-  components: { LeftSide },
+  components: { LeftSide, PasswordQuestion },
 };
 </script>

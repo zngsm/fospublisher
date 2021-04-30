@@ -14,7 +14,7 @@
               <div style="width: 25vw">
                 <v-text-field label="새 비밀번호"></v-text-field>
                 <v-text-field label="새 비밀번호 확인"></v-text-field>
-                <v-select label="새 비밀번호 찾기 질문"></v-select>
+                <password-question />
                 <v-text-field label="새 비밀번호 찾기 답변"></v-text-field>
               </div>
             </div>
@@ -22,14 +22,16 @@
               <v-row class="justify-space-around">
                 <v-btn
                   color="#fff"
-                  style="width: 10vw; margin-top: 2rem; margin-bottom: 2rem"
+                  class="ma-5"
+                  style="width: 10vw"
                   to="/"
                   x-large
                   >취소</v-btn
                 >
                 <v-btn
                   color="#231815"
-                  style="width: 10vw; margin-top: 2rem; margin-bottom: 2rem"
+                  class="ma-5"
+                  style="width: 10vw"
                   dark
                   x-large
                   >비밀번호 변경</v-btn
@@ -47,7 +49,8 @@
 <script>
 import "../../assets/css/font.css";
 import LeftSide from "../../components/member/LeftSide";
+import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 export default {
-  components: { LeftSide },
+  components: { LeftSide, PasswordQuestion },
 };
 </script>

@@ -3,14 +3,9 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-import auth from "./auth";
-import error from "./error";
 export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: {
-    auth,
-    error,
-  },
+  modules: {},
 });

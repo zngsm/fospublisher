@@ -64,10 +64,8 @@ import LeftSide from "../../components/member/LeftSide";
 
 export default {
   components: { LeftSide },
-  data() {
-    return {
-      dialog: false,
-    };
-  },
+  data: () => ({
+    dialog: false,
+  }),
 };
 </script>

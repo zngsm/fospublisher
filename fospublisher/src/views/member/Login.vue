@@ -19,11 +19,29 @@
                 label="아이디"
                 v-model="username"
               ></v-text-field>
+              <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+              <div
+                v-if="
+                  validationErrors.username !== undefined && this.username == ''
+                "
+              >
+                {{ validationErrors.username }}
+              </div>
+              <!-- -------------------------------------------------------- -->
               <v-text-field
                 label="비밀번호"
                 v-model="password"
                 type="password"
               ></v-text-field>
+              <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+              <div
+                v-if="
+                  validationErrors.password !== undefined && this.password == ''
+                "
+              >
+                {{ validationErrors.password }}
+              </div>
+              <!-- -------------------------------------------------------- -->
               <div class="text-center">
                 <v-btn
                   class="font-xl my-7"
@@ -79,6 +97,7 @@ import "../../assets/css/font.css";
 import "../../assets/css/member.css";
 import LeftSide from "../../components/member/LeftSide";
 import MessageModal from "../../components/MessageModal";
+import { mapState } from "vuex";
 import { userLogin } from "@/api/account";
 
 export default {
@@ -100,16 +119,31 @@ export default {
         username: this.username,
         password: this.password,
       };
-      userLogin(this.form, (res) => {
-        if (res.status == 200 || res.status == 201) {
-          localStorage.setItem("token", res.data.token);
-          this.$router.push("/main");
-        } else {
-          this.dialog = !this.dialog;
-          this.isFailedLogin = true;
+      userLogin(
+        this.form,
+        (res) => {
+          if (res.status == 200 || res.status == 201) {
+            localStorage.setItem("token", res.data.token);
+            // vuex에 토큰 저장 시
+            this.$store.commit("auth/setToken", res.data.token);
+            // --------------------
+            this.$router.push("/main");
+          } else {
+            this.dialog = !this.dialog;
+            this.isFailedLogin = true;
+          }
+        },
+        (err) => {
+          console.log(err);
         }
-      });
+      );
     },
+  },
+  // vuex에서 validation가져오기, 값이 있으면 에러존재
+  computed: {
+    ...mapState("error", {
+      validationErrors: (state) => state.validations,
+    }),
   },
 };
 </script>

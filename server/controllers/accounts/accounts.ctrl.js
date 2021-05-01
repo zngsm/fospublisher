@@ -13,25 +13,25 @@ exports.post_accounts_signup = async (req, res) => {
   let validationErrors = {};
 
   if (req.body.username === undefined || req.body.username === "" || req.body.username === null) {
-    validationErrors['username'] = 'username은 필수입니다.';
+    validationErrors['username'] = '아이디는 필수입니다.';
   }
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
-    validationErrors['password'] = 'password은 필수입니다.';
+    validationErrors['password'] = '비밀번호는 필수입니다.';
   }
   if (req.body.password.length < 8) {
-    validationErrors['password'] = 'password은 8자 이상이어야 합니다.';
+    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
   }
   if (req.body.birthday === undefined || req.body.birthday === "" || req.body.birthday === null) {
-    validationErrors['birthday'] = 'birthday은 필수입니다.';
+    validationErrors['birthday'] = '생일은 필수입니다.';
   }
   if (req.body.nickname === undefined || req.body.nickname === "" || req.body.nickname === null) {
-    validationErrors['nickname'] = 'nickname은 필수입니다.';
+    validationErrors['nickname'] = '닉네임은 필수입니다.';
   }
   if (req.body.question === undefined || req.body.question === "" || req.body.question === null) {
-    validationErrors['question'] = 'question은 필수입니다.';
+    validationErrors['question'] = '비밀번호 찾기 질문은 필수입니다.';
   }
   if (req.body.answer === undefined || req.body.answer === "" || req.body.answer === null) {
-    validationErrors['answer'] = 'answer은 필수입니다.';
+    validationErrors['answer'] = '비밀번호 찾기 답변은 필수입니다.';
   }
 
   if (Object.keys(validationErrors).length > 0) {
@@ -98,13 +98,13 @@ exports.post_accounts_login = async (req, res) => {
   let validationErrors = {};
 
   if (req.body.username === undefined || req.body.username === "" || req.body.username === null) {
-    validationErrors['username'] = 'username은 필수입니다.';
+    validationErrors['username'] = '아이디는 필수입니다.';
   }
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
-    validationErrors['password'] = 'password은 필수입니다.';
+    validationErrors['password'] = '비밀번호는 필수입니다.';
   }
   if (req.body.password.length < 8) {
-    validationErrors['password'] = 'password은 8자 이상이어야 합니다.';
+    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
   }
 
   if (Object.keys(validationErrors).length > 0) {
@@ -173,10 +173,10 @@ exports.put_accounts_user_edit = async (req, res) => {
   let validationErrors = {};
 
   if (req.body.birthday === undefined || req.body.birthday === "" || req.body.birthday === null) {
-    validationErrors['birthday'] = 'birthday은 필수입니다.';
+    validationErrors['birthday'] = '생일은 필수입니다.';
   }
   if (req.body.nickname === undefined || req.body.nickname === "" || req.body.nickname === null) {
-    validationErrors['nickname'] = 'nickname은 필수입니다.';
+    validationErrors['nickname'] = '닉네임은 필수입니다.';
   }
 
   if (Object.keys(validationErrors).length > 0) {
@@ -235,10 +235,10 @@ exports.put_accounts_password_edit = async (req, res) => {
   let validationErrors = {};
 
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
-    validationErrors['password'] = 'password은 필수입니다.';
+    validationErrors['password'] = '비밀번호는 필수입니다.';
   }
   if (req.body.password.length < 8) {
-    validationErrors['password'] = 'password은 8자 이상이어야 합니다.';
+    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
   }
 
   if (Object.keys(validationErrors).length > 0) {
@@ -272,16 +272,16 @@ exports.put_accounts_password_question_edit = async (req, res) => {
   let validationErrors = {};
 
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
-    validationErrors['password'] = 'password은 필수입니다.';
+    validationErrors['password'] = '비밀번호는 필수입니다.';
   }
   if (req.body.password.length < 8) {
-    validationErrors['password'] = 'password은 8자 이상이어야 합니다.';
+    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
   }
   if (req.body.question === undefined || req.body.question === "" || req.body.question === null) {
-    validationErrors['question'] = 'question은 필수입니다.';
+    validationErrors['question'] = '질문은 필수입니다.';
   }
   if (req.body.answer === undefined || req.body.answer === "" || req.body.answer === null) {
-    validationErrors['answer'] = 'answer은 필수입니다.';
+    validationErrors['answer'] = '답변은 필수입니다.';
   }
 
   if (Object.keys(validationErrors).length > 0) {

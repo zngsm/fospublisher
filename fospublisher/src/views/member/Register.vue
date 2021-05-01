@@ -21,6 +21,16 @@
                   label="* 아 이 디"
                   v-model="username"
                 ></v-text-field>
+                <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                <div
+                  v-if="
+                    validationErrors.username !== undefined &&
+                      this.username == ''
+                  "
+                >
+                  {{ validationErrors.username }}
+                </div>
+                <!-- -------------------------------------------------------- -->
                 <v-btn width="5vw" small dark color="#231815" @click="checkId">
                   중복확인
                 </v-btn>
@@ -43,11 +53,29 @@
                 label="* 닉 네 임"
                 v-model="nickname"
               ></v-text-field>
+              <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+              <div
+                v-if="
+                  validationErrors.nickname !== undefined && this.nickname == ''
+                "
+              >
+                {{ validationErrors.nickname }}
+              </div>
+              <!-- -------------------------------------------------------- -->
               <v-text-field
                 label="* 비 밀 번 호"
                 v-model="password"
                 type="password"
               ></v-text-field>
+              <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+              <div
+                v-if="
+                  validationErrors.password !== undefined && this.password == ''
+                "
+              >
+                {{ validationErrors.password }}
+              </div>
+              <!-- -------------------------------------------------------- -->
               <v-text-field
                 label="* 비 밀 번 호 확 인"
                 v-model="passwordConfirm"
@@ -55,6 +83,15 @@
                 required
               ></v-text-field>
               <data-picker @birthday="dateReceive" />
+              <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+              <div
+                v-if="
+                  validationErrors.birthday !== undefined && this.answer == ''
+                "
+              >
+                {{ validationErrors.birthday }}
+              </div>
+              <!-- -------------------------------------------------------- -->
               <v-row no-gutters>
                 <password-question is-required @input="questionReceive" />
               </v-row>
@@ -62,6 +99,15 @@
                 label="* 비밀번호 찾기 답변"
                 v-model="answer"
               ></v-text-field>
+              <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+              <div
+                v-if="
+                  validationErrors.answer !== undefined && this.answer == ''
+                "
+              >
+                {{ validationErrors.answer }}
+              </div>
+              <!-- -------------------------------------------------------- -->
             </v-col>
           </v-row>
         </v-col>
@@ -133,6 +179,7 @@ import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 import AvatarSelect from "../../components/member/AvatarSelect.vue";
 import MessageModal from "../../components/MessageModal";
 import { checkDuplicateId, signUp } from "../../api/account";
+import { mapState } from "vuex";
 
 export default {
   components: { DataPicker, PasswordQuestion, AvatarSelect, MessageModal },
@@ -215,6 +262,11 @@ export default {
         });
       }
     },
+  },
+  computed: {
+    ...mapState("error", {
+      validationErrors: (state) => state.validations,
+    }),
   },
 };
 </script>

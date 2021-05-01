@@ -1,6 +1,6 @@
 <template>
   <v-col>
-    <v-row class="justify-center my-6">
+    <v-row class="justify-center mb-2">
       <v-avatar v-if="!isSelected" size="15vh">
         <img src="../../assets/member/default.png" />
       </v-avatar>
@@ -23,28 +23,36 @@
 </template>
 
 <script>
+import { uploadProfile } from "@/api/account";
+
 export default {
-  // 사진파일 사이즈 제한 있는지 확인 필요
-  data() {
-    return {
-      url: "",
-      image: undefined,
-      isSelected: false,
-      rules: [
-        (file) =>
-          !file ||
-          file.size < 2000000 ||
-          "이미지 파일은 2 MB 이하만 사용가능합니다!",
-      ],
-    };
-  },
+  data: () => ({
+    url: "",
+    image: undefined,
+    isSelected: false,
+    rules: [
+      (file) =>
+        !file ||
+        file.size < 1000000 ||
+        "이미지 파일은 10 MB 이하만 사용가능합니다!",
+    ],
+  }),
   methods: {
     onFileChange(file) {
       if (!file) {
         return;
+      } else {
+        let imgFile = new FormData();
+        imgFile.append("imgFile", this.image);
+
+        uploadProfile(imgFile, (res) => {
+          if (res.status == 200) {
+            this.url = res.data.imgUrl;
+            this.isSelected = true;
+            this.$emit("sendImg", this.url);
+          }
+        });
       }
-      this.url = URL.createObjectURL(this.image);
-      this.isSelected = true;
     },
   },
 };

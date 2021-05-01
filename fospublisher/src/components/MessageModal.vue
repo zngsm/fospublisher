@@ -3,7 +3,7 @@
     class="member-kukde-light justify-center d-flex align-content-space-around flex-wrap"
     min-height="20vh"
   >
-    <v-col cols="12">
+    <v-col v-if="iCon" cols="12">
       <v-card-title v-if="headerTitle !== 'email'">
         <v-row class="justify-center">
           <v-img
@@ -23,7 +23,7 @@
 
     <v-card-text>
       <v-row class="justify-center">
-        {{ bodyContent }}
+        <b>{{ bodyContent }}</b>
       </v-row>
     </v-card-text>
 
@@ -51,6 +51,10 @@ export default {
     },
     moveTo: {
       type: String,
+      require: false,
+    },
+    iCon: {
+      type: Boolean,
       require: false,
     },
   },

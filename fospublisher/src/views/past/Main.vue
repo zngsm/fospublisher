@@ -51,7 +51,7 @@ import MessageModal from "../../components/MessageModal.vue";
 // import { mapState } from "vuex";
 export default {
   name: "Main",
-  data: function() {
+  data: function () {
     return {
       form: {
         username: "suemin22",

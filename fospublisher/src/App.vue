@@ -38,7 +38,9 @@
     </v-app-bar> -->
 
     <v-main>
-      <router-view />
+      <sequential-entrance fromBottom>
+        <router-view />
+      </sequential-entrance>
     </v-main>
   </v-app>
 </template>

@@ -240,6 +240,12 @@ exports.put_accounts_password_edit = async (req, res) => {
   if (req.body.password.length < 8) {
     validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
   }
+  if (req.body.question === undefined || req.body.question === "" || req.body.question === null) {
+    validationErrors['question'] = '질문은 필수입니다.';
+  }
+  if (req.body.answer === undefined || req.body.answer === "" || req.body.answer === null) {
+    validationErrors['answer'] = '답변은 필수입니다.';
+  }
 
   if (Object.keys(validationErrors).length > 0) {
     res.status(422).json({
@@ -257,6 +263,8 @@ exports.put_accounts_password_edit = async (req, res) => {
   await models.Users.update({
     password: hashPassword,
     salt: salt,
+    question: body.question,
+    answer: body.answer
   }, {
     where: {
       id: body.userId

@@ -5,25 +5,39 @@ exports.get_timelines_read = async (req, res) => {
   const book = await models.BookPasts.findOne({
     where: { UserId: res.locals.userId },
   });
+  const UserInfo = await models.Users.findOne({
+    where: { id: res.locals.userId },
+  });
   models.ChapterPasts.findAll({
     where: { BookPastId: book.id },
     order: [["year"], ["order"]],
   }).then((result) => {
-    let count = 0;
+    let each5Chapter = [{ status: "start", start: UserInfo.birthday }];
+    let count = 1;
+    let lastIdx = 0;
     result.forEach((chapter) => {
       const year = chapter["dataValues"]["year"];
       let idxCnt = count % 5;
       let idxOrder = parseInt(count / 5);
-      if (idxOrder % 2) {
-        idxCnt = 4 - idxCnt;
+      let node = {};
+      node["title"] = chapter["dataValues"]["title"];
+      node["id"] = chapter["dataValues"]["id"];
+      node["order"] = chapter["dataValues"]["order"];
+      node["check"] = chapter["dataValues"]["check"];
+      node["year"] = year;
+      node["status"] = "ing";
+      node["idx"] = idxCnt;
+      each5Chapter.push(node);
+      if (each5Chapter.length == 5) {
+        context[idxOrder] = each5Chapter.slice();
+        each5Chapter = [];
       }
-      let node = mkChapterObj(chapter, idxCnt, idxOrder);
-      if (year in context === false) {
-        context[year] = [];
-      }
-      context[year].push(node);
       count += 1;
+      lastIdx = idxOrder;
     });
+    if (each5Chapter) {
+      context[lastIdx] = each5Chapter;
+    }
     res.send(context);
   });
 };

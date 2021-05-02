@@ -1,6 +1,7 @@
 const models = require("../../models");
 
 exports.post_pasts_write = async (req, res) => {
+  res.set({ "Access-Control-Allow-Credentials": true });
   let body = await req.body;
   let chapterPage = 10; // 페이지를 설정하는 기준 생성시 변경
   const book = await models.BookPasts.findOne({

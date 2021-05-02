@@ -225,11 +225,11 @@ export default {
         username: this.username,
       };
       checkDuplicateId(this.form, (res) => {
-        if (res.data.result == "중복ID") {
+        if (res.data.result === "중복ID") {
           this.dialog = !this.dialog;
           this.isDuplicated = !this.isDuplicated;
           this.duplicateId = !this.duplicateId;
-        } else if (res.data.result == "사용가능ID") {
+        } else if (res.data.result === "사용가능ID") {
           this.dialog = !this.dialog;
           this.isNotDuplicated = !this.isNotDuplicated;
           this.duplicateId = false;
@@ -252,7 +252,7 @@ export default {
           answer: this.answer,
         };
         signUp(this.form, (res) => {
-          if (res.status == 200 || res.status == 201) {
+          if (res.status === 200 || res.status === 201) {
             this.dialog = !this.dialog;
             this.isSuccessSignup = !this.isSuccessSignup;
           } else {

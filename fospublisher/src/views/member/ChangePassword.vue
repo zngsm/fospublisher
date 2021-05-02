@@ -11,10 +11,12 @@
           <p class="member-kukde-light">비밀번호 변경</p>
           <div class="d-flex align-center flex-column">
             <div style="width: 25vw">
-              <v-text-field label="새 비밀번호"></v-text-field>
-              <v-text-field label="새 비밀번호 확인"></v-text-field>
-              <password-question />
-              <v-text-field label="새 비밀번호 찾기 답변"></v-text-field>
+              <v-text-field label="* 새 비밀번호"></v-text-field>
+              <v-text-field label="* 새 비밀번호 확인"></v-text-field>
+              <div v-show="!userId">
+                <password-question />
+                <v-text-field label="새 비밀번호 찾기 답변"></v-text-field>
+              </div>
             </div>
           </div>
           <div class="text-center">
@@ -50,5 +52,11 @@ import LeftSide from "../../components/member/LeftSide";
 import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 export default {
   components: { LeftSide, PasswordQuestion },
+  props: {
+    userId: {
+      type: Number,
+      require: false,
+    },
+  },
 };
 </script>

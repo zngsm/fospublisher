@@ -46,7 +46,7 @@ export default {
         imgFile.append("imgFile", this.image);
 
         uploadProfile(imgFile, (res) => {
-          if (res.status == 200) {
+          if (res.status === 200) {
             this.url = res.data.imgUrl;
             this.isSelected = true;
             this.$emit("sendImg", this.url);

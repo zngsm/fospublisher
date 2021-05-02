@@ -42,12 +42,12 @@ function signUp(user, success, fail) {
 //     .then(success)
 //     .catch(fail);
 // }
-// function confirmQuestion(user, success, fail) {
-//   instance
-//     .post(`api/accounts/question-answer-confirm/`, user)
-//     .then(success)
-//     .catch(fail);
-// }
+function confirmQuestion(user, success, fail) {
+  instance
+    .post(`api/accounts/question-answer-confirm/`, user)
+    .then(success)
+    .catch(fail);
+}
 function checkDuplicateId(user, success, fail) {
   instance
     .post(`api/accounts/username-confirm/`, user)
@@ -60,12 +60,12 @@ function checkDuplicateId(user, success, fail) {
 //     .then(success)
 //     .catch(fail);
 // }
-// function checkToken(user, success, fail) {
-//   instance
-//     .post(`api/accounts/token/`, user)
-//     .then(success)
-//     .catch(fail);
-// }
+function checkToken(user, success, fail) {
+  instance
+    .post(`api/accounts/token/`, user)
+    .then(success)
+    .catch(fail);
+}
 
 export {
   userLogin,
@@ -75,8 +75,8 @@ export {
   // passwordConfirm,
   // editPassword,
   // editQuestion,
-  // confirmQuestion,
+  confirmQuestion,
   checkDuplicateId,
   // checkUserInfo,
-  // checkToken,
+  checkToken,
 };

@@ -25,7 +25,7 @@
                 <div
                   v-if="
                     validationErrors.username !== undefined &&
-                      this.username == ''
+                    this.username == ''
                   "
                 >
                   {{ validationErrors.username }}
@@ -82,7 +82,7 @@
                 type="password"
                 required
               ></v-text-field>
-              <data-picker @birthday="dateReceive" />
+              <date-picker @birthday="dateReceive" />
               <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
               <div
                 v-if="
@@ -174,7 +174,7 @@
 
 <script>
 import "../../assets/css/font.css";
-import DataPicker from "../../components/member/DataPicker.vue";
+import DatePicker from "../../components/member/DatePicker.vue";
 import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 import AvatarSelect from "../../components/member/AvatarSelect.vue";
 import MessageModal from "../../components/MessageModal";
@@ -182,7 +182,7 @@ import { checkDuplicateId, signUp } from "../../api/account";
 import { mapState } from "vuex";
 
 export default {
-  components: { DataPicker, PasswordQuestion, AvatarSelect, MessageModal },
+  components: { DatePicker, PasswordQuestion, AvatarSelect, MessageModal },
   data: () => ({
     dialog: false,
     isDuplicated: false,

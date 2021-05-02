@@ -35,6 +35,7 @@ const routes = [
     path: "/changePassword",
     name: "ChangePassword",
     component: ChangePassword,
+    props: true,
   },
   {
     path: "/register",

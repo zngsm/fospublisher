@@ -11,9 +11,12 @@
           <p class="member-kukde-light">비밀번호 찾기</p>
           <div class="d-flex align-center flex-column">
             <div style="width: 25vw">
-              <v-text-field label="아이디"></v-text-field>
-              <password-question />
-              <v-text-field label="비밀번호 찾기 답변"></v-text-field>
+              <v-text-field label="아이디" v-model="username"></v-text-field>
+              <password-question @input="questionReceive" />
+              <v-text-field
+                label="비밀번호 찾기 답변"
+                v-model="answer"
+              ></v-text-field>
               <div class="text-center">
                 <v-btn
                   block
@@ -21,8 +24,9 @@
                   class="my-6"
                   dark
                   depressed
-                  to="/changePassword"
                   x-large
+                  type="submit"
+                  @click="findPassword"
                   >비밀번호 찾기</v-btn
                 >
               </div>
@@ -55,7 +59,58 @@
 import "../../assets/css/font.css";
 import LeftSide from "../../components/member/LeftSide";
 import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
+// import MessageModal from "../../components/MessageModal";
+import { confirmQuestion } from "../../api/account";
+
 export default {
-  components: { LeftSide, PasswordQuestion },
+  components: {
+    LeftSide,
+    PasswordQuestion,
+    // MessageModal,
+  },
+  data: () => ({
+    dialog: false,
+    isSuccessSignup: false,
+    isFailedSignup: false,
+    username: "",
+    question: 0,
+    answer: "",
+    form: "",
+  }),
+  methods: {
+    questionReceive(question) {
+      this.question = question;
+    },
+    closeDialog() {
+      this.isDuplicated = false;
+      this.isNotDuplicated = false;
+      this.isFailedSignup = false;
+      this.dialog = false;
+    },
+    findPassword() {
+      this.form = {
+        username: this.username,
+        question: this.question,
+        answer: this.answer,
+      };
+      confirmQuestion(
+        this.form,
+        (res) => {
+          if (res.data.result === "OK") {
+            let userId = res.data.userId;
+            this.$router.push({
+              name: "ChangePassword",
+              params: { userId: userId },
+            });
+          } else {
+            console.log(res);
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+  },
 };
 </script>

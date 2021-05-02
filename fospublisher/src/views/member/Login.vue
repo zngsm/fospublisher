@@ -122,7 +122,7 @@ export default {
       userLogin(
         this.form,
         (res) => {
-          if (res.status == 200 || res.status == 201) {
+          if (res.status === 200 || res.status === 201) {
             localStorage.setItem("token", res.data.token);
             // vuex에 토큰 저장 시
             this.$store.commit("auth/setToken", res.data.token);

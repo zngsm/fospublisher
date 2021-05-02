@@ -33,7 +33,7 @@ export default {
     },
   },
   data: () => ({
-    selectedItem: 0,
+    selectedItem: null,
     items: [
       {
         question: 0,

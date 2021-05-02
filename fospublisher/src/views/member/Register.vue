@@ -25,7 +25,7 @@
                 <div
                   v-if="
                     validationErrors.username !== undefined &&
-                      this.username == ''
+                    this.username == ''
                   "
                 >
                   {{ validationErrors.username }}
@@ -82,7 +82,7 @@
                 type="password"
                 required
               ></v-text-field>
-              <data-picker @birthday="dateReceive" />
+              <date-picker @birthday="dateReceive" />
               <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
               <div
                 v-if="
@@ -174,7 +174,7 @@
 
 <script>
 import "../../assets/css/font.css";
-import DataPicker from "../../components/member/DataPicker.vue";
+import DatePicker from "../../components/member/DatePicker.vue";
 import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 import AvatarSelect from "../../components/member/AvatarSelect.vue";
 import MessageModal from "../../components/MessageModal";
@@ -182,7 +182,7 @@ import { checkDuplicateId, signUp } from "../../api/account";
 import { mapState } from "vuex";
 
 export default {
-  components: { DataPicker, PasswordQuestion, AvatarSelect, MessageModal },
+  components: { DatePicker, PasswordQuestion, AvatarSelect, MessageModal },
   data: () => ({
     dialog: false,
     isDuplicated: false,
@@ -225,11 +225,11 @@ export default {
         username: this.username,
       };
       checkDuplicateId(this.form, (res) => {
-        if (res.data.result == "중복ID") {
+        if (res.data.result === "중복ID") {
           this.dialog = !this.dialog;
           this.isDuplicated = !this.isDuplicated;
           this.duplicateId = !this.duplicateId;
-        } else if (res.data.result == "사용가능ID") {
+        } else if (res.data.result === "사용가능ID") {
           this.dialog = !this.dialog;
           this.isNotDuplicated = !this.isNotDuplicated;
           this.duplicateId = false;
@@ -252,7 +252,7 @@ export default {
           answer: this.answer,
         };
         signUp(this.form, (res) => {
-          if (res.status == 200 || res.status == 201) {
+          if (res.status === 200 || res.status === 201) {
             this.dialog = !this.dialog;
             this.isSuccessSignup = !this.isSuccessSignup;
           } else {

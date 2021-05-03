@@ -1,0 +1,116 @@
+.timeline-body {
+  width: 1372px;
+  margin: auto;
+  position: relative;
+}
+.timeline {
+  width: 1000px;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  margin-right: 187px;
+}
+.timeline-chapter {
+  margin-top: -27px;
+}
+.timeline-reverse {
+  flex-direction: row-reverse;
+  position: absolute;
+}
+.timeline-final-right {
+  justify-content: right;
+}
+.timeline-final-left {
+  justify-content: left;
+}
+.timeline-img-road-start {
+  width: 1131px;
+  margin-top: 124px;
+}
+.timeline-img-start {
+  width: 183px;
+}
+.timeline-img-start > div {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border: 1px solid;
+  border-radius: 100%;
+  margin-top: 80px;
+  margin-left: 80px;
+  background-color: brown;
+  z-index: 12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.timeline-img-road-right-left {
+  width: 1304px;
+  margin-right: 26px;
+  margin-left: 42px;
+  margin-top: -24px;
+}
+.timeline-img-road-left-right {
+  width: 1288px;
+  margin-right: 56px;
+  margin-left: 28px;
+  margin-top: -8px;
+}
+.timeline-img-road-final-right {
+  width: 1331px;
+  margin-left: 42px;
+  margin-top: -8px;
+}
+.timeline-img-road-final-left {
+  width: 1315px;
+  margin-top: -9px;
+}
+.timeline-title {
+  width: auto;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+  /* width: 150px; */
+  padding: 10px;
+  height: 60px;
+  margin: 0 35px;
+  border: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  /* background-image: url("../timeline/wood_title.jpg"); */
+  /* color: white; */
+  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
+  /* word-break: break-all; */
+}
+.timeline-title-top {
+  height: 50px;
+}
+.timeline-title-bottom {
+  width: 15px;
+  height: 30px;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  background-color: white;
+  margin: auto;
+  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
+}
+.timeline-year {
+  color: white;
+  margin: auto;
+  background-color: brown;
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -25px;
+}

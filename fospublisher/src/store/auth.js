@@ -8,6 +8,7 @@ export default {
   mutations: {
     setToken(state, token) {
       state.token = token;
+      localStorage.setItem("token", state.token);
     },
     setRefreshToken(state, refreshToken) {
       state.refreshToken = refreshToken;

@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 
-router.use("/", require("./main"));
+// router.use("/api", require("./main"));
 
 router.use("/api/accounts", require("./accounts"));
 

@@ -1,9 +1,9 @@
-const AdminBro = require('admin-bro');
-const AdminBroSequelize = require('@admin-bro/sequelize');
-const AdminBroExpress = require('@admin-bro/express');
+const AdminBro = require("admin-bro");
+const AdminBroSequelize = require("@admin-bro/sequelize");
+const AdminBroExpress = require("@admin-bro/express");
 const createError = require("http-errors");
 const express = require("express");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
 dotenv.config(); //LOAD CONFIG
 
@@ -15,23 +15,23 @@ AdminBro.registerAdapter(AdminBroSequelize);
 const db = require("./models");
 const adminBro = new AdminBro({
   databases: [db],
-  rootPath: '/admin',
+  rootPath: "/admin",
 });
 
 const ADMIN = {
   email: ADMIN_EMAIL,
-  password: ADMIN_PASSWORD
+  password: ADMIN_PASSWORD,
 };
 
 const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
   authenticate: async (email, password) => {
     if (ADMIN.password === password && ADMIN.email === email) {
-      return ADMIN
+      return ADMIN;
     }
-      return null
-    },
-  cookieName: 'adminBro',
-  cookiePassword: 'testtest'
+    return null;
+  },
+  cookieName: "adminBro",
+  cookiePassword: "testtest",
 });
 
 const nunjucks = require("nunjucks");
@@ -85,7 +85,12 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        origin: true,
+        credentials: true,
+      })
+    );
   }
 
   setViewEngine() {

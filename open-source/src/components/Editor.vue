@@ -407,10 +407,25 @@ export default {
       const childNodes = $('iframe[name="richTextField"]').contents().find("body")[0].childNodes
       const vm = this
       childNodes.forEach(function(childNode) {
-        console.log(childNode.offsetTop)
         if (childNode.offsetTop > vm.pagenation * 500) {
-          console.log('asdfasdfasdf')
-          $(`<div class="html2pdf__page-break" style="border-bottom: 3px dashed black;">page ${vm.pagenation}</div><br>`).insertBefore(childNode)
+          $(`<br>
+            <div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">
+              <div style="-webkit-transform: translate(-50%,-50%); 
+                transform: translate(-50%,-50%);
+                position: absolute; 
+                background-color: white;
+                border: 1px solid black;
+                border-radius: 3px;
+                top: 50%;  
+                left: 50%;
+                padding: 2px 10px;
+                justify-content: center;"
+              >
+                PAGE ${vm.pagenation}
+              </div>
+            </div>
+            <br>`)
+          .insertBefore(childNode)
           vm.pagenation += 1
         }
       })
@@ -537,15 +552,18 @@ export default {
       window.richTextField.document.execCommand(command, false, arg);
     },
  
-    exportToPDF() {
+    async exportToPDF() {
+      $('iframe[name="richTextField"]').contents().find(".html2pdf__page-break").css("visibility", 'hidden');
       // html2pdf npm 모듈 사용
-      html2pdf(window.richTextField.document.getElementsByTagName('body')[0], {
+      await html2pdf(window.richTextField.document.getElementsByTagName('body')[0], {
         margin: 10,
         filename: 'myfile.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 3, logging: true, dpi: 192, letterRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       });
+
+      $('iframe[name="richTextField"]').contents().find(".html2pdf__page-break").css("visibility", 'visible');
 
     },
   },

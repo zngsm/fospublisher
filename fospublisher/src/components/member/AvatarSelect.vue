@@ -2,10 +2,10 @@
   <v-col>
     <v-row class="justify-center mb-2">
       <v-avatar v-if="!isSelected" size="15vh">
-        <img src="../../assets/member/default.png" />
+        <img src="../../assets/member/default.png" alt="프로필 사진" />
       </v-avatar>
       <v-avatar v-else size="15vh">
-        <img :src="url" />
+        <img :src="url" alt="프로필 사진" />
       </v-avatar>
     </v-row>
     <v-file-input

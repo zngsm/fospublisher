@@ -15,7 +15,9 @@ AdminBro.registerAdapter(AdminBroSequelize);
 const db = require("./models");
 const adminBro = new AdminBro({
   databases: [db],
-  rootPath: "/admin",
+  rootPath: "/api/admin",
+  logoutPath: "/api/admin/exit",
+  loginPath: "/api/admin/login",
 });
 
 const ADMIN = {

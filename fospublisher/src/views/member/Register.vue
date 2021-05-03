@@ -57,11 +57,6 @@
                   body-content="사용 가능한 아이디입니다."
                   @submit="closeDialog"
                 />
-                <message-modal
-                  v-if="isEmpty"
-                  body-content="아이디를 입력해주세요."
-                  @submit="closeDialog"
-                />
               </v-dialog>
               <!-- End 중복확인 모달 -->
               <v-form>
@@ -86,12 +81,6 @@
                   v-model.lazy="password"
                   type="password"
                   autocomplete="off"
-                  :rules="[
-                    (v) => !!v || '',
-                    (v) =>
-                      (v && v.length >= 8) ||
-                      '비밀번호는 8자 이상이어야 합니다.',
-                  ]"
                 >
                 </v-text-field>
               </v-form>
@@ -99,7 +88,7 @@
               <div
                 class="validation-kwandong"
                 v-if="
-                  validationErrors.password !== undefined && this.password == ''
+                  validationErrors.password !== undefined || this.password == ''
                 "
               >
                 {{ validationErrors.password }}
@@ -245,10 +234,8 @@ export default {
     isSuccessSignup: false,
     isFailedSignup: false,
     duplicateId: false,
-    isEmpty: false,
     username: "",
     password: "",
-    passwordConfirm: "",
     birthday: "",
     nickname: "",
     introduce: "",
@@ -272,7 +259,6 @@ export default {
       this.isNotDuplicated = false;
       this.isFailedSignup = false;
       this.dialog = false;
-      this.isEmpty = false;
     },
     moveToLogin() {
       this.$router.push("/login");
@@ -285,27 +271,24 @@ export default {
       checkDuplicateId(this.form, (res) => {
         if (this.username !== "") {
           if (res.data.result === "중복ID") {
-            this.dialog = !this.dialog;
-            this.isDuplicated = !this.isDuplicated;
-            this.duplicateId = !this.duplicateId;
+            this.dialog = true;
+            this.isDuplicated = true;
+            this.duplicateId = true;
           } else if (res.data.result === "사용가능ID") {
-            this.dialog = !this.dialog;
-            this.isNotDuplicated = !this.isNotDuplicated;
+            this.dialog = true;
+            this.isNotDuplicated = true;
             this.duplicateId = false;
           }
-        } else {
-          this.dialog = !this.dialog;
-          this.isEmpty = !this.isEmpty;
         }
       });
     },
     onSubmit() {
       if (this.duplicateId) {
-        this.dialog = !this.dialog;
-        this.isDuplicated = !this.isDuplicated;
+        this.dialog = true;
+        this.isDuplicated = true;
       } else if (!this.didCheckDuplicated) {
-        this.dialog = !this.dialog;
-        this.isFailedSignup = !this.isFailedSignup;
+        this.dialog = true;
+        this.isFailedSignup = true;
       } else {
         this.form = {
           username: this.username,
@@ -318,11 +301,9 @@ export default {
           answer: this.answer,
         };
         signUp(this.form, (res) => {
-          if (this.password >= 8) {
-            if (res.status === 200 || res.status === 201) {
-              this.dialog = !this.dialog;
-              this.isSuccessSignup = !this.isSuccessSignup;
-            }
+          if (res.status === 200 || res.status === 201) {
+            this.dialog = true;
+            this.isSuccessSignup = true;
           }
         });
       }

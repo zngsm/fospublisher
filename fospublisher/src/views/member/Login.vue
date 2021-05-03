@@ -32,16 +32,10 @@
               <v-form>
                 <v-text-field
                   label="비밀번호"
-                  v-model="password"
+                  v-model.lazy="password"
                   type="password"
                   autocomplete="off"
                   @keyup.enter="onLogin"
-                  :rules="[
-                    (v) => !!v || '',
-                    (v) =>
-                      (v && v.length >= 8) ||
-                      '비밀번호는 8자 이상이어야 합니다.',
-                  ]"
                 >
                 </v-text-field>
               </v-form>
@@ -49,7 +43,7 @@
               <div
                 class="validation-kwandong"
                 v-if="
-                  validationErrors.password !== undefined && this.password == ''
+                  validationErrors.password !== undefined || this.password == ''
                 "
               >
                 {{ validationErrors.password }}
@@ -134,20 +128,17 @@ export default {
       };
       userLogin(
         this.form,
-
         (res) => {
-          if (this.password >= 8) {
-            if (res.status === 200 || res.status === 201) {
-              this.$store.commit("auth/setToken", res.data.token);
-              this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
-              this.$store.commit("auth/setUserId", res.data.userId);
-              this.$router.push("/main");
-            }
+          if (res.status === 200 || res.status === 201) {
+            this.$store.commit("auth/setToken", res.data.token);
+            this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
+            this.$store.commit("auth/setUserId", res.data.userId);
+            this.$router.push("/main");
           }
         },
         () => {
-          this.dialog = !this.dialog;
-          this.isFailedLogin = !this.isFailedLogin;
+          this.dialog = true;
+          this.isFailedLogin = true;
         }
       );
     },
@@ -167,7 +158,7 @@ export default {
       checkToken(this.form, (res) => {
         if (res.status === 200) {
           this.$store.commit("auth/setToken", res.data.token);
-          // this.$router.push("/main");
+          this.$router.push("/main");
         }
       });
     }

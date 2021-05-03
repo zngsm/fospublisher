@@ -18,9 +18,11 @@
                 color="#231815"
                 label="아이디"
                 v-model="username"
+                @keyup.enter="onLogin"
               ></v-text-field>
               <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
               <div
+                class="validation-kwandong"
                 v-if="
                   validationErrors.username !== undefined && this.username == ''
                 "
@@ -28,13 +30,25 @@
                 {{ validationErrors.username }}
               </div>
               <!-- -------------------------------------------------------- -->
-              <v-text-field
-                label="비밀번호"
-                v-model="password"
-                type="password"
-              ></v-text-field>
+              <v-form>
+                <v-text-field
+                  label="비밀번호"
+                  v-model="password"
+                  type="password"
+                  autocomplete="off"
+                  @keyup.enter="onLogin"
+                  :rules="[
+                    (v) => !!v || '',
+                    (v) =>
+                      (v && v.length >= 8) ||
+                      '비밀번호는 8자 이상이어야 합니다.',
+                  ]"
+                >
+                </v-text-field>
+              </v-form>
               <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
               <div
+                class="validation-kwandong"
                 v-if="
                   validationErrors.password !== undefined && this.password == ''
                 "
@@ -98,7 +112,7 @@ import "../../assets/css/member.css";
 import LeftSide from "../../components/member/LeftSide";
 import MessageModal from "../../components/MessageModal";
 import { mapState } from "vuex";
-import { userLogin } from "@/api/account";
+import { userLogin, checkToken } from "@/api/account";
 
 export default {
   components: { LeftSide, MessageModal },
@@ -122,15 +136,16 @@ export default {
       userLogin(
         this.form,
         (res) => {
-          if (res.status === 200 || res.status === 201) {
-            localStorage.setItem("token", res.data.token);
-            // vuex에 토큰 저장 시
-            this.$store.commit("auth/setToken", res.data.token);
-            // --------------------
-            this.$router.push("/main");
-          } else {
-            this.dialog = !this.dialog;
-            this.isFailedLogin = true;
+          if (this.password >= 8) {
+            if (res.status === 200 || res.status === 201) {
+              this.$store.commit("auth/setToken", res.data.token);
+              this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
+              this.$store.commit("auth/setUserId", res.data.userId);
+              this.$router.push("/main");
+            } else {
+              this.dialog = !this.dialog;
+              this.isFailedLogin = true;
+            }
           }
         },
         (err) => {
@@ -141,9 +156,23 @@ export default {
   },
   // vuex에서 validation가져오기, 값이 있으면 에러존재
   computed: {
-    ...mapState("error", {
-      validationErrors: (state) => state.validations,
+    ...mapState({
+      validationErrors: (state) => state.error.validations,
     }),
+  },
+  created() {
+    if (localStorage.getItem("userId")) {
+      this.form = {
+        refreshToken: localStorage.getItem("refreshToken"),
+        userId: localStorage.getItem("userId"),
+      };
+      checkToken(this.form, (res) => {
+        if (res.status === 200) {
+          this.$store.commit("auth/setToken", res.data.token);
+          // this.$router.push("/main");
+        }
+      });
+    }
   },
 };
 </script>

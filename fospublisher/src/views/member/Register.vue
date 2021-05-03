@@ -94,7 +94,7 @@
                 {{ validationErrors.password }}
               </div>
               <!-- -------------------------------------------------------- -->
-              <v-form>
+              <v-form ref="form">
                 <v-text-field
                   label="* 비 밀 번 호 확 인"
                   type="password"
@@ -245,6 +245,9 @@ export default {
     form: "",
   }),
   methods: {
+    validate() {
+      this.$refs.form.validate();
+    },
     dateReceive(date) {
       this.birthday = date;
     },
@@ -283,6 +286,7 @@ export default {
       });
     },
     onSubmit() {
+      this.validate();
       if (this.duplicateId) {
         this.dialog = true;
         this.isDuplicated = true;
@@ -290,22 +294,25 @@ export default {
         this.dialog = true;
         this.isFailedSignup = true;
       } else {
-        this.form = {
-          username: this.username,
-          password: this.password,
-          birthday: this.birthday,
-          nickname: this.nickname,
-          introduce: this.introduce,
-          img: this.img,
-          question: this.question,
-          answer: this.answer,
-        };
-        signUp(this.form, (res) => {
-          if (res.status === 200 || res.status === 201) {
-            this.dialog = true;
-            this.isSuccessSignup = true;
-          }
-        });
+        this.checkId();
+        if (this.isNotDuplicated) {
+          this.form = {
+            username: this.username,
+            password: this.password,
+            birthday: this.birthday,
+            nickname: this.nickname,
+            introduce: this.introduce,
+            img: this.img,
+            question: this.question,
+            answer: this.answer,
+          };
+          signUp(this.form, (res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.dialog = true;
+              this.isSuccessSignup = true;
+            }
+          });
+        }
       }
     },
   },

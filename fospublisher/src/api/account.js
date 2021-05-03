@@ -1,4 +1,4 @@
-import { instance } from "./index.js";
+import { authInstance, instance } from "./index.js";
 
 // 로그인
 function userLogin(user, success, fail) {
@@ -33,12 +33,12 @@ function signUp(user, success, fail) {
 // }
 
 // 비밀번호 확인
-// function passwordConfirm(user, success, fail) {
-//   authInstance
-//     .post(`api/accounts/password-confirm/`, user)
-//     .then(success)
-//     .catch(fail);
-// }
+function passwordConfirm(user, success, fail) {
+  authInstance
+    .post(`api/accounts/password-confirm/`, user)
+    .then(success)
+    .catch(fail);
+}
 
 // 비밀번호만 변경
 function editPassword(user, success, fail) {
@@ -73,12 +73,12 @@ function checkDuplicateId(user, success, fail) {
 }
 
 // 유저 정보확인
-// function checkUserInfo(success, fail) {
-//   authInstance
-//     .get(`api/accounts/user-info/`)
-//     .then(success)
-//     .catch(fail);
-// }
+function checkUserInfo(success, fail) {
+  authInstance
+    .get(`api/accounts/user-info/`)
+    .then(success)
+    .catch(fail);
+}
 
 // 리프레시토큰
 function checkToken(user, success, fail) {
@@ -93,11 +93,11 @@ export {
   uploadProfile,
   signUp,
   // editUser,
-  // passwordConfirm,
+  passwordConfirm,
   editPassword,
   // editQuestion,
   confirmQuestion,
   checkDuplicateId,
-  // checkUserInfo,
+  checkUserInfo,
   checkToken,
 };

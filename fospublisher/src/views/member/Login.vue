@@ -101,7 +101,6 @@
 
 <script>
 import "../../assets/css/font.css";
-import "../../assets/css/member.css";
 import LeftSide from "../../components/member/LeftSide";
 import MessageModal from "../../components/MessageModal";
 import { mapState } from "vuex";
@@ -156,9 +155,11 @@ export default {
         userId: localStorage.getItem("userId"),
       };
       checkToken(this.form, (res) => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           this.$store.commit("auth/setToken", res.data.token);
-          this.$router.push("/main");
+          this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
+          this.$router.push("/");
+          // this.$router.push("/main");
         }
       });
     }

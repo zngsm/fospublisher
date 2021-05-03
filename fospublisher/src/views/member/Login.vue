@@ -147,7 +147,7 @@ export default {
         },
         () => {
           this.dialog = !this.dialog;
-          this.isFailedLogin = true;
+          this.isFailedLogin = !this.isFailedLogin;
         }
       );
     },

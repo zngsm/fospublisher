@@ -1,8 +1,6 @@
 FROM node:14
-WORKDIR /fospublisher
-COPY . .
-
-RUN npm install -g yarn
-RUN yarn install --force
+WORKDIR /app
+COPY ./package.json ./
+RUN npm install
 COPY ./ ./
 RUN npm run build

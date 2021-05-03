@@ -12,10 +12,13 @@ instance.interceptors.response.use(
     store.commit("error/setValidationError", {});
     return response;
   },
+
   function(error) {
     // vuex에 있는 validation에 error넣어주기
     if (error.response.status === 422) {
       store.commit("error/setValidationError", error.response.data.data);
+    } else {
+      return Promise.reject(error);
     }
   }
 );
@@ -29,13 +32,13 @@ const authInstance = axios.create({
 authInstance.interceptors.request.use(function(config) {
   if (store.state.auth.token !== null) {
     config["headers"] = {
-      user: `${localStorage.getItem("token")}`,
-      // user: `${store.state.auth.token}`,
+      // user: `${localStorage.getItem("token")}`,
+      user: `${store.state.auth.token}`,
     };
   }
   console.log("요청인터셉터에서 토큰");
-  console.log(localStorage.getItem("token"));
-  // console.log(store.state.auth.token);
+  // console.log(localStorage.getItem("token"));
+  console.log(store.state.auth.token);
   return config;
 });
 
@@ -49,6 +52,8 @@ authInstance.interceptors.response.use(
     // vuex에 있는 validation에 error넣어주기
     if (error.response.status === 422) {
       store.commit("error/setValidationError", error.response.data.data);
+    } else {
+      return Promise.reject(error);
     }
   }
 );

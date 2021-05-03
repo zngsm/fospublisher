@@ -11,11 +11,12 @@
           <p class="member-kukde-light">비밀번호 찾기</p>
           <div class="d-flex align-center flex-column">
             <div style="width: 25vw">
-              <v-text-field label="아이디" v-model="username"></v-text-field>
-              <password-question @input="questionReceive" />
+              <v-text-field label="* 아이디" v-model="username"></v-text-field>
+              <password-question isRequired @input="questionReceive" />
               <v-text-field
-                label="비밀번호 찾기 답변"
+                label="* 비밀번호 찾기 답변"
                 v-model="answer"
+                @keyup.enter="findPassword"
               ></v-text-field>
               <div class="text-center">
                 <v-btn
@@ -29,6 +30,20 @@
                   @click="findPassword"
                   >비밀번호 찾기</v-btn
                 >
+                <!-- Start 비밀번호찾기 모달 -->
+                <v-dialog v-model="dialog" width="25vw">
+                  <message-modal
+                    v-if="isFailedFind"
+                    body-content="회원정보를 찾을 수 없습니다."
+                    @submit="closeDialog"
+                  />
+                  <message-modal
+                    v-if="isEmpty"
+                    body-content="입력이 올바르지 않습니다."
+                    @submit="closeDialog"
+                  />
+                </v-dialog>
+                <!-- End 비밀번호찾기 모달 -->
               </div>
             </div>
             <v-row>
@@ -59,21 +74,21 @@
 import "../../assets/css/font.css";
 import LeftSide from "../../components/member/LeftSide";
 import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
-// import MessageModal from "../../components/MessageModal";
+import MessageModal from "../../components/MessageModal";
 import { confirmQuestion } from "../../api/account";
 
 export default {
   components: {
     LeftSide,
     PasswordQuestion,
-    // MessageModal,
+    MessageModal,
   },
   data: () => ({
     dialog: false,
-    isSuccessSignup: false,
-    isFailedSignup: false,
+    isFailedFind: false,
+    isEmpty: false,
     username: "",
-    question: 0,
+    question: null,
     answer: "",
     form: "",
   }),
@@ -82,34 +97,46 @@ export default {
       this.question = question;
     },
     closeDialog() {
-      this.isDuplicated = false;
-      this.isNotDuplicated = false;
-      this.isFailedSignup = false;
+      this.isFailedFind = false;
+      this.isEmpty = false;
       this.dialog = false;
     },
     findPassword() {
-      this.form = {
-        username: this.username,
-        question: this.question,
-        answer: this.answer,
-      };
-      confirmQuestion(
-        this.form,
-        (res) => {
-          if (res.data.result === "OK") {
-            let userId = res.data.userId;
-            this.$router.push({
-              name: "ChangePassword",
-              params: { userId: userId },
-            });
-          } else {
-            console.log(res);
+      if (
+        this.username === "" ||
+        this.question === null ||
+        this.answer === ""
+      ) {
+        this.dialog = !this.dialog;
+        this.isEmpty = true;
+      } else {
+        this.form = {
+          username: this.username,
+          question: this.question,
+          answer: this.answer,
+        };
+        confirmQuestion(
+          this.form,
+          (res) => {
+            if (res.data.result === "OK") {
+              let userId = res.data.userId;
+              this.$router.push({
+                name: "ChangePassword",
+                params: { userId: userId },
+              });
+            } else {
+              if (res.data.result === "FAIL") {
+                this.dialog = !this.dialog;
+                this.isFailedFind = true;
+              }
+            }
+          },
+          () => {
+            this.dialog = !this.dialog;
+            this.isFailedFind = true;
           }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+        );
+      }
     },
   },
 };

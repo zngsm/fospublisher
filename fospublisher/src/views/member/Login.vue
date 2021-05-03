@@ -15,7 +15,6 @@
           <div class="d-flex align-center flex-column">
             <div style="width: 25vw">
               <v-text-field
-                color="#231815"
                 label="아이디"
                 v-model="username"
                 @keyup.enter="onLogin"
@@ -135,6 +134,7 @@ export default {
       };
       userLogin(
         this.form,
+
         (res) => {
           if (this.password >= 8) {
             if (res.status === 200 || res.status === 201) {
@@ -142,14 +142,12 @@ export default {
               this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
               this.$store.commit("auth/setUserId", res.data.userId);
               this.$router.push("/main");
-            } else {
-              this.dialog = !this.dialog;
-              this.isFailedLogin = true;
             }
           }
         },
-        (err) => {
-          console.log(err);
+        () => {
+          this.dialog = !this.dialog;
+          this.isFailedLogin = true;
         }
       );
     },

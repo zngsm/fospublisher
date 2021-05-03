@@ -12,8 +12,8 @@ exports.get_timelines_read = async (req, res) => {
     where: { BookPastId: book.id },
     order: [["year"], ["order"]],
   }).then((result) => {
-    let each5Chapter = [{ status: "start", start: UserInfo.birthday }];
-    let count = 1;
+    let each5Chapter = [];
+    let count = 0;
     let lastIdx = 0;
     result.forEach((chapter) => {
       const year = chapter["dataValues"]["year"];
@@ -35,10 +35,14 @@ exports.get_timelines_read = async (req, res) => {
       count += 1;
       lastIdx = idxOrder;
     });
-    if (each5Chapter) {
+    if (each5Chapter.length > 0) {
       context[lastIdx] = each5Chapter;
     }
-    res.send(context);
+    let contexts = {};
+    contexts["data"] = context;
+    contexts["birth"] = UserInfo.birthday;
+    contexts["name"] = UserInfo.nickname;
+    res.send(contexts);
   });
 };
 

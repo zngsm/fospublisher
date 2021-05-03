@@ -41,12 +41,12 @@ function signUp(user, success, fail) {
 // }
 
 // 비밀번호만 변경
-// function editPassword(user, success, fail) {
-//   instance
-//     .put(`api/accounts/password-edit/`, user)
-//     .then(success)
-//     .catch(fail);
-// }
+function editPassword(user, success, fail) {
+  instance
+    .put(`api/accounts/password-edit/`, user)
+    .then(success)
+    .catch(fail);
+}
 
 // 비밀번호+질문 변경
 // function editQuestion(user, success, fail) {
@@ -94,7 +94,7 @@ export {
   signUp,
   // editUser,
   // passwordConfirm,
-  // editPassword,
+  editPassword,
   // editQuestion,
   confirmQuestion,
   checkDuplicateId,

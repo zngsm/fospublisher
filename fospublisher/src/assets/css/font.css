@@ -19,6 +19,12 @@
     font-family: 'Kwandong-otf';
     font-size: 2vw;
 }
+.validation-kwandong{
+    font-family: 'Kwandong-otf';
+    font-size: 12px;
+    color: red;
+    margin-top: -17px;
+}
 .member-kukde-light{
     font-family: 'Kukde-aLt';
     line-height: 5vw;

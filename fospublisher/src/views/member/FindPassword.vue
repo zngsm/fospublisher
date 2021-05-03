@@ -103,7 +103,9 @@ export default {
               params: { userId: userId },
             });
           } else {
-            console.log(res);
+            if (res.data.result === "FAIL") {
+              console.log(res.data.result);
+            }
           }
         },
         (err) => {

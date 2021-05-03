@@ -29,13 +29,13 @@ const authInstance = axios.create({
 authInstance.interceptors.request.use(function(config) {
   if (store.state.auth.token !== null) {
     config["headers"] = {
-      user: `${localStorage.getItem("token")}`,
-      // user: `${store.state.auth.token}`,
+      // user: `${localStorage.getItem("token")}`,
+      user: `${store.state.auth.token}`,
     };
   }
   console.log("요청인터셉터에서 토큰");
-  console.log(localStorage.getItem("token"));
-  // console.log(store.state.auth.token);
+  // console.log(localStorage.getItem("token"));
+  console.log(store.state.auth.token);
   return config;
 });
 

@@ -77,11 +77,6 @@
                   body-content="비밀번호가 변경되었습니다.<br /> 로그인 페이지로 이동합니다."
                   @submit="moveToLogin"
                 />
-                <!-- <message-modal
-                  v-if="isFailedSignup"
-                  body-content="아이디 중복확인이 필요합니다."
-                  @submit="closeDialog"
-                /> -->
               </v-dialog>
               <!-- End  비밀번호 변경 모달 -->
             </v-row>

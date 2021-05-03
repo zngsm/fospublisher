@@ -6,6 +6,7 @@ import Login from "../views/member/Login.vue";
 import FindPassword from "../views/member/FindPassword.vue";
 import ChangePassword from "../views/member/ChangePassword.vue";
 import Register from "../views/member/Register.vue";
+import CheckPassword from "../views/member/CheckPassword.vue";
 import Main from "../views/past/Main.vue";
 
 Vue.use(VueRouter);
@@ -20,6 +21,13 @@ const routes = [
     path: "/timeline",
     name: "Timeline",
     component: Timeline,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem("userId")) {
+        next();
+      } else {
+        next({ name: "Login" });
+      }
+    },
   },
   {
     path: "/login",
@@ -30,6 +38,13 @@ const routes = [
     path: "/findPassword",
     name: "FindPassword",
     component: FindPassword,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem("userId")) {
+        next({ name: "Main" });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/changePassword",
@@ -41,11 +56,37 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("userId")) {
+        next({ name: "Main" });
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/checkPassword",
+    name: "CheckPassword",
+    component: CheckPassword,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem("userId")) {
+        next();
+      } else {
+        next({ name: "Login" });
+      }
+    },
   },
   {
     path: "/main",
     name: "Main",
     component: Main,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem("userId")) {
+        next();
+      } else {
+        next({ name: "Login" });
+      }
+    },
   },
 ];
 

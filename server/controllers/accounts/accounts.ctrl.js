@@ -18,9 +18,6 @@ exports.post_accounts_signup = async (req, res) => {
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
     validationErrors['password'] = '비밀번호는 필수입니다.';
   }
-  if (req.body.password.length < 8) {
-    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
-  }
   if (req.body.birthday === undefined || req.body.birthday === "" || req.body.birthday === null) {
     validationErrors['birthday'] = '생일은 필수입니다.';
   }
@@ -102,9 +99,6 @@ exports.post_accounts_login = async (req, res) => {
   }
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
     validationErrors['password'] = '비밀번호는 필수입니다.';
-  }
-  if (req.body.password.length < 8) {
-    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
   }
 
   if (Object.keys(validationErrors).length > 0) {
@@ -237,9 +231,6 @@ exports.put_accounts_password_edit = async (req, res) => {
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
     validationErrors['password'] = '비밀번호는 필수입니다.';
   }
-  if (req.body.password.length < 8) {
-    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
-  }
   if (req.body.question === undefined || req.body.question === "" || req.body.question === null) {
     validationErrors['question'] = '질문은 필수입니다.';
   }
@@ -281,9 +272,6 @@ exports.put_accounts_password_question_edit = async (req, res) => {
 
   if (req.body.password === undefined || req.body.password === "" || req.body.password === null) {
     validationErrors['password'] = '비밀번호는 필수입니다.';
-  }
-  if (req.body.password.length < 8) {
-    validationErrors['password'] = '비밀번호는 8자 이상이어야 합니다.';
   }
   if (req.body.question === undefined || req.body.question === "" || req.body.question === null) {
     validationErrors['question'] = '질문은 필수입니다.';

@@ -433,10 +433,32 @@ exports.post_accounts_token = async (req, res) => {
         }
       );
 
-      tokenList[body.refreshToken].token = token;
+      const refreshToken = jwt.sign(
+        {
+          userId: body.userId,
+        },
+        YOUR_REFRESH_SECRET_KEY,
+        {
+          expiresIn: "168h",
+        }
+      );
+
+      const response = {
+        status: "Logged in",
+        token: token,
+        refreshToken: refreshToken,
+      };
+
+      tokenList[refreshToken] = response;
+      delete tokenList[body.refreshToken];
 
       res.cookie("user", token);
-      res.status(200).json({ token: token });
+      res.status(201).json({
+        result: "로그인에 성공하였습니다.",
+        userId: body.userId,
+        token,
+        refreshToken,
+      });
     } else {
       res.status(404).send("잘못된 요청 혹은 리프레시 토큰이 만료되었습니다.");
     }

@@ -12,10 +12,13 @@ instance.interceptors.response.use(
     store.commit("error/setValidationError", {});
     return response;
   },
+
   function(error) {
     // vuex에 있는 validation에 error넣어주기
     if (error.response.status === 422) {
       store.commit("error/setValidationError", error.response.data.data);
+    } else {
+      return Promise.reject(error);
     }
   }
 );
@@ -49,6 +52,8 @@ authInstance.interceptors.response.use(
     // vuex에 있는 validation에 error넣어주기
     if (error.response.status === 422) {
       store.commit("error/setValidationError", error.response.data.data);
+    } else {
+      return Promise.reject(error);
     }
   }
 );

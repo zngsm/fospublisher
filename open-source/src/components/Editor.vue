@@ -373,8 +373,9 @@
       <span>PDF 추출</span>
     </v-tooltip>
   </div>
+  <v-btn @click="test">test</v-btn>
 
-  <iframe name="richTextField" style="width: 1000px; height: 500px; border: solid #D1D1D1 1px; border-radius: 3px;"></iframe>
+  <iframe name="richTextField" style="overflow-y:hidden; width: 1000px; height: 500px; border: solid #D1D1D1 1px; border-radius: 3px;"></iframe>
   </body>
 </template>
 
@@ -398,9 +399,22 @@ export default {
       imageNum: 0,
       linkModal: false,
       pageLink: '',
+      pagenation: 1,
     }
   },
   methods: {
+    test() {
+      const childNodes = $('iframe[name="richTextField"]').contents().find("body")[0].childNodes
+      const vm = this
+      childNodes.forEach(function(childNode) {
+        console.log(childNode.offsetTop)
+        if (childNode.offsetTop > vm.pagenation * 500) {
+          console.log('asdfasdfasdf')
+          $(`<div class="html2pdf__page-break" style="border-bottom: 3px dashed black;">page ${vm.pagenation}</div><br>`).insertBefore(childNode)
+          vm.pagenation += 1
+        }
+      })
+    },
     // 이미지 삽입 후 드래그 및 리사이즈 기능 추가 함수
     imageDragResize() {
       const vm = this
@@ -526,16 +540,12 @@ export default {
     exportToPDF() {
       // html2pdf npm 모듈 사용
       html2pdf(window.richTextField.document.getElementsByTagName('body')[0], {
-        margin: 0,
-        filename: 'document.pdf',
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { width: 976, height: 1600 },
+        margin: 10,
+        filename: 'myfile.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 3, logging: true, dpi: 192, letterRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      })
-      
-      // .from(element).set({
-      //   pagebreak: { mode: 'avoid-all', after: '#root' },
-      // })
+      });
 
     },
   },
@@ -545,6 +555,8 @@ export default {
 
     // 문자가 richTextField의 너비를 넘어섰을 때 자동으로 줄바꿈
     window.richTextField.document.getElementsByTagName('body')[0].style.wordBreak = "break-all"
+    window.richTextField.document.getElementsByTagName('body')[0].style.margin = "10px"
+    // window.richTextField.document.getElementsByTagName('body')[0].style.pageBreakBefore = "auto"
 
     // 이모티콘 선택하면 커서 위치에 삽입할 수 있도록 하는 코드
     const picker = new EmojiButton();
@@ -554,6 +566,11 @@ export default {
     });
 
     trigger.addEventListener('click', () => picker.togglePicker(trigger));
+
+    var vm = this
+    $('iframe[name="richTextField"]').contents().scroll(function() {
+      vm.test()
+    })
   },
 }
 </script>

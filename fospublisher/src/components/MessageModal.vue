@@ -11,7 +11,7 @@
 
     <v-card-text>
       <v-row class="justify-center">
-        <b><p v-html="bodyContent"></p></b>
+        <strong><p v-html="bodyContent"></p></strong>
       </v-row>
     </v-card-text>
 

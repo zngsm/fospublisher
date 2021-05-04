@@ -104,7 +104,7 @@ import "../../assets/css/font.css";
 import LeftSide from "../../components/member/LeftSide";
 import MessageModal from "../../components/MessageModal";
 import { mapState } from "vuex";
-import { userLogin, checkToken } from "@/api/account";
+import { userLogin } from "@/api/account";
 
 export default {
   components: { LeftSide, MessageModal },
@@ -147,22 +147,6 @@ export default {
     ...mapState({
       validationErrors: (state) => state.error.validations,
     }),
-  },
-  created() {
-    if (localStorage.getItem("userId")) {
-      this.form = {
-        refreshToken: localStorage.getItem("refreshToken"),
-        userId: localStorage.getItem("userId"),
-      };
-      checkToken(this.form, (res) => {
-        if (res.status === 201) {
-          this.$store.commit("auth/setToken", res.data.token);
-          this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
-          this.$router.push("/");
-          // this.$router.push("/main");
-        }
-      });
-    }
   },
 };
 </script>

@@ -46,12 +46,29 @@
 </template>
 
 <script>
+import { checkToken } from "@/api/account";
+
 export default {
   name: "App",
 
   data: () => ({
-    //
+    form: "",
   }),
+  created() {
+    if (localStorage.getItem("userId")) {
+      this.form = {
+        refreshToken: localStorage.getItem("refreshToken"),
+        userId: localStorage.getItem("userId"),
+      };
+      checkToken(this.form, (res) => {
+        if (res.status === 201) {
+          this.$store.commit("auth/setToken", res.data.token);
+          this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
+          // this.$router.push("/main");
+        }
+      });
+    }
+  },
 };
 </script>
 

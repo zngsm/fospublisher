@@ -49,12 +49,12 @@ function editPassword(user, success, fail) {
 }
 
 // 비밀번호+질문 변경
-// function editQuestion(user, success, fail) {
-//   authInstance
-//     .put(`api/accounts/password-question-edit/`, user)
-//     .then(success)
-//     .catch(fail);
-// }
+function editQuestion(user, success, fail) {
+  authInstance
+    .put(`api/accounts/password-question-edit/`, user)
+    .then(success)
+    .catch(fail);
+}
 
 // 질문 답변 확인
 function confirmQuestion(user, success, fail) {
@@ -95,7 +95,7 @@ export {
   // editUser,
   passwordConfirm,
   editPassword,
-  // editQuestion,
+  editQuestion,
   confirmQuestion,
   checkDuplicateId,
   checkUserInfo,

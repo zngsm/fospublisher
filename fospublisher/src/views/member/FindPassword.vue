@@ -93,8 +93,17 @@ export default {
     username: "",
     question: null,
     answer: "",
-    form: "",
+    formHasErrors: false,
   }),
+  computed: {
+    form() {
+      return {
+        username: this.username,
+        question: this.question,
+        answer: this.answer,
+      };
+    },
+  },
   methods: {
     questionReceive(question) {
       this.question = question;
@@ -113,11 +122,6 @@ export default {
         this.dialog = !this.dialog;
         this.isEmpty = true;
       } else {
-        this.form = {
-          username: this.username,
-          question: this.question,
-          answer: this.answer,
-        };
         confirmQuestion(
           this.form,
           (res) => {

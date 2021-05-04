@@ -77,13 +77,16 @@ export default {
     noData: false,
   }),
   methods: {
+    // 유효성 검사
     validate() {
       this.$refs.form.validate();
     },
+    // 모달 닫기
     closeDialog() {
       this.noData = false;
       this.dialog = false;
     },
+    // 패스워드 확인
     changePassword() {
       this.validate();
       this.form = {

@@ -113,20 +113,30 @@ export default {
   data: () => ({
     username: "",
     password: "",
-    form: "",
     dialog: false,
     isFailedLogin: false,
   }),
+  computed: {
+    // vuex에서 validation가져오기, 값이 있으면 에러존재
+    ...mapState({
+      validationErrors: (state) => state.error.validations,
+    }),
+    // 폼 만들어주기
+    form() {
+      return {
+        username: this.username,
+        password: this.password,
+      };
+    },
+  },
   methods: {
+    // 모달 닫기
     closeDialog() {
       this.isFailedLogin = false;
       this.dialog = false;
     },
+    // 로그인
     onLogin() {
-      this.form = {
-        username: this.username,
-        password: this.password,
-      };
       userLogin(
         this.form,
         (res) => {
@@ -143,12 +153,6 @@ export default {
         }
       );
     },
-  },
-  // vuex에서 validation가져오기, 값이 있으면 에러존재
-  computed: {
-    ...mapState({
-      validationErrors: (state) => state.error.validations,
-    }),
   },
 };
 </script>

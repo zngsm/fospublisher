@@ -64,7 +64,7 @@ export default {
         if (res.status === 201) {
           this.$store.commit("auth/setToken", res.data.token);
           this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
-          // this.$router.push("/main");
+          this.$router.push("/main");
         }
       });
     }

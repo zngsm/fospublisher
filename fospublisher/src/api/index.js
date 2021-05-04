@@ -37,7 +37,7 @@ authInstance.interceptors.request.use(function(config) {
     };
   }
   console.log("요청인터셉터에서 토큰");
-  console.log(localStorage.getItem("token"));
+  console.log("index.js에서 체크 중인 토큰 : ", localStorage.getItem("token"));
   // console.log(store.state.auth.token);
   return config;
 });

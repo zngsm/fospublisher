@@ -33,6 +33,13 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem("userId")) {
+        next({ name: "Main" });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/findPassword",

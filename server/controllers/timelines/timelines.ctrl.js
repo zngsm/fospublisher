@@ -24,6 +24,7 @@ exports.get_timelines_read = async (req, res) => {
       node["id"] = chapter["dataValues"]["id"];
       node["order"] = chapter["dataValues"]["order"];
       node["check"] = chapter["dataValues"]["check"];
+      node["content"] = chapter["dataValues"]["content"];
       node["year"] = year;
       node["status"] = "ing";
       node["idx"] = idxCnt;
@@ -44,17 +45,6 @@ exports.get_timelines_read = async (req, res) => {
     contexts["name"] = UserInfo.nickname;
     res.send(contexts);
   });
-};
-
-const mkChapterObj = (chapter, count, idxOrder) => {
-  let node = {};
-  node["title"] = chapter["dataValues"]["title"];
-  node["id"] = chapter["dataValues"]["id"];
-  node["order"] = chapter["dataValues"]["order"];
-  node["check"] = chapter["dataValues"]["check"];
-  node["idx"] = count;
-  node["idxOrder"] = idxOrder;
-  return node;
 };
 
 exports.put_timelines_edit = async (req, res) => {

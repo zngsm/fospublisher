@@ -15,66 +15,44 @@
               <p class="member-kukde-light">회원가입</p>
               <v-row class="justify-center align-content-around">
                 <v-col class="d-flex flex-column justify-space-around">
-                  <v-row class="align-center" no-gutters dense>
-                    <v-text-field
-                      label="* 아 이 디"
-                      v-model="username"
-                      @keyup.enter="checkId"
+                  <div>
+                    <v-row class="align-center" no-gutters dense>
+                      <v-text-field label="* 아 이 디" v-model="username">
+                      </v-text-field>
+                    </v-row>
+                    <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                    <div
+                      class="validation-kwandong"
+                      v-if="
+                        validationErrors.username !== undefined &&
+                        this.username == ''
+                      "
                     >
-                    </v-text-field>
-                    <v-btn
-                      width="5vw"
-                      small
-                      dark
-                      color="#231815"
-                      @click="checkId"
-                    >
-                      중복확인
-                    </v-btn>
-                  </v-row>
-                  <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
-                  <div
-                    class="validation-kwandong"
-                    v-if="
-                      validationErrors.username !== undefined &&
-                      this.username == ''
-                    "
-                  >
-                    {{ validationErrors.username }}
+                      {{ validationErrors.username }}
+                    </div>
+                    <div class="validation-kwandong" v-if="isDuplicated">
+                      중복된 아이디가 존재합니다.
+                    </div>
+                    <!-- -------------------------------------------------------- -->
                   </div>
-                  <!-- -------------------------------------------------------- -->
-                  <!-- Start 중복확인 모달 -->
-                  <v-dialog v-model="dialog" width="25vw">
-                    <message-modal
-                      v-if="isDuplicated"
-                      body-content="중복된 아이디가 존재합니다.<br />다시 입력해주세요."
-                      @submit="closeDialog"
-                    />
-                    <message-modal
-                      v-if="isNotDuplicated"
-                      body-content="사용 가능한 아이디입니다."
-                      @submit="closeDialog"
-                    />
-                  </v-dialog>
-                  <!-- End 중복확인 모달 -->
-                  <v-form>
+                  <div>
                     <v-text-field
                       label="* 닉 네 임"
                       v-model="nickname"
-                    ></v-text-field
-                  ></v-form>
-                  <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
-                  <div
-                    class="validation-kwandong"
-                    v-if="
-                      validationErrors.nickname !== undefined &&
-                      this.nickname == ''
-                    "
-                  >
-                    {{ validationErrors.nickname }}
+                    ></v-text-field>
+                    <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                    <div
+                      class="validation-kwandong"
+                      v-if="
+                        validationErrors.nickname !== undefined &&
+                        this.nickname == ''
+                      "
+                    >
+                      {{ validationErrors.nickname }}
+                    </div>
+                    <!-- -------------------------------------------------------- -->
                   </div>
-                  <!-- -------------------------------------------------------- -->
-                  <v-form>
+                  <div>
                     <v-text-field
                       label="* 비 밀 번 호"
                       v-model.lazy="password"
@@ -82,77 +60,85 @@
                       autocomplete="off"
                     >
                     </v-text-field>
-                  </v-form>
-                  <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
-                  <div
-                    class="validation-kwandong"
-                    v-if="
-                      validationErrors.password !== undefined ||
-                      this.password == ''
-                    "
-                  >
-                    {{ validationErrors.password }}
-                  </div>
-                  <!-- -------------------------------------------------------- -->
-                  <v-form ref="form">
-                    <v-text-field
-                      label="* 비 밀 번 호 확 인"
-                      type="password"
-                      autocomplete="off"
-                      required
-                      :rules="[
-                        (v) => !!v || '비밀번호 확인은 필수입니다.',
-                        (v) =>
-                          (v && v === this.password) ||
-                          '입력한 비밀번호와 일치하지 않습니다.',
-                      ]"
+                    <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                    <div
+                      class="validation-kwandong"
+                      v-if="
+                        validationErrors.password !== undefined ||
+                        this.password == ''
+                      "
                     >
-                    </v-text-field>
-                  </v-form>
-                  <v-form>
+                      {{ validationErrors.password }}
+                    </div>
+                    <!-- -------------------------------------------------------- -->
+                  </div>
+                  <div>
+                    <v-form ref="form">
+                      <v-text-field
+                        label="* 비 밀 번 호 확 인"
+                        type="password"
+                        autocomplete="off"
+                        v-model.lazy="passwordConfirm"
+                      >
+                      </v-text-field>
+                    </v-form>
+                    <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                    <div
+                      class="validation-kwandong"
+                      v-if="
+                        validationErrors.passwordConfirm !== undefined ||
+                        this.passwordConfirm == ''
+                      "
+                    >
+                      {{ validationErrors.passwordConfirm }}
+                    </div>
+                    <!-- -------------------------------------------------------- -->
+                  </div>
+                  <div>
                     <v-row no-gutters>
                       <password-question is-required @input="questionReceive" />
                     </v-row>
-                  </v-form>
-                  <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
-                  <div
-                    class="validation-kwandong"
-                    v-if="
-                      validationErrors.question !== undefined &&
-                      this.question == ''
-                    "
-                  >
-                    {{ validationErrors.question }}
+                    <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                    <div
+                      class="validation-kwandong"
+                      v-if="
+                        validationErrors.question !== undefined &&
+                        this.question == ''
+                      "
+                    >
+                      {{ validationErrors.question }}
+                    </div>
+                    <!-- -------------------------------------------------------- -->
                   </div>
-                  <!-- -------------------------------------------------------- -->
-                  <v-form>
+                  <div>
                     <v-text-field label="* 비밀번호 찾기 답변" v-model="answer">
                     </v-text-field>
-                  </v-form>
-                  <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
-                  <div
-                    class="validation-kwandong"
-                    v-if="
-                      validationErrors.answer !== undefined && this.answer == ''
-                    "
-                  >
-                    {{ validationErrors.answer }}
+                    <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                    <div
+                      class="validation-kwandong"
+                      v-if="
+                        validationErrors.answer !== undefined &&
+                        this.answer == ''
+                      "
+                    >
+                      {{ validationErrors.answer }}
+                    </div>
+                    <!-- -------------------------------------------------------- -->
                   </div>
-                  <!-- -------------------------------------------------------- -->
-                  <v-form>
+                  <div>
                     <date-picker @birthday="dateReceive" />
-                  </v-form>
-                  <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
-                  <div
-                    class="validation-kwandong"
-                    v-if="
-                      validationErrors.birthday !== undefined &&
-                      this.birthday == ''
-                    "
-                  >
-                    {{ validationErrors.birthday }}
+                    <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
+                    <div
+                      class="validation-kwandong"
+                      v-if="
+                        validationErrors.birthday !== undefined &&
+                        this.birthday == ''
+                      "
+                    >
+                      {{ validationErrors.birthday }}
+                    </div>
+                    <!-- -------------------------------------------------------- -->
                   </div>
-                  <!-- -------------------------------------------------------- -->
                 </v-col>
               </v-row>
             </v-col>
@@ -191,7 +177,6 @@
                   color="#231815"
                   style="width: 10vw; margin: 1vh 0"
                   dark
-                  type="submit"
                   @click="onSubmit"
                 >
                   회원가입
@@ -200,13 +185,8 @@
                 <v-dialog v-model="dialog" width="25vw">
                   <message-modal
                     v-if="isSuccessSignup"
-                    body-content="회원가입에 성공했습니다. 로그인 페이지로 이동합니다."
+                    body-content="회원가입에 성공했습니다. <br /> 로그인 페이지로 이동합니다."
                     @submit="moveToLogin"
-                  />
-                  <message-modal
-                    v-if="isFailedSignup"
-                    body-content="아이디 중복확인이 필요합니다."
-                    @submit="closeDialog"
                   />
                 </v-dialog>
                 <!-- End 회원가입 모달 -->
@@ -232,14 +212,11 @@ export default {
   components: { DatePicker, PasswordQuestion, AvatarSelect, MessageModal },
   data: () => ({
     dialog: false,
-    didCheckDuplicated: false,
-    isDuplicated: false,
-    isNotDuplicated: false,
     isSuccessSignup: false,
-    isFailedSignup: false,
-    duplicateId: false,
+    isDuplicated: false,
     username: "",
     password: "",
+    passwordConfirm: "",
     birthday: "",
     nickname: "",
     introduce: "",
@@ -248,82 +225,84 @@ export default {
     answer: "",
     form: "",
   }),
-  methods: {
-    validate() {
-      this.$refs.form.validate();
-    },
-    dateReceive(date) {
-      this.birthday = date;
-    },
-    questionReceive(question) {
-      this.question = question;
-    },
-    imgReceive(img) {
-      this.img = img;
-    },
-    closeDialog() {
-      this.isDuplicated = false;
-      this.isNotDuplicated = false;
-      this.isFailedSignup = false;
-      this.dialog = false;
-    },
-    moveToLogin() {
-      this.$router.push("/login");
-    },
-    checkId() {
-      this.didCheckDuplicated = true;
-      this.form = {
-        username: this.username,
-      };
-      checkDuplicateId(this.form, (res) => {
-        if (this.username !== "") {
-          if (res.data.result === "중복ID") {
-            this.dialog = true;
-            this.isDuplicated = true;
-            this.duplicateId = true;
-          } else if (res.data.result === "사용가능ID") {
-            this.dialog = true;
-            this.isNotDuplicated = true;
-            this.duplicateId = false;
-          }
-        }
-      });
-    },
-    onSubmit() {
-      this.validate();
-      if (this.duplicateId) {
-        this.dialog = true;
-        this.isDuplicated = true;
-      } else if (!this.didCheckDuplicated) {
-        this.dialog = true;
-        this.isFailedSignup = true;
-      } else {
-        this.checkId();
-        if (this.isNotDuplicated) {
-          this.form = {
-            username: this.username,
-            password: this.password,
-            birthday: this.birthday,
-            nickname: this.nickname,
-            introduce: this.introduce,
-            img: this.img,
-            question: this.question,
-            answer: this.answer,
-          };
-          signUp(this.form, (res) => {
-            if (res.status === 200 || res.status === 201) {
-              this.dialog = true;
-              this.isSuccessSignup = true;
-            }
-          });
-        }
-      }
-    },
-  },
   computed: {
     ...mapState("error", {
       validationErrors: (state) => state.validations,
     }),
+  },
+  methods: {
+    // 생일 component에서 받아오기
+    dateReceive(date) {
+      this.birthday = date;
+    },
+    // 질문 component에서 받아오기
+    questionReceive(question) {
+      this.question = question;
+    },
+    // 이미지 component에서 받아오기
+    imgReceive(img) {
+      this.img = img;
+    },
+    // 모달 닫을 때
+    closeDialog() {
+      this.isDuplicated = false;
+      this.isSuccessSignup = false;
+      this.dialog = false;
+    },
+    // 페이지 이동
+    moveToLogin() {
+      this.$router.push("/login");
+    },
+    // 회원가입 버튼 클릭
+    onSubmit() {
+      this.checkId();
+    },
+    // 아이디 체크
+    checkId() {
+      this.form = {
+        username: this.username,
+      };
+      checkDuplicateId(
+        this.form,
+        (res) => {
+          if (res.data.result === "중복ID") {
+            this.isDuplicated = true;
+          } else if (res.data.result === "사용가능ID") {
+            this.isDuplicated = false;
+            this.signUp();
+          }
+        },
+        () => {
+          return;
+        }
+      );
+    },
+    // 가입시작
+    signUp() {
+      this.form = {
+        username: this.username,
+        password: this.password,
+        passwordConfirm: this.passwordConfirm,
+        birthday: this.birthday,
+        nickname: this.nickname,
+        introduce: this.introduce,
+        img: this.img,
+        question: this.question,
+        answer: this.answer,
+      };
+      signUp(
+        this.form,
+        (res) => {
+          if (res.status === 200 || res.status === 201) {
+            this.dialog = true;
+            this.isSuccessSignup = true;
+          }
+        },
+        () => {
+          return;
+        }
+      );
+    },
   },
 };
 </script>

@@ -45,13 +45,19 @@ export default {
         let imgFile = new FormData();
         imgFile.append("imgFile", this.image);
 
-        uploadProfile(imgFile, (res) => {
-          if (res.status === 200) {
-            this.url = res.data.imgUrl;
-            this.isSelected = true;
-            this.$emit("sendImg", this.url);
+        uploadProfile(
+          imgFile,
+          (res) => {
+            if (res.status === 200) {
+              this.url = res.data.imgUrl;
+              this.isSelected = true;
+              this.$emit("sendImg", this.url);
+            }
+          },
+          () => {
+            return;
           }
-        });
+        );
       }
     },
   },

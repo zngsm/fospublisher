@@ -1,29 +1,30 @@
 <template>
-  <v-container fluid class="member-kwandong login">
+  <v-container fluid class="member-kwandong">
     <v-row class="align-center" style="height: 100vh">
-      <v-spacer></v-spacer>
-      <left-side></left-side>
-      <v-spacer></v-spacer>
+      <v-col cols="6">
+        <left-side></left-side>
+      </v-col>
       <v-divider vertical></v-divider>
-      <v-spacer></v-spacer>
-      <div>
-        <v-col>
-          <p class="member-kukde-light">비밀번호 확인</p>
-          <div class="d-flex align-center flex-column">
-            <div style="width: 25vw">
-              <v-form ref="form">
-                <v-text-field
-                  label="현재 비밀번호"
-                  v-model.lazy="password"
-                  type="password"
-                  autocomplete="off"
-                  @keyup.enter="changePassword"
-                  :rules="[(v) => !!v || '현재 비밀번호는 필수입니다.']"
-                >
-                </v-text-field>
-              </v-form>
+      <v-col cols="6">
+        <v-row justify="center">
+          <div style="width: 30vw">
+            <p class="member-kukde-light">비밀번호 확인</p>
+            <div class="d-flex align-center flex-column">
+              <div style="width: 25vw">
+                <v-form ref="form">
+                  <v-text-field
+                    label="현재 비밀번호"
+                    v-model.lazy="password"
+                    type="password"
+                    autocomplete="off"
+                    @keyup.enter="changePassword"
+                    :rules="[(v) => !!v || '현재 비밀번호는 필수입니다.']"
+                  >
+                  </v-text-field>
+                </v-form>
+              </div>
               <div class="text-center">
-                <v-row class="justify-space-around">
+                <v-row class="justify-center">
                   <v-btn
                     color="#fff"
                     class="ma-5"
@@ -55,9 +56,8 @@
               </div>
             </div>
           </div>
-        </v-col>
-      </div>
-      <v-spacer></v-spacer>
+        </v-row>
+      </v-col>
     </v-row>
   </v-container>
 </template>

@@ -8,6 +8,7 @@ import ChangePassword from "../views/member/ChangePassword.vue";
 import Register from "../views/member/Register.vue";
 import CheckPassword from "../views/member/CheckPassword.vue";
 import Main from "../views/past/Main.vue";
+import PastBookReader from "../components/book/PastBookReader.vue";
 
 Vue.use(VueRouter);
 
@@ -94,6 +95,18 @@ const routes = [
         next({ name: "Login" });
       }
     },
+  },
+  {
+    path: "/read",
+    name: "PastBookReader",
+    component: PastBookReader,
+    // beforeEnter(to, from, next) {
+    //   if (localStorage.getItem("userId")) {
+    //     next();
+    //   } else {
+    //     next({ name: "Login" });
+    //   }
+    // },
   },
 ];
 

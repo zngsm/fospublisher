@@ -67,7 +67,7 @@
               <v-btn
                 color="#fff"
                 class="ma-5"
-                style="width: 10vw"
+                style="width: 12vw"
                 to="/"
                 x-large
                 >취소</v-btn
@@ -76,7 +76,7 @@
                 <v-btn
                   color="#231815"
                   class="ma-5"
-                  style="width: 10vw"
+                  style="width: 12vw"
                   dark
                   x-large
                   type="submit"
@@ -88,7 +88,7 @@
                 <v-btn
                   color="#231815"
                   class="ma-5"
-                  style="width: 10vw"
+                  style="width: 12vw"
                   dark
                   x-large
                   type="submit"

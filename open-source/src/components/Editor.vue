@@ -1,379 +1,169 @@
 <template>
   <body style="width: 1000px;">
-  <div class="d-flex flex-wrap align-center">
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('bold')">
-          <i class="fas fa-bold"></i>
-        </v-btn>
-      </template>
-      <span>굵게</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('italic')">
-          <i class="fas fa-italic"></i>
-        </v-btn>
-      </template>
-      <span>기울임꼴</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('underline')">
-          <i class="fas fa-underline"></i>
-        </v-btn>
-      </template>
-      <span>밑줄</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('strikethrough')">
-          <i class="fas fa-strikethrough"></i>
-        </v-btn>
-      </template>
-      <span>취소선</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('justifyLeft')">
-          <i class="fas fa-align-left"></i>
-        </v-btn>
-      </template>
-      <span>왼쪽 정렬</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('justifyCenter')">
-          <i class="fas fa-align-center"></i>
-        </v-btn>
-      </template>
-      <span>가운데 정렬</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('justifyRight')">
-          <i class="fas fa-align-right"></i>
-        </v-btn>
-      </template>
-      <span>오른쪽 정렬</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('justifyFull')">
-          <i class="fas fa-align-justify"></i>
-        </v-btn>
-      </template>
-      <span>양쪽 맞춤</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('cut')">
-          <i class="fas fa-cut"></i>
-        </v-btn>
-      </template>
-      <span>잘라내기</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('copy')">
-          <i class="fas fa-copy"></i>
-        </v-btn>
-      </template>
-      <span>복사하기</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('indent')">
-          <i class="fas fa-indent"></i>
-        </v-btn>
-      </template>
-      <span>들여쓰기</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('outdent')">
-          <i class="fas fa-outdent"></i>
-        </v-btn>
-      </template>
-      <span>내어쓰기</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('subscript')">
-          <i class="fas fa-subscript"></i>
-        </v-btn>
-      </template>
-      <span>아래 첨자</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('superscript')">
-          <i class="fas fa-superscript"></i>
-        </v-btn>
-      </template>
-      <span>위 첨자</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('undo')">
-          <i class="fas fa-undo"></i>
-        </v-btn>
-      </template>
-      <span>취소</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('redo')">
-          <i class="fas fa-redo"></i>
-        </v-btn>
-      </template>
-      <span>다시 실행</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('insertUnorderedList')">
-          <i class="fas fa-list-ul"></i>
-        </v-btn>
-      </template>
-      <span>글머리 기호</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('insertOrderedList')">
-          <i class="fas fa-list-ol"></i>
-        </v-btn>
-      </template>
-      <span>번호 매기기</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('insertParagraph')">
-          <i class="fas fa-paragraph"></i>
-        </v-btn>
-      </template>
-      <span>줄바꿈</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile fab small v-bind="attrs" v-on="on" @click="execCmd('insertHorizontalRule')">
-          HR
-        </v-btn>
-      </template>
-      <span>가로선</span>
-    </v-tooltip>
-    
-    <v-tooltip bottom>
-    <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          text 
-          tile 
-          fab 
-          small
-          v-bind="attrs"
-          v-on="on"
-          @click="linkModal = true"
-        >
-          <i class="fas fa-link"></i>
-        </v-btn>
-      </template>
-      <span>링크</span>
-    </v-tooltip>
-    <v-dialog
-      v-model="linkModal"
-      width="500"
-    >
-      <v-card>
-        <v-card-title class="headline">
-          Link
-        </v-card-title>
+  <div class=".toolBar">
 
-        <v-text-field
-          class="mx-4 my-5"
-          v-model="pageLink"
-          label="Insert link"
-          outlined
-          dense
-          clearable
-        ></v-text-field>
+    <button class="toolButton" @click="execCmd('bold')">
+      <i class="fas fa-bold"></i>
+      <span class="tooltip">굵게</span>
+    </button>
+    <button class="toolButton" @click="execCmd('italic')">
+      <i class="fas fa-italic"></i>
+      <span class="tooltip">기울임꼴</span>
+    </button>
+    <button class="toolButton" @click="execCmd('underline')">
+      <i class="fas fa-underline"></i>
+      <span class="tooltip">밑줄</span>
+    </button>
+    <button class="toolButton" @click="execCmd('strikethrough')">
+      <i class="fas fa-strikethrough"></i>
+      <span class="tooltip">취소선</span>
+    </button>
+    <button class="toolButton" @click="execCmd('justifyLeft')">
+      <i class="fas fa-align-left"></i>
+      <span class="tooltip">왼쪽 정렬</span>
+    </button>
+    <button class="toolButton" @click="execCmd('justifyCenter')">
+      <i class="fas fa-align-center"></i>
+      <span class="tooltip">가운데 정렬</span>
+    </button>
+    <button class="toolButton" @click="execCmd('justifyRight')">
+      <i class="fas fa-align-right"></i>
+      <span class="tooltip">오른쪽 정렬</span>
+    </button>
+    <button class="toolButton" @click="execCmd('justifyFull')">
+      <i class="fas fa-align-justify"></i>
+      <span class="tooltip">양쪽 맞춤</span>
+    </button>
+    <button class="toolButton" @click="execCmd('cut')">
+      <i class="fas fa-cut"></i>
+      <span class="tooltip">잘라내기</span>
+    </button>
+    <button class="toolButton" @click="execCmd('copy')">
+      <i class="fas fa-copy"></i>
+      <span class="tooltip">복사하기</span>
+    </button>
+    <button class="toolButton" @click="execCmd('indent')">
+      <i class="fas fa-indent"></i>
+      <span class="tooltip">들여쓰기</span>
+    </button>
+    <button class="toolButton" @click="execCmd('outdent')">
+      <i class="fas fa-outdent"></i>
+      <span class="tooltip">내어쓰기</span>
+    </button>
+    <button class="toolButton" @click="execCmd('subscript')">
+      <i class="fas fa-subscript"></i>
+      <span class="tooltip">아래 첨자</span>
+    </button>
+    <button class="toolButton" @click="execCmd('superscript')">
+      <i class="fas fa-superscript"></i>
+      <span class="tooltip">위 첨자</span>
+    </button>
+    <button class="toolButton" @click="execCmd('undo')">
+      <i class="fas fa-undo"></i>
+      <span class="tooltip">취소</span>
+    </button>
+    <button class="toolButton" @click="execCmd('redo')">
+      <i class="fas fa-redo"></i>
+      <span class="tooltip">다시 실행</span>
+    </button>
+    <button class="toolButton" @click="execCmd('insertUnorderedList')">
+      <i class="fas fa-list-ul"></i>
+      <span class="tooltip">글머리 기호</span>
+    </button>
+    <button class="toolButton" @click="execCmd('insertOrderedList')">
+      <i class="fas fa-list-ol"></i>
+      <span class="tooltip">번호 매기기</span>
+    </button>
+    <button class="toolButton" @click="execCmd('insertParagraph')">
+      <i class="fas fa-paragraph"></i>
+      <span class="tooltip">줄바꿈</span>
+    </button>
+    <button class="toolButton" @click="execCmd('insertHorizontalRule')">
+      HR
+      <span class="tooltip">가로선</span>
+    </button>
 
-        <v-divider></v-divider>
+    <button class="toolButton" @click="toggleLinkModal">
+      <i class="fas fa-link"></i>
+      <span class="tooltip">링크</span>
+    </button>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            @click="inserLink"
-          >
-            okay
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          id="emoji-trigger" 
-          text 
-          tile 
-          small 
-          v-bind="attrs"
-          v-on="on"
-          class="py-5 px-0" 
-        >
-          <h2>😀</h2>
-        </v-btn>
-      </template>
-      <span>이모티콘</span>
-    </v-tooltip>
-    
-    <div class="text-center">
-      <v-menu offset-y>
-        <template v-slot:activator="{ on: onMenu }">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: onTooltip }">
-              <v-btn
-                text 
-                tile 
-                small 
-                class="py-5" 
-                v-on="{ ...onMenu, ...onTooltip }"
-              >
-                Font Style ▾
-              </v-btn>
-            </template>
-            <span>글꼴</span>
-          </v-tooltip>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(item, index) in fontStyle"
-            :key="index"
-            link
-          >
-            <v-list-item-title @click="execCommandWithArg('fontName', item)" :style="{ 'font-family': [item]}">{{ item }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+    <div id="linkModal" class="modal">
+      <div class="modal-content">
+        <h2 style="margin-top: 0;">Link</h2>
+        <input v-model="pageLink" class="modalTextInput" type="text" />
+        <button class="modalButton" @click="toggleLinkModal">OKAY</button>
+      </div>
     </div>
 
-    <div class="text-center">
-      <v-menu offset-y :close-on-click="true">
-        <template v-slot:activator="{ on: onMenu }">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: onTooltip }">
-              <v-btn
-                text 
-                tile 
-                small 
-                class="py-5" 
-                v-on="{ ...onMenu, ...onTooltip }"
-              >
-                Font size ▾
-              </v-btn>
-            </template>
-            <span>글꼴 크기</span>
-          </v-tooltip>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(item, index) in fontSize"
-            :key="index"
-            link
-          >
-            <v-list-item-title @click="execCommandWithArg('formatBlock', item)">{{ item }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+    <button id="emoji-trigger" class="toolButton">
+      😀
+      <span class="tooltip">이모티콘</span>
+    </button>
+    <div class="dropdown">
+      <button @click="toggleDropdown('fontStyleDropdown')" class="dropdownButton">FONT STYLE ▾
+        <span class="tooltip">글꼴</span>
+      </button>
+      <div id="fontStyleDropdown" style="width: 110px;" class="dropdown-content">
+        <div 
+          v-for="(font, index) in fontStyle" 
+          :key="index" 
+          :style="{ 'font-family': [font]}"
+          @click="[execCommandWithArg('fontName', font), toggleDropdown('fontStyleDropdown')]"
+        >
+          {{ font }}
+        </div>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button @click="toggleDropdown('fontSizeDropdown')" class="dropdownButton">FONT SIZE ▾
+        <span class="tooltip">글씨 크기</span>
+      </button>
+      <div id="fontSizeDropdown" style="width: 97px;" class="dropdown-content">
+        <div 
+          v-for="(size, index) in fontSize" 
+          :key="index" 
+          @click="[execCommandWithArg('formatBlock', size), toggleDropdown('fontSizeDropdown')]"
+        >
+          {{ size }}
+        </div>
+      </div>
+    </div>
+    <div class="colorPickerButton">FONT COLOR</div>
+    <button class="toolButtonText">
+      <input class="colorPicker" type="color" @change="execCommandWithArg('foreColor', $event.target.value);"/>
+      <span class="tooltip">글씨 색</span>
+    </button>
+    <div class="colorPickerButton">BACKGROUND COLOR</div>
+    <button class="toolButtonText">
+      <input class="colorPicker" type="color" @change="execCommandWithArg('hiliteColor', $event.target.value);"/>
+      <span class="tooltip">글꼴 배경색</span>
+    </button>
+
+    <button class="toolButtonText" @click="toggleImageModal">
+      <i class="fas fa-file-image"></i> IMAGE
+      <span class="tooltip">이미지 삽입</span>
+    </button>
+
+    <div id="imageModal" class="modal">
+      <div class="modal-content">
+        <h2 style="margin-top: 0;">Image upload</h2>
+        <input class="modalTextInput" id="ImageFile" type="file" accept="image/png, image/jpeg"/>
+        <div style="font-size: 15px; padding-bottom: 5px;">Image link</div>
+        <input v-model="imageLink" class="modalTextInput" type="text" />
+        <button class="modalButton" @click="toggleImageModal">OKAY</button>
+      </div>
     </div>
 
-    <v-btn text tile small class="py-5" disabled >Font Color</v-btn>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <input v-bind="attrs" v-on="on" style="cursor: pointer" type="color" @change="execCommandWithArg('foreColor', $event.target.value);"/>
-      </template>
-      <span>글꼴 색</span>
-    </v-tooltip>
-    <v-btn text tile small class="py-5" disabled >Background Color </v-btn>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <input v-bind="attrs" v-on="on" style="cursor: pointer" type="color" @change="execCommandWithArg('hiliteColor', $event.target.value);"/>
-      </template>
-      <span>텍스트 강조 색</span>
-    </v-tooltip>
-    
-    <v-dialog
-      v-model="imageModal"
-      width="500"
-    >
-    <template v-slot:activator="{ on: onModal }">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on: onTooltip }">
-        <v-btn
-          text 
-          tile 
-          small
-          v-on="{ ...onModal, ...onTooltip }"
-          class="py-5"
-        >
-          <i class="fas fa-file-image pr-1"></i>image
-        </v-btn>
-      </template>
-      <span>이미지 삽입</span>
-      </v-tooltip>
-    </template>
-
-      <v-card>
-        <v-card-title class="headline">
-          Image upload
-        </v-card-title>
-
-        <v-file-input
-          class="mx-4 mt-5"
-          v-model="imageFile"
-          label="File input"
-          outlined
-          dense
-        ></v-file-input>
-        <v-text-field
-          class="mx-4"
-          v-model="imageLink"
-          label="Image link"
-          outlined
-          dense
-          clearable
-        ></v-text-field>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            @click="insertImage"
-          >
-            Okay
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile small v-bind="attrs" v-on="on" class="py-5" @click="execCmd('selectAll')">
-          Select All
-        </v-btn>
-      </template>
-      <span>전부 선택</span>
-    </v-tooltip>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text tile small v-bind="attrs" v-on="on" class="py-5" @click="exportToPDF()">
-          <i class="fas fa-file-pdf pr-1"></i>PDF
-        </v-btn>
-      </template>
-      <span>PDF 추출</span>
-    </v-tooltip>
+    <button class="toolButtonText" @click="execCmd('selectAll')">
+      SELECT ALL
+      <span class="tooltip">전부 선택</span>
+    </button>
+    <button class="toolButtonText" @click="exportToPDF()">
+      <i class="fas fa-file-pdf"></i> PDF
+      <span class="tooltip">PDF 추출</span>
+    </button>
   </div>
-  <v-btn @click="test">test</v-btn>
 
   <iframe name="richTextField" style="overflow-y:hidden; width: 1000px; height: 500px; border: solid #D1D1D1 1px; border-radius: 3px;"></iframe>
   </body>
@@ -383,6 +173,8 @@
 import { EmojiButton } from '@joeattardi/emoji-button';
 import html2pdf from 'html2pdf.js'
 import $ from 'jquery'
+import '@fortawesome/fontawesome-free/js/all.js';
+
 require('jquery');
 require('jquery-ui-bundle');
 
@@ -393,21 +185,50 @@ export default {
       fontSize: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
       fontStyle: ['돋움', '굴림', '바탕','궁서', '맑은 고딕'],
       // fontStyle: ['Arial', 'Comic Sans MS', 'Courier', 'Georgia', 'Tahoma', 'Times New Roman', 'Verdana'],
-      imageModal: false,
       imageFile: [],
       imageLink: '',
       imageNum: 0,
-      linkModal: false,
       pageLink: '',
       pagenation: 1,
     }
   },
   methods: {
-    test() {
+    toggleImageModal() {
+      const modal = document.getElementById("imageModal")
+      if (modal.style.display == "block") {
+        modal.style.display = "none";
+        const imageFile = document.getElementById('ImageFile').value
+        if (this.imageLink != '' || imageFile) {
+          this.insertImage()
+        } 
+      } else {
+        modal.style.display = "block";
+      }
+    },
+    toggleLinkModal() {
+      const modal = document.getElementById("linkModal")
+      if (modal.style.display == "block") {
+        modal.style.display = "none";
+        if (this.pageLink != '') {
+          this.insertLink()
+        } 
+      } else {
+        modal.style.display = "block";
+      }
+    },
+    toggleDropdown(arg) {
+      document.getElementById(arg).classList.toggle("show");
+    },
+    pageBreak() {
+      // 에디터 안에 들어있는 태그 모두 가져오기
       const childNodes = $('iframe[name="richTextField"]').contents().find("body")[0].childNodes
       const vm = this
       childNodes.forEach(function(childNode) {
+        // 각 태그의 y축 시작 위치는 childNode.offsetTop
+        // pagenation 1부터 시작, 500px마다 페이지 분절하는 것으로 설정
         if (childNode.offsetTop > vm.pagenation * 500) {
+          // class="html2pdf__page-break" <-- htmlpdf 모듈에서 페이지 분절 기능을 담당하는 class
+          // 500px마다 해당 class를 담은 div를 삽입한다 
           $(`<br>
             <div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">
               <div style="-webkit-transform: translate(-50%,-50%); 
@@ -473,7 +294,7 @@ export default {
         'width': '12px'})
       $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseenter(function(event) {
             event.target.style.cursor = 'pointer'
-            event.target.style.border = 'solid white 3px'
+            event.target.style.border = 'solid white 1px'
             event.target.style.boxSizing = 'border-box'
       });
       $('iframe[name="richTextField"]').contents().find(`#${vm.imageNum}`).mouseout(function(event) {
@@ -481,30 +302,27 @@ export default {
       });
       vm.imageNum += 1
     },
-    inserLink() {
-      this.linkModal = false
-      if (this.pageLink != '') {
-        this.execCommandWithArg('createLink', this.pageLink)
-        const links = window.richTextField.document.querySelectorAll('a')
-        links.forEach(item => {
-          item.target = '_blank';
-          // 링크 삽입 후 클릭하면 링크로 이동할 수 있도록 디자인 모드 끔
-          item.addEventListener('mouseover', () => {
-            window.richTextField.document.designMode = 'Off'
-          });
-          // 링크 삽입 후 다른 작업이 가능하도록 디자인 모드 다시 킴 
-          item.addEventListener('mouseout', () => {
-            window.richTextField.document.designMode = 'On'
-          });
-        })
-        this.pageLink = ''
-      }
+    insertLink() {
+      this.execCommandWithArg('createLink', this.pageLink)
+      const links = window.richTextField.document.querySelectorAll('a')
+      links.forEach(item => {
+        item.target = '_blank';
+        // 링크 삽입 후 클릭하면 링크로 이동할 수 있도록 디자인 모드 끔
+        item.addEventListener('mouseover', () => {
+          window.richTextField.document.designMode = 'Off'
+        });
+        // 링크 삽입 후 다른 작업이 가능하도록 디자인 모드 다시 킴 
+        item.addEventListener('mouseout', () => {
+          window.richTextField.document.designMode = 'On'
+        });
+      })
+      this.pageLink = ''
     },
     insertImage() {
-      this.imageModal = false
+      const imageFile = document.getElementById('ImageFile').files[0]
       // 로컬에서 이미지를 직접 올리는 경우
-      if (this.imageFile.length != 0) {
-        var file = this.imageFile
+      if (imageFile) {
+        var file = imageFile
         var reader = new FileReader();
         var image = new Image();
         var vm = this
@@ -520,9 +338,7 @@ export default {
           }
         }
         reader.readAsDataURL(file);
-        // 문제점: 현재 같은 이미지를 두 번 올릴 수 없음 
-        // 찾아보니 vuetify 자체적인 오류인듯함...추후 수정 필요
-        this.imageFile = []
+        document.getElementById('ImageFile').value = "";
 
         // 이미지 링크로 올리는 경우
       } else if (this.imageLink != '') {
@@ -553,8 +369,9 @@ export default {
     },
  
     async exportToPDF() {
+      // 페이지가 캡쳐되기 전에 페이지 분절에 사용된 div를 잠시 숨김 처리
       $('iframe[name="richTextField"]').contents().find(".html2pdf__page-break").css("visibility", 'hidden');
-      // html2pdf npm 모듈 사용
+      // html2pdf npm 모듈 사용, 에디터 내용을 캡쳐하여 이를 pdf로 변환하는 방식
       await html2pdf(window.richTextField.document.getElementsByTagName('body')[0], {
         margin: 10,
         filename: 'myfile.pdf',
@@ -563,6 +380,7 @@ export default {
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       });
 
+      // pdf 생성이 완료되면 페이지 분절 표기가 다시 보이도록 설정 
       $('iframe[name="richTextField"]').contents().find(".html2pdf__page-break").css("visibility", 'visible');
 
     },
@@ -585,10 +403,46 @@ export default {
 
     trigger.addEventListener('click', () => picker.togglePicker(trigger));
 
+    // 스크롤 발생 감지해서 pageBreak 함수로 연결
     var vm = this
     $('iframe[name="richTextField"]').contents().scroll(function() {
-      vm.test()
+      vm.pageBreak()
     })
+
+    // 드롭다운이 열려있거나 모달이 열려있는데 다른 곳을 클릭하면 자동으로 닫히도록 설정
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropdownButton')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+      if (event.target == document.getElementById("linkModal")) {
+        document.getElementById("linkModal").style.display = "none";
+        vm.pageLink = ''
+      }
+      if (event.target == document.getElementById("imageModal")) {
+        document.getElementById("imageModal").style.display = "none";
+        vm.imageLink = ''
+      }
+    }
+
+    window.richTextField.document.onclick = function(event) {
+      if (!event.target.matches('.dropdownButton')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
   },
 }
 </script>
@@ -596,5 +450,193 @@ export default {
 <style scoped>
 .v-text-field__details {
   display: none !important;
+}
+.toolBar {
+  display: flex;
+}
+.toolButton {
+  margin-right: 2px;
+  cursor: pointer;
+  background-color: white; 
+  border: none;
+  color: black;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: relative;
+
+}
+.toolButtonText {
+  cursor: pointer;
+  background-color: white; 
+  border: none;
+  color: black;
+  height: 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  position: relative;
+}
+.toolButton:hover {
+  background-color: #efefef;; 
+}
+.toolButton:hover .tooltip {
+  visibility: visible;
+}
+.tooltip {
+  font-size: 13px;
+  visibility: hidden;
+  width: 70px;
+  display: inline;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px 8px 5px;
+  border-radius: 6px;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  opacity: 0.8;
+  top: 100%;
+  left: 50%;
+  margin-left: -40px;
+}
+.tooltip::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+.toolButtonText:hover {
+  background-color: #efefef;; 
+}
+.toolButtonText:hover .tooltip {
+  visibility: visible;
+}
+.toolButtonText .tooltip {
+  font-size: 13px;
+  visibility: hidden;
+  width: 70px;
+  display: inline;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px 8px 5px;
+  border-radius: 6px;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  opacity: 0.8;
+  left: 50%;
+  margin-left: -40px;
+}
+.toolButtonText .tooltip::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+.colorPicker {
+  cursor: pointer;
+  border: none;
+}
+.colorPickerButton {
+  font-size: 14px;
+  display: inline-block;
+  padding: 0px 5px;
+  color: gray;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.dropdownButton {
+  margin-right: 6px;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+.dropdownButton:hover .tooltip {
+  visibility: visible;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content div {
+  cursor: pointer;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content :hover {
+  background-color: #f1f1f1
+}
+.show {display: block;}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  border-radius: 10px;
+}
+.modalButton {
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 0.5px #dadce0;
+}
+.modalButton:hover {
+  background-color: #dddddd;
+}
+.modalTextInput{
+  width: 99%;
+  margin-bottom: 20px;
+  padding: 7px 0;
+  font-size: 17px;
 }
 </style>

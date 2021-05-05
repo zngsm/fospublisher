@@ -37,7 +37,7 @@
                   <v-dialog v-model="dialog" width="25vw">
                     <message-modal
                       v-if="isFailedFind"
-                      body-content="회원정보를 찾을 수 없습니다."
+                      body-content="회원정보를 찾을 수 없습니다.<br />답변이 기억나지 않는다면,<br />201publisher@gmail.com으로 문의바랍니다."
                       @submit="closeDialog"
                     />
                     <message-modal

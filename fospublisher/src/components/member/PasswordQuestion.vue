@@ -16,7 +16,6 @@
         item-text="value"
         item-value="question"
         label="비밀번호 찾기 질문"
-        hide-details
         @input="sendQuestion"
         v-model="selectedItem"
       ></v-select>

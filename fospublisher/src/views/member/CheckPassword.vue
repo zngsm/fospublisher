@@ -97,6 +97,7 @@ export default {
           this.form,
           (res) => {
             if (res.data.result === "OK") {
+              localStorage.setItem("tempAccept", "accept");
               this.$router.push("/changePassword");
             }
           },

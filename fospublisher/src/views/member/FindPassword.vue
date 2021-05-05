@@ -126,11 +126,8 @@ export default {
           this.form,
           (res) => {
             if (res.data.result === "OK") {
-              let userId = res.data.userId;
-              this.$router.push({
-                name: "ChangePassword",
-                params: { userId: userId },
-              });
+              localStorage.setItem("tempUserId", res.data.userId);
+              this.$router.replace("/changePassword");
             } else {
               if (res.data.result === "FAIL") {
                 this.dialog = !this.dialog;

@@ -39,13 +39,16 @@ export default {
     url: "",
   }),
   methods: {
+    // 패스워드 변경 페이지로 이동
     checkPassword() {
       this.$router.push("/checkPassword");
     },
+    // 로그아웃
     logout() {
       localStorage.clear();
       this.checkLogin();
     },
+    // 유저정보 불러오기
     getUserInfo() {
       checkUserInfo((res) => {
         if (res.status === 200) {
@@ -53,6 +56,7 @@ export default {
         }
       });
     },
+    // 로그인 상태 확인
     checkLogin() {
       if (localStorage.getItem("userId") === null) {
         this.$router.push("/login");

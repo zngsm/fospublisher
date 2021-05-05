@@ -122,15 +122,10 @@ import { editPassword, checkUserInfo, editQuestion } from "@/api/account";
 import { mapState } from "vuex";
 export default {
   components: { LeftSide, PasswordQuestion, MessageModal },
-  props: {
-    userId: {
-      type: Number,
-      require: false,
-    },
-  },
   data: () => ({
     form: "",
     password: "",
+    userId: "",
     passwordConfirm: "",
     question: null,
     answer: "",
@@ -225,6 +220,15 @@ export default {
         this.doEdit();
       }, 50);
     },
+  },
+  created() {
+    if (localStorage.getItem("tempUserId")) {
+      this.userId = localStorage.getItem("tempUserId");
+    }
+  },
+  destroyed() {
+    localStorage.removeItem("tempUserId");
+    localStorage.removeItem("tempAccept");
   },
 };
 </script>

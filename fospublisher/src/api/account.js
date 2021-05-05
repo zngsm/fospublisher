@@ -25,12 +25,12 @@ function signUp(user, success, fail) {
 }
 
 // 회원정보 변경
-// function editUser(user, success, fail) {
-//   authInstance
-//     .put(`api/accounts/user-edit/`, user)
-//     .then(success)
-//     .catch(fail);
-// }
+function editUser(user, success, fail) {
+  authInstance
+    .put(`api/accounts/user-edit/`, user)
+    .then(success)
+    .catch(fail);
+}
 
 // 비밀번호 확인
 function passwordConfirm(user, success, fail) {
@@ -92,7 +92,7 @@ export {
   userLogin,
   uploadProfile,
   signUp,
-  // editUser,
+  editUser,
   passwordConfirm,
   editPassword,
   editQuestion,

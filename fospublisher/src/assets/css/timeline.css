@@ -1,6 +1,7 @@
 .timeline-body {
   width: 1372px;
   margin: auto;
+  margin-top: 130px;
   position: relative;
 }
 .timeline {
@@ -42,7 +43,7 @@
   margin-top: 80px;
   margin-left: 80px;
   background-color: brown;
-  z-index: 12;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,10 +73,6 @@
 .timeline-title {
   width: auto;
   max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* white-space: nowrap; */
-  /* width: 150px; */
   padding: 10px;
   height: 60px;
   margin: 0 35px;
@@ -84,10 +81,7 @@
   justify-content: center;
   align-items: center;
   background-color: white;
-  /* background-image: url("../timeline/wood_title.jpg"); */
-  /* color: white; */
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
-  /* word-break: break-all; */
 }
 .timeline-title-top {
   height: 50px;
@@ -101,10 +95,30 @@
   margin: auto;
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
 }
+.timeline-title-hover {
+  margin-top: -140px;
+  width: 300px;
+  background-color: white;
+  border: 1px solid;
+  cursor: pointer;
+  height: 200px;
+  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
+}
+.timeline-title-hover > div {
+  padding: 10px;
+}
+.timeline-preview-content {
+  height: 80px;
+  margin-top: 10px;
+}
+.timeline-preview-button {
+  display: flex;
+  justify-content: space-evenly;
+}
 .timeline-year {
   color: white;
   margin: auto;
-  background-color: brown;
+  background-color: rgb(114, 85, 62);
   width: 70px;
   height: 70px;
   border-radius: 100%;
@@ -113,4 +127,34 @@
   justify-content: center;
   align-items: center;
   margin-top: -25px;
+  box-shadow: 8px 8px 8px rgb(0, 0, 0, 0.3);
+}
+.timeline-year-hover:hover {
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  margin-top: -35px;
+  text-decoration: underline;
+  background-color: rgb(145, 108, 78);
+  box-shadow: 8px 8px 8px rgb(0, 0, 0, 0.3);
+}
+.timeline-text-hidden {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.timeline-edit {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; */
+}
+.v-list-item {
+  cursor: pointer;
 }

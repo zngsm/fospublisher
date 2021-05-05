@@ -5,7 +5,7 @@
       <div>
         <TimeChapter :timeline="timeline"/>
       </div>
-      <div v-if="timeline.order == 0" class="timeline-year">
+      <div v-if="timeline.order == 0" class="timeline-year" :class="{'timeline-year-hover':!edit}">
         {{timeline.year}}
       </div>
     </div>
@@ -14,6 +14,7 @@
 
 <script>
 import TimeChapter from './TimeChapter.vue'
+import { mapState } from "vuex";
 export default {
   name: 'Timenode',
   components: {TimeChapter},
@@ -27,14 +28,17 @@ export default {
     };
   },
   mounted() {
-    
   },
   methods: {
     
   },
+  computed: {
+    ...mapState({
+      edit: (state) => state.timeline.edit,
+    }),
+  }
 };
 </script>
 
 <style scoped>
-
 </style>

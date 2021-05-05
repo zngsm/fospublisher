@@ -7,4 +7,10 @@ function readTimeline(success, fail) {
     .catch(fail);
 }
 
-export { readTimeline };
+function readTimlineEditMode(success, fail) {
+  authInstance
+    .get("api/timelines/edit", {})
+    .then(success)
+    .catch(fail);
+}
+export { readTimeline, readTimlineEditMode };

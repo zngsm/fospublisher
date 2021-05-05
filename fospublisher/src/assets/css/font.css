@@ -19,6 +19,16 @@
     font-family: 'Kwandong-otf';
     font-size: 2vw;
 }
+.writer-kwandong{
+    font-family: 'Kwandong-otf';
+    font-size: 5vh;
+    letter-spacing: 1vw;
+    padding-bottom: 12px;
+}
+.introduce-kwandong{
+    font-family: 'Kwandong-otf';
+    font-size: 1.5vh;
+}
 .validation-kwandong{
     font-family: 'Kwandong-otf';
     font-size: 12px;

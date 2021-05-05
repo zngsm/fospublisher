@@ -47,6 +47,29 @@ exports.get_timelines_read = async (req, res) => {
   });
 };
 
+exports.get_timelines_edit_mode = async (req, res) => {
+  let context = {};
+  const book = await models.BookPasts.findOne({
+    where: { UserId: res.locals.userId },
+  });
+  models.ChapterPasts.findAll({
+    where: { BookPastId: book.id },
+    order: [["year"], ["order"]],
+  }).then((result) => {
+    result.forEach((chapter) => {
+      let year = chapter.year;
+      let node = {};
+      node["title"] = chapter["dataValues"]["title"];
+      node["id"] = chapter["dataValues"]["id"];
+      if (!context[year]) {
+        context[year] = [];
+      }
+      context[year].push(node);
+    });
+    res.send(context);
+  });
+};
+
 exports.put_timelines_edit = async (req, res) => {
   let body = req.body;
   const book = await models.BookPasts.findOne({

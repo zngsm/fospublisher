@@ -59,6 +59,28 @@ const routes = [
     name: "ChangePassword",
     component: ChangePassword,
     props: true,
+    beforeEnter: (to, from, next) => {
+      if (
+        localStorage.getItem("userId") &&
+        localStorage.getItem("tempUserId") === null &&
+        localStorage.getItem("tempAccept")
+      ) {
+        next();
+      } else if (
+        localStorage.getItem("userId") === null &&
+        localStorage.getItem("tempUserId") === null
+      ) {
+        next({ name: "Login" });
+      } else if (
+        localStorage.getItem("userId") &&
+        localStorage.getItem("tempUserId") === null &&
+        localStorage.getItem("tempAccept") === null
+      ) {
+        next(false);
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/register",

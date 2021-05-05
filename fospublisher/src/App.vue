@@ -39,7 +39,7 @@
 
     <v-main>
       <sequential-entrance fromBottom>
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </sequential-entrance>
     </v-main>
   </v-app>

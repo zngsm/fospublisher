@@ -7,8 +7,21 @@ import error from "./error";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
+  state: {
+    url: null,
+  },
+  getters: {
+    getUrl: (state) => () => state.url,
+  },
+  mutations: {
+    setUrl(state, url) {
+      state.url = url;
+    },
+  },
+  actions: {
+    setUrl({ commit }, url) {
+      commit("setUrl", { url });
+    },
+  },
   modules: { auth, error },
 });

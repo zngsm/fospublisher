@@ -62,5 +62,10 @@ export default {
   created() {
     this.getUserInfo();
   },
+  mounted() {
+    this.$store.watch(this.$store.getters.getUrl, (url) => {
+      this.url = url;
+    });
+  },
 };
 </script>

@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import auth from "./auth";
 import error from "./error";
+import timeline from "./timeline";
 
 Vue.use(Vuex);
 
@@ -23,5 +24,5 @@ export default new Vuex.Store({
       commit("setUrl", { url });
     },
   },
-  modules: { auth, error },
+  modules: { auth, error, timeline },
 });

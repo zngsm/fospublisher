@@ -60,12 +60,23 @@ export default {
         refreshToken: localStorage.getItem("refreshToken"),
         userId: localStorage.getItem("userId"),
       };
-      checkToken(this.form, (res) => {
-        if (res.status === 201) {
-          this.$store.commit("auth/setToken", res.data.token);
-          this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
+      checkToken(
+        this.form,
+        (res) => {
+          if (res.status === 201) {
+            this.$store.commit("auth/setToken", res.data.token);
+            this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
+          }
+        },
+        (err) => {
+          if (err.response.status === 404) {
+            localStorage.clear();
+            setTimeout(() => {
+              this.$router.replace("/login");
+            }, 200);
+          }
         }
-      });
+      );
     }
   },
 };

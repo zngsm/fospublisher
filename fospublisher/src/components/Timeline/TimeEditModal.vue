@@ -119,7 +119,9 @@ export default {
       this.$store.commit("timeline/setEditMode", !this.edit);
     },
     all() {
-      this.panel = [...Array(this.years).keys()].map((k, i) => i);
+      for (let i in this.years) {
+        this.panel.push(Number(i));
+      }
     },
     // Reset the panel
     none() {

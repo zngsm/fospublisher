@@ -1,7 +1,24 @@
+.timeline-container {
+  width: 1372px;
+  margin-left: 113px;
+  padding-bottom: 50px;
+}
+.timeline-header {
+  padding: 20px;
+}
+.timeline-header-btn {
+  margin: 20px;
+}
+.timeline-header-toggle {
+  margin: 20px;
+}
+.timeline-header-title {
+  margin: 30px;
+}
 .timeline-body {
   width: 1372px;
   margin: auto;
-  margin-top: 130px;
+  margin-top: 40px;
   position: relative;
 }
 .timeline {
@@ -49,6 +66,12 @@
   align-items: center;
   color: white;
 }
+.timeline-img-start-ing {
+  margin-top: 124px;
+}
+.timeline-img-start-tunnel {
+  margin-top: 80px;
+}
 .timeline-img-road-right-left {
   width: 1304px;
   margin-right: 26px;
@@ -69,6 +92,41 @@
 .timeline-img-road-final-left {
   width: 1315px;
   margin-top: -9px;
+}
+.timeline-img-tunnel {
+  width: 150px;
+  cursor: pointer;
+}
+.timeline-img-tunnel-prev {
+  position: absolute;
+  color: white;
+  left: 54px;
+  top: -55px;
+}
+.timeline-img-tunnel-prev:hover {
+  text-decoration: underline;
+  color: yellow;
+  cursor: pointer;
+}
+.timeline-img-tunnel-prev-position {
+  position: absolute;
+  top: -120px;
+}
+.timeline-img-tunnel-next {
+  position: absolute;
+  bottom: 30px;
+  right: 72px;
+  color: white;
+}
+.timeline-img-tunnel-next:hover {
+  text-decoration: underline;
+  color: yellow;
+  cursor: pointer;
+}
+.timeline-img-tunnel-next-position {
+  position: absolute;
+  bottom: -30px;
+  right: 10px;
 }
 .timeline-title {
   width: auto;
@@ -150,10 +208,6 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; */
 }
 .v-panel-header {
   background-color: #f5f5f5;
@@ -164,3 +218,11 @@
 .v-list-item-selected {
   color: red;
 }
+.prev div {
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 1s ease-out;
+}
+/* .next {
+  background-color: black;
+} */

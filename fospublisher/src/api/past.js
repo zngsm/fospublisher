@@ -1,5 +1,13 @@
 import { authInstance } from "./index.js";
 
+// 오늘의 질문
+function getQuestion(id, success, fail) {
+  authInstance
+    .post(`api/questions/${id}`, {})
+    .then(success)
+    .catch(fail);
+}
+
 // 챕터 CRUD
 function createPastChapter(data, success, fail) {
   authInstance
@@ -45,6 +53,7 @@ function updatePastBook(data, success, fail) {
 }
 
 export {
+  getQuestion,
   createPastChapter,
   readPastChapter,
   updatePastChapter,

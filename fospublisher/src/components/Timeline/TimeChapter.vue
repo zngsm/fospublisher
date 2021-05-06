@@ -16,7 +16,7 @@
         {{ timeline.content }}
       </div>
       <div class="timeline-preview-button">
-        <v-btn>전문읽기</v-btn>
+        <v-btn @click="sendTimeline">전문읽기</v-btn>
         <v-btn>수정</v-btn>
       </div>
     </div>
@@ -42,6 +42,12 @@ export default {
     },
     closePreview() {
       this.preview = false;
+    },
+    sendTimeline() {
+      this.$router.push({
+        name: "ReadPast",
+        params: { timeline: this.timeline },
+      });
     },
   },
   computed: {

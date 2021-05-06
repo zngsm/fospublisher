@@ -8,8 +8,8 @@ import ChangePassword from "../views/member/ChangePassword.vue";
 import Register from "../views/member/Register.vue";
 import CheckPassword from "../views/member/CheckPassword.vue";
 import Main from "../views/past/Main.vue";
+import CreatePast from "../views/past/CreatePast.vue";
 import ReadPast from "../components/book/ReadPast.vue";
-import CreatePast from "../components/book/CreatePast.vue";
 
 Vue.use(VueRouter);
 

@@ -33,12 +33,8 @@ authInstance.interceptors.request.use(function(config) {
   if (localStorage.getItem("token")) {
     config["headers"] = {
       user: `${localStorage.getItem("token")}`,
-      // user: `${store.state.auth.token}`,
     };
   }
-  console.log("요청인터셉터에서 토큰");
-  console.log("index.js에서 체크 중인 토큰 : ", localStorage.getItem("token"));
-  // console.log(store.state.auth.token);
   return config;
 });
 

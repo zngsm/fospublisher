@@ -71,7 +71,7 @@ export default {
           this.name = res.data.name;
         },
         (err) => {
-          console.err(err);
+          console.error(err);
         }
       );
     },

@@ -1,6 +1,8 @@
 <template>
   <div
+    v-if="bookInfo"
     class="Main__past-book"
+    @click="sendBookInfo"
     :style="{
       backgroundColor: bookInfo.cover.skin_color,
       fontColor: bookInfo.cover.font_color,
@@ -28,11 +30,16 @@ export default {
         this.fontSize = "x-large";
       }
     },
+    sendBookInfo() {
+      this.$router.push({
+        name: "ReadPast",
+        params: { bookInfo: this.bookInfo },
+      });
+    },
   },
   mounted() {
     readPastBook(
       (res) => {
-        console.log(res);
         this.bookInfo = res.data;
         this.getFontSize(res.data.cover.font);
       },
@@ -42,7 +49,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .Main__past-book {
   width: 294px;
   height: 416px;

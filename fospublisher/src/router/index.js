@@ -18,6 +18,13 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem("userId")) {
+        next();
+      } else {
+        next({ name: "Login" });
+      }
+    },
   },
   {
     path: "/timeline",
@@ -36,6 +43,10 @@ const routes = [
     name: "Login",
     component: Login,
     beforeEnter(to, from, next) {
+      console.log(localStorage.getItem("userId"));
+      console.log(localStorage.getItem("token"));
+      console.log(localStorage.getItem("refreshToken"));
+
       if (localStorage.getItem("userId")) {
         next({ name: "Main" });
       } else {

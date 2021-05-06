@@ -135,6 +135,10 @@ export default {
       this.isFailedLogin = false;
       this.dialog = false;
     },
+    // 메인페이지로 이동
+    moveToMain() {
+      this.$router.replace("/main");
+    },
     // 로그인
     onLogin() {
       userLogin(
@@ -144,7 +148,7 @@ export default {
             this.$store.commit("auth/setToken", res.data.token);
             this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
             this.$store.commit("auth/setUserId", res.data.userId);
-            this.$router.replace("/main");
+            this.moveToMain();
           }
         },
         () => {

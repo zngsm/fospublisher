@@ -767,3 +767,17 @@ paths:
             properties:
               success:
                 type: "string"
+  /api/questions/{id}:
+    get:
+      tags:
+        - questions
+      summary: (토큰 필요) 인생 질문 조회
+      description: 90여개의 질문 중 가장 최근에 받은 질문을 제외한 질문 중 랜덤하게 뽑아서 제공
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              id: integer
+              question: string

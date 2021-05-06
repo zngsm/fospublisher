@@ -148,7 +148,9 @@ export default {
             this.$store.commit("auth/setToken", res.data.token);
             this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
             this.$store.commit("auth/setUserId", res.data.userId);
-            this.moveToMain();
+            setTimeout(() => {
+              this.moveToMain();
+            }, 200);
           }
         },
         () => {

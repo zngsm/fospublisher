@@ -1,14 +1,19 @@
 <template>
   <div>
-    <div :class="{'timeline-title' : !preview, 'd-none' : preview}">
-      <p class="timeline-text-hidden" @mouseover="openPreview">{{ timeline.title }}</p>
+    <div :class="{ 'timeline-title': !preview, 'd-none': preview }">
+      <p class="timeline-text-hidden" @mouseover="openPreview">
+        {{ timeline.title }}
+      </p>
     </div>
-    <div :class="{'timeline-title-hover' : preview, 'd-none' : !preview}" @mouseleave="closePreview">
+    <div
+      :class="{ 'timeline-title-hover': preview, 'd-none': !preview }"
+      @mouseleave="closePreview"
+    >
       <div class="timeline-text-hidden text-h6 text-center">
         {{ timeline.title }}
       </div>
       <div class="timeline-preview-content timeline-text-hidden">
-        {{ timeline.content}}
+        {{ timeline.content }}
       </div>
       <div class="timeline-preview-button">
         <v-btn>전문읽기</v-btn>
@@ -23,21 +28,19 @@
 import { mapState } from "vuex";
 
 export default {
-  name: 'Timechapter',
+  name: "Timechapter",
   data() {
     return {
       preview: false,
     };
   },
   props: { timeline: Object },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
-    openPreview () {
+    openPreview() {
       this.preview = true;
     },
-    closePreview () {
+    closePreview() {
       this.preview = false;
     },
   },
@@ -45,10 +48,8 @@ export default {
     ...mapState({
       edit: (state) => state.timeline.edit,
     }),
-  }
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

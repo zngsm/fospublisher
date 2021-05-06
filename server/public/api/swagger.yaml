@@ -773,11 +773,21 @@ paths:
         - questions
       summary: (토큰 필요) 인생 질문 조회
       description: 90여개의 질문 중 가장 최근에 받은 질문을 제외한 질문 중 랜덤하게 뽑아서 제공
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 질문 id
       responses:
         "200":
-          description: OK
+          description: 과거 자서전 정보
           schema:
             type: object
             properties:
-              id: integer
-              question: string
+              id:
+                type: integer
+              question:
+                type: string

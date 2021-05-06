@@ -15,34 +15,38 @@
             </v-btn>
           </div>
 
-          <v-expansion-panels
-            v-model="panel"
-            multiple
-          >
-            <v-expansion-panel
-              v-for="(year,i) in years"
-              :key="i"
-            >
-              <v-expansion-panel-header>{{ year }}</v-expansion-panel-header>
+          <v-expansion-panels v-model="panel" multiple>
+            <v-expansion-panel v-for="(year, i) in years" :key="i">
+              <v-expansion-panel-header
+                :class="{ 'v-panel-header': selectYear.includes(year) }"
+                >{{ year }}</v-expansion-panel-header
+              >
               <v-expansion-panel-content>
                 <v-list flat>
-                <v-list-item-group
-                >
-                  <draggable :list="allData[year]" v-model="allData[year]">
-                    <!-- <transition-group> -->
+                  <v-list-item-group>
+                    <draggable :list="allData[year]" v-model="allData[year]">
+                      <!-- <transition-group> -->
                       <div
                         class="v-list-item"
                         v-for="(data, idx) in allData[year]"
                         :key="idx"
                       >
-
-                        <v-list-item-content>
-                          <v-list-item-title v-text="data.title"></v-list-item-title>
+                        <v-list-item-content
+                          @mousedown="saveyear(year, data.title)"
+                        >
+                          <v-list-item-title
+                            v-text="data.title"
+                            :class="{
+                              'v-list-item-selected': changedItems.includes(
+                                data.title
+                              ),
+                            }"
+                          ></v-list-item-title>
                         </v-list-item-content>
                       </div>
-                    <!-- </transition-group> -->
-                  </draggable>
-                </v-list-item-group>
+                      <!-- </transition-group> -->
+                    </draggable>
+                  </v-list-item-group>
                 </v-list>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -51,18 +55,10 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="blue darken-1"
-          text
-          @click="changeEditMode"
-        >
+        <v-btn color="blue darken-1" text @click="changeEditMode">
           닫기
         </v-btn>
-        <v-btn
-          color="blue darken-1"
-          text
-          @click="changeList"
-        >
+        <v-btn color="blue darken-1" text @click="changeList">
           수정하기
         </v-btn>
       </v-card-actions>
@@ -72,12 +68,13 @@
 
 <script>
 import { mapState } from "vuex";
-import { readTimlineEditMode } from '../../api/timeline.js'
+import { readTimlineEditMode } from "../../api/timeline.js";
+import { updateTimeline } from "../../api/timeline.js";
 
-import draggable from 'vuedraggable'
+import draggable from "vuedraggable";
 
 export default {
-  name: 'TimeEditModal',
+  name: "TimeEditModal",
   components: {
     draggable,
   },
@@ -85,52 +82,67 @@ export default {
     return {
       panel: [],
       years: [],
+      originalData: {},
       allData: {},
-      selectedItem: null,
-
+      selectYear: [],
+      changedItems: [],
+      test: "hey!!",
       // drag
-
     };
   },
   mounted() {
     this.getTimelineEditList();
   },
   methods: {
-    changeList () {
-      console.log(this.allData)
-      this.$store.commit("timeline/setEditMode", !this.edit)
+    saveyear(y, title) {
+      if (!this.selectYear.includes(y)) {
+        this.selectYear.push(y);
+      }
+      this.changedItems.push(title);
     },
-    changeEditMode () {
-      this.$store.commit("timeline/setEditMode", !this.edit)
+    changeList() {
+      // console.log(this.allData);
+      let context = {};
+      for (let i of this.selectYear) {
+        let selectedData = this.allData[i];
+        for (let j in selectedData) {
+          selectedData[j]["order"] = j;
+        }
+        context[i] = selectedData;
+      }
+      updateTimeline(context, this.$emit("getTimeline"), (err) => {
+        console.log(err);
+      });
+      this.$store.commit("timeline/setEditMode", !this.edit);
     },
-    all () {
-      this.panel = [...Array(this.years).keys()].map((k, i) => i)
+    changeEditMode() {
+      this.$store.commit("timeline/setEditMode", !this.edit);
+    },
+    all() {
+      this.panel = [...Array(this.years).keys()].map((k, i) => i);
     },
     // Reset the panel
-    none () {
-      this.panel = []
+    none() {
+      this.panel = [];
     },
-    getTimelineEditList () {
+    getTimelineEditList() {
       readTimlineEditMode(
         (res) => {
-          this.years = Object.keys(res.data)
-          this.allData = res.data
-          console.log(this.allData)
+          this.years = Object.keys(res.data);
+          this.allData = res.data;
         },
         (err) => {
-          console.log(err)
+          console.log(err);
         }
-      )
+      );
     },
   },
   computed: {
     ...mapState({
       edit: (state) => state.timeline.edit,
     }),
-  }
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

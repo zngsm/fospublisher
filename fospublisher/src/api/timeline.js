@@ -13,4 +13,11 @@ function readTimlineEditMode(success, fail) {
     .then(success)
     .catch(fail);
 }
-export { readTimeline, readTimlineEditMode };
+
+function updateTimeline(data, success, fail) {
+  authInstance
+    .put("api/timelines", data)
+    .then(success)
+    .catch(fail);
+}
+export { readTimeline, readTimlineEditMode, updateTimeline };

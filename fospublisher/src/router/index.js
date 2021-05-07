@@ -22,6 +22,9 @@ const routes = [
       if (localStorage.getItem("userId")) {
         next();
       } else {
+        console.log("홈", localStorage.getItem("userId"));
+        console.log(localStorage.getItem("token"));
+        console.log(localStorage.getItem("refreshToken"));
         next({ name: "Login" });
       }
     },
@@ -42,17 +45,17 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
-    beforeEnter(to, from, next) {
-      console.log(localStorage.getItem("userId"));
-      console.log(localStorage.getItem("token"));
-      console.log(localStorage.getItem("refreshToken"));
+    // beforeEnter(to, from, next) {
+    //   console.log("로그인", localStorage.getItem("userId"));
+    //   console.log(localStorage.getItem("token"));
+    //   console.log(localStorage.getItem("refreshToken"));
 
-      if (localStorage.getItem("userId")) {
-        next({ name: "Main" });
-      } else {
-        next();
-      }
-    },
+    //   if (localStorage.getItem("userId")) {
+    //     next({ name: "Main" });
+    //   } else {
+    //     next();
+    //   }
+    // },
   },
   {
     path: "/findPassword",
@@ -126,6 +129,9 @@ const routes = [
       if (localStorage.getItem("userId")) {
         next();
       } else {
+        console.log("메인", localStorage.getItem("userId"));
+        console.log(localStorage.getItem("token"));
+        console.log(localStorage.getItem("refreshToken"));
         next({ name: "Login" });
       }
     },

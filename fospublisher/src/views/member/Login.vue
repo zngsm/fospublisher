@@ -151,6 +151,8 @@ export default {
             setTimeout(() => {
               this.moveToMain();
             }, 200);
+          } else {
+            console.log("로그인 에러");
           }
         },
         () => {
@@ -159,6 +161,11 @@ export default {
         }
       );
     },
+  },
+  created() {
+    if (localStorage.getItem("userId")) {
+      this.moveToMain();
+    }
   },
 };
 </script>

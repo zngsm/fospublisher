@@ -4,19 +4,23 @@
       <!-- 기본이미지 & 원형(회원가입) -->
       <div v-if="!editInfo">
         <v-avatar v-if="!isSelected" size="15vh">
-          <img src="../../assets/member/default.png" alt="프로필 사진" />
+          <img
+            src="../../assets/member/default.png"
+            alt="프로필 사진"
+            style="object-fit: cover"
+          />
         </v-avatar>
         <v-avatar v-else size="15vh">
-          <img :src="url" alt="프로필 사진" />
+          <img :src="url" alt="프로필 사진" style="object-fit: cover" />
         </v-avatar>
       </div>
       <!-- DB 나의 프로필 & 타일형 -->
       <div v-else>
         <v-avatar tile v-if="!isSelected" size="15vh">
-          <img :src="origin" alt="프로필 사진" />
+          <img :src="origin" alt="프로필 사진" style="object-fit: cover" />
         </v-avatar>
         <v-avatar tile v-else size="15vh">
-          <img :src="url" alt="프로필 사진" />
+          <img :src="url" alt="프로필 사진" style="object-fit: cover" />
         </v-avatar>
       </div>
     </v-row>

@@ -4,9 +4,9 @@
       <v-row justify="center">
         <v-menu bottom min-width="12vw" rounded offset-x>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" width="10vh" height="10vh">
+            <v-btn fab icon v-on="on" width="10vh" height="10vh" id="test">
               <v-avatar size="10vh">
-                <img :src="url" />
+                <img :src="url" style="object-fit: cover" />
               </v-avatar>
             </v-btn>
           </template>
@@ -73,3 +73,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#test {
+  object-fit: cover;
+}
+</style>

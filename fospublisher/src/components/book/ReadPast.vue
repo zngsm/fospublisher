@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div id="flipbook">
+    <div v-if="bookInfo.content[0].title !== ''" id="flipbook">
       <!-- hard: 표지 앞,뒤 -->
-      <div v-if="bookInfo" class="hard">
+      <div class="hard">
         {{ bookInfo.cover.title }}
       </div>
-      <div v-else-if="bookInfo2" class="hard">
-        {{ bookInfo2.cover.title }}
-      </div>
       <!-- 저자소개 -->
-      <div class="hard"><WriterInfo /></div>
+      <div class="hard">
+        <WriterInfo />
+      </div>
       <div><SelectMode /></div>
       <div>
         <h1>목차</h1>
@@ -17,20 +16,26 @@
       <!-- <div v-if="bookInfo"> -->
       <!-- computed에서 v-for작업, html에는 v-if만 -->
       <!-- <div v-if="bookInfo"> -->
-      <div v-for="(item, idx) in bookInfo2.content" :key="idx">
+      <!-- 일단 주석처리
+      <div v-for="(item, idx) in timechapter.content" :key="idx">
         <h1>{{ item.title }}</h1>
-        <p>{{ item.content }}</p>
-        <!-- </div> -->
-        <!-- </div> -->
-        <div class="hard"></div>
-        <div class="hard"></div>
+        <p>{{ item.content }}</p>-->
+      <div class="hard"></div>
+      <div class="hard"></div>
+    </div>
+    <div v-else id="flipbook">
+      <div class="hard"></div>
+      <div>
+        <h1>{{ timechapter.title }}</h1>
+      </div>
+      <div>
+        <p>{{ timechapter.content }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { readTimeline } from "@/api/timeline";
 import { readPastChapter } from "@/api/past";
 import WriterInfo from "../member/WriterInfo.vue";
 import SelectMode from "./SelectMode.vue";
@@ -73,17 +78,7 @@ export default {
   },
   data() {
     return {
-      bookInfo2: {
-        cover: {
-          id: 0,
-          page: 0,
-          title: "",
-          size: 0,
-          skin: 0,
-          font: 0,
-          skin_color: "",
-          font_color: "",
-        },
+      timechapter: {
         content: [
           {
             id: 0,
@@ -100,12 +95,12 @@ export default {
     };
   },
   methods: {
-    mainRead(page) {
+    mainRead() {
       if (window.$("#flipbook")) {
         window.$("#flipbook").turn({
           width: 1200,
           height: 900,
-          page: page,
+          page: 3,
           // acceleration: true,
           gradients: true,
         });
@@ -114,28 +109,12 @@ export default {
       }
     },
     async timelineRead() {
-      await readTimeline(
-        (res) => {
-          let arr = [];
-          let items = res.data.data;
-          let lastIdx = Object.keys(items)[Object.keys(items).length - 1];
-          console.log(lastIdx);
-
-          for (let i = 0; i < lastIdx; i++) {
-            // arr.push(items[i]);
-            Array.prototype.push.apply(arr, items[i]);
-          }
-          this.bookInfo2 = arr;
-          console.log("timeline챕터정보======");
-          console.log(this.bookInfo2);
-        },
-        (err) => console.error(err)
-      );
-      readPastChapter(
+      await readPastChapter(
         this.timeline.id,
-        () => {
+        (res) => {
           // let page = res.data.page;
-          this.mainRead(1);
+          this.timechapter = res.data;
+          this.mainRead(3);
         },
         (err) => {
           console.error(err);
@@ -153,8 +132,7 @@ export default {
       // 메인->책읽기
       if (this.bookInfo.content[0].title !== "") {
         console.log("mainRead");
-        this.bookInfo2 = this.bookInfo;
-        this.mainRead(3);
+        this.mainRead();
       } else {
         // 타임라인->책읽기
         console.log("timelineRead");

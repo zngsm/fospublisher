@@ -1,9 +1,7 @@
 <template>
-  <v-app>
-    <v-main class="mx-auto">
-      <Editor/>
-    </v-main>
-  </v-app>
+  <div>
+    <Editor/>
+  </div>
 </template>
 
 <script>

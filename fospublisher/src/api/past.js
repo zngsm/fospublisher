@@ -3,7 +3,7 @@ import { authInstance } from "./index.js";
 // 오늘의 질문
 function getQuestion(id, success, fail) {
   authInstance
-    .post(`api/questions/${id}`, {})
+    .get(`api/questions/${id}`, {})
     .then(success)
     .catch(fail);
 }

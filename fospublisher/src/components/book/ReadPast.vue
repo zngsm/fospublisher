@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div v-if="bookInfo.content[0].title !== ''" id="flipbook">
+    <div
+      v-if="bookInfo.content.length == 0 || bookInfo.content[0].title !== ''"
+      id="flipbook"
+    >
       <!-- hard: 표지 앞,뒤 -->
-      <div class="hard">
+      <div v-if="bookInfo.cover.title" class="hard">
         {{ bookInfo.cover.title }}
       </div>
       <!-- 저자소개 -->
@@ -130,7 +133,10 @@ export default {
     },
     getInfo() {
       // 메인->책읽기
-      if (this.bookInfo.content[0].title !== "") {
+      if (
+        this.bookInfo.content.length == 0 ||
+        this.bookInfo.content[0].title !== ""
+      ) {
         console.log("mainRead");
         this.mainRead();
       } else {

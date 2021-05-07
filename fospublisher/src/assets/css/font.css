@@ -3,44 +3,49 @@
     src: url('../fonts/Kwandong.ttf') format('truetype');
 } */
 @font-face {
-    font-family: 'Kwandong-otf';
-    src: url('../fonts/Kwandong.otf') format('opentype');
+  font-family: "Kwandong-otf";
+  src: url("../fonts/Kwandong.otf") format("opentype");
 }
 @font-face {
-    font-family:'Kukde-aLt' ;
-    src: url('../fonts/Kukde-aLt.otf') format('opentype');
+  font-family: "Kukde-aLt";
+  src: url("../fonts/Kukde-aLt.otf") format("opentype");
 }
 @font-face {
-    font-family: 'Kukde-bBd';
-    src: url('../fonts/Kukde-bBd.otf') format('opentype');
+  font-family: "Kukde-bBd";
+  src: url("../fonts/Kukde-bBd.otf") format("opentype");
 }
 
-.member-kwandong{
-    font-family: 'Kwandong-otf';
-    font-size: 2vw;
+.member-kwandong {
+  font-family: "Kwandong-otf";
+  font-size: 2vw;
 }
-.writer-kwandong{
-    font-family: 'Kwandong-otf';
-    font-size: 5vh;
-    letter-spacing: 1vw;
-    padding-bottom: 12px;
+.writer-kwandong {
+  font-family: "Kwandong-otf";
+  font-size: 5vh;
+  letter-spacing: 1vw;
+  padding-bottom: 12px;
 }
-.introduce-kwandong{
-    font-family: 'Kwandong-otf';
-    font-size: 1.5vh;
+.introduce-kwandong {
+  font-family: "Kwandong-otf";
+  font-size: 1.5vh;
 }
-.validation-kwandong{
-    font-family: 'Kwandong-otf';
-    font-size: 12px;
-    color: red;
-    margin-top: -17px;
+.validation-kwandong {
+  font-family: "Kwandong-otf";
+  font-size: 12px;
+  color: red;
+  margin-top: -17px;
 }
-.member-kukde-light{
-    font-family: 'Kukde-aLt';
-    line-height: 5vw;
-    font-size: 1.8vw;
-    font-weight: 200;
+.member-kukde-light {
+  font-family: "Kukde-aLt";
+  line-height: 5vw;
+  font-size: 1.8vw;
+  font-weight: 200;
 }
-.kukde-bold{
-    font-family: 'Kukde-bBd';
+.kukde-bold {
+  font-family: "Kukde-bBd";
+}
+.kekde-light {
+  font-family: "Kukde-aLt";
+  font-size: 1.8vw;
+  font-weight: 200;
 }

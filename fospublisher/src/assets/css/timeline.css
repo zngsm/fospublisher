@@ -18,7 +18,7 @@
 .timeline-body {
   width: 1372px;
   margin: auto;
-  margin-top: 40px;
+  /* margin-top: 40px; */
   position: relative;
 }
 .timeline {
@@ -67,7 +67,7 @@
   color: white;
 }
 .timeline-img-start-ing {
-  margin-top: 124px;
+  margin-top: 84px;
 }
 .timeline-img-start-tunnel {
   margin-top: 80px;

@@ -97,8 +97,8 @@
         has3d =
           "WebKitCSSMatrix" in window ||
           "MozPerspective" in document.body.style;
-        hasRot = rotationAvailable();
-        vendor = getPrefix();
+        hasRot = rotationAvailable(); //navigator.userAgent 안에 /AppleWebkit\/([0-9\.]+)/i 가 담긴 문자열을 찾아서 array로 return하여 parts에 담기
+        vendor = getPrefix(); //웹브라우저 버전에 상관없이 실험적 css기능이 돌아가도록 해줌
 
         var i,
           that = this,
@@ -210,9 +210,9 @@
         if (data.destroying) return false;
 
         // Read the page number from the className of `element` - format: p[0-9]+
-
+        // p[0-9]+가 포함된 것중 클래스이름이 그것인 element라면 (클래스 이름이 p[0-9]+ 인 element라면),
         if ((currentPage = /\bp([0-9]+)\b/.exec($(element).attr("class"))))
-          page = parseInt(currentPage[1], 10);
+          page = parseInt(currentPage[1], 10); // currentPage[1]을 10진법으로 표현
 
         if (page) {
           if (page == lastPage) incPages = true;
@@ -1569,7 +1569,7 @@
         else if (
           (data.display == "single" && page == view[0] + 1) ||
           (data.display == "double" && page == view[0] - 2) ||
-            page == view[1] + 2
+          page == view[1] + 2
         )
           loc = 2;
 

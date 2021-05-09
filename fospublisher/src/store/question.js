@@ -8,8 +8,5 @@ export default {
     setQuestion(state, question) {
       state.todayQuestion = question;
     },
-    setQuestionId(state, id) {
-      state.todayQuestionId = id;
-    },
   },
 };

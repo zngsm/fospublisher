@@ -52,7 +52,7 @@ export default {
     sendTimeline() {
       this.$router.push({
         name: "ReadPast",
-        params: { timeline: this.timeline },
+        params: { id: this.timeline.id },
       });
     },
   },

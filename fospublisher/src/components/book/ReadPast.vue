@@ -1,12 +1,26 @@
 <template>
   <div>
     <div class="bar">
-      <button>목차</button>
-      <button @click="modifyChapter">수정하기</button>
-      <button @click="deleteModal">삭제하기</button>
+      <button>
+        <v-icon large color="black">mdi-format-list-bulleted</v-icon>
+        <p>목차</p>
+      </button>
+      <button @click="modifyChapter">
+        <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
+        <p>수정하기</p>
+      </button>
+      <button @click="deleteModal">
+        <v-icon large color="black">mdi-delete-forever-outline</v-icon>
+        <p>삭제하기</p>
+      </button>
     </div>
     <!-- 책클릭 -> 읽기모드 -->
-    <div v-if="bookInfo.content[0].title !== ''" id="flipbook">
+    <div
+      v-if="
+        this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
+      "
+      id="flipbook"
+    >
       <div class="hard">
         {{ bookInfo.cover.title }}
       </div>
@@ -19,6 +33,7 @@
       </div>
       <!-- computed에서 v-for작업, html에는 v-if만 -->
       <div v-for="(item, idx) in bookInfo.content" :key="idx">
+        <h2>{{ item.id }}</h2>
         <h1>{{ item.title }}</h1>
         <p>{{ item.content }}</p>
         <div class="hard"></div>
@@ -35,11 +50,12 @@
         <p>{{ timechapter.content }}</p>
       </div>
     </div>
-    <MessageModal
-      v-if="isDelete"
-      body-content="정말 삭제하시겠습니까?"
-      @submit="deleteChapter"
-    />
+    <v-dialog v-model="dialog" width="25vw">
+      <MessageModal
+        body-content="정말 삭제하시겠습니까?"
+        @submit="deleteChapter"
+      />
+    </v-dialog>
   </div>
 </template>
 
@@ -48,6 +64,7 @@ import { readPastChapter, deletePastChapter } from "@/api/past";
 import WriterInfo from "../member/WriterInfo.vue";
 import SelectMode from "./SelectMode.vue";
 import MessageModal from "../MessageModal.vue";
+// import { mdiFileDocumentEditOutline } from "@mdi/js";
 
 export default {
   name: "ReadPast",
@@ -82,9 +99,6 @@ export default {
         };
       },
     },
-    timeline: {
-      type: Object,
-    },
   },
   data() {
     return {
@@ -102,28 +116,42 @@ export default {
           },
         ],
       },
-      isDelete: false,
+      currentId: 0,
+      dialog: false,
     };
   },
   methods: {
     deleteChapter() {
+      console.log("delete");
+      this.dialog = false;
+      let id = this.currentId;
       deletePastChapter(
-        // id,
-        (res) => {
-          console.log(res), (this.isDelete = false);
+        id,
+        () => {
+          // timeline에서 삭제면 일대기로, 읽기모드에서 삭제면 저자소개로 돌아가기
+          if (this.$route.params.id) {
+            this.$router.push("timeline");
+          } else {
+            this.mainRead();
+          }
         },
         (err) => {
           console.error(err);
+          alert("삭제 실패하였습니다. 다시 시도해주세요");
         }
       );
     },
     modifyChapter() {},
     deleteModal() {
-      this.isDelete = true;
-      // var view = window.$("#flipbook").turn("view");
-      // alert("Current view: " + view);
-      // var currentView = view[0];
-      // 현재 페이지로 해당 챕터의 id 역추적하기
+      this.dialog = !this.dialog;
+      let view = window.$("#flipbook").turn("view");
+      let currentView = view[0];
+      let index = currentView - 4; // 내용이 여러장이면,,
+      if (this.bookInfo.content[0].title !== "") {
+        this.currentId = this.bookInfo.content[index].id;
+      } else {
+        this.currentId = this.$route.params.id;
+      }
     },
     mainRead() {
       if (window.$("#flipbook")) {
@@ -141,7 +169,7 @@ export default {
     },
     async timelineRead() {
       await readPastChapter(
-        this.timeline.id,
+        (this.timechapter.id = this.$route.params.id),
         (res) => {
           this.timechapter = res.data;
           this.mainRead(3);
@@ -164,7 +192,6 @@ export default {
         this.bookInfo.content.length == 0 ||
         this.bookInfo.content[0].title !== ""
       ) {
-        console.log("mainRead");
         this.mainRead();
       } else {
         this.timelineRead();

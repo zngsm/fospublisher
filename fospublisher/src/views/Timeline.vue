@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Navbar />
     <div class="timeline-container">
       <div class="timeline-header d-flex justify-content-between">
         <div class="timeline-header-btn">
@@ -45,10 +46,11 @@ import "../assets/css/timeline.css";
 import { mapState } from "vuex";
 import TimeEditModal from "../components/Timeline/TimeEditModal.vue";
 import TimeBodySection from "../components/Timeline/TimeBodySection.vue";
+import Navbar from "@/components/main/Navbar.vue";
 
 export default {
   name: "Timeline",
-  components: { TimeBody, TimeEditModal, TimeBodySection },
+  components: { TimeBody, TimeEditModal, TimeBodySection, Navbar },
   data() {
     return {
       totalTimelines: null,

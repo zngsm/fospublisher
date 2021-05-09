@@ -1,11 +1,12 @@
 <template>
   <div>
-    <v-img
+    <navbar />
+    <!-- <v-img
       contain
       src="../../assets/light/center.png"
       alt="기본조명"
       height="100vh"
-    />
+    /> -->
     <div class="pastBook">
       <PastBook />
     </div>
@@ -14,10 +15,13 @@
 
 <script>
 import PastBook from "@/components/book/PastBook.vue";
+import Navbar from "@/components/main/Navbar.vue";
+import "@/assets/css/main.css";
+import "@/assets/css/font.css";
 // import { mapState } from "vuex";
 export default {
   name: "Main",
-  components: { PastBook },
+  components: { PastBook, Navbar },
   data: () => {
     return {};
   },
@@ -32,10 +36,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.pastBook {
-  position: absolute;
-  top: 27%;
-  left: 32%;
-}
-</style>
+<style></style>

@@ -49,3 +49,15 @@
   font-size: 1.8vw;
   font-weight: 200;
 }
+.main-kukde-light {
+  font-family: "Kukde-aLt";
+  line-height: 3vw;
+  font-size: 23px;
+  font-weight: 200;
+}
+.nav-kukde-light {
+  font-family: "Kukde-aLt";
+  font-size: 20px;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+}

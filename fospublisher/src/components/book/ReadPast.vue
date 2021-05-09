@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div
-      v-if="bookInfo.content.length == 0 || bookInfo.content[0].title !== ''"
-      id="flipbook"
-    >
-      <!-- hard: 표지 앞,뒤 -->
-      <div v-if="bookInfo.cover.title" class="hard">
+    <div class="bar">
+      <button>목차</button>
+      <button @click="modifyChapter">수정하기</button>
+      <button @click="deleteModal">삭제하기</button>
+    </div>
+    <!-- 책클릭 -> 읽기모드 -->
+    <div v-if="bookInfo.content[0].title !== ''" id="flipbook">
+      <div class="hard">
         {{ bookInfo.cover.title }}
       </div>
-      <!-- 저자소개 -->
       <div class="hard">
         <WriterInfo />
       </div>
@@ -16,16 +17,15 @@
       <div>
         <h1>목차</h1>
       </div>
-      <!-- <div v-if="bookInfo"> -->
       <!-- computed에서 v-for작업, html에는 v-if만 -->
-      <!-- <div v-if="bookInfo"> -->
-      <!-- 일단 주석처리
-      <div v-for="(item, idx) in timechapter.content" :key="idx">
+      <div v-for="(item, idx) in bookInfo.content" :key="idx">
         <h1>{{ item.title }}</h1>
-        <p>{{ item.content }}</p>-->
-      <div class="hard"></div>
-      <div class="hard"></div>
+        <p>{{ item.content }}</p>
+        <div class="hard"></div>
+        <div class="hard"></div>
+      </div>
     </div>
+    <!-- 타임라인 -> 읽기모드 -->
     <div v-else id="flipbook">
       <div class="hard"></div>
       <div>
@@ -35,16 +35,23 @@
         <p>{{ timechapter.content }}</p>
       </div>
     </div>
+    <MessageModal
+      v-if="isDelete"
+      body-content="정말 삭제하시겠습니까?"
+      @submit="deleteChapter"
+    />
   </div>
 </template>
 
 <script>
-import { readPastChapter } from "@/api/past";
+import { readPastChapter, deletePastChapter } from "@/api/past";
 import WriterInfo from "../member/WriterInfo.vue";
 import SelectMode from "./SelectMode.vue";
+import MessageModal from "../MessageModal.vue";
+
 export default {
   name: "ReadPast",
-  components: { WriterInfo, SelectMode },
+  components: { WriterInfo, SelectMode, MessageModal },
   props: {
     bookInfo: {
       type: Object,
@@ -95,17 +102,38 @@ export default {
           },
         ],
       },
+      isDelete: false,
     };
   },
   methods: {
+    deleteChapter() {
+      deletePastChapter(
+        // id,
+        (res) => {
+          console.log(res), (this.isDelete = false);
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    modifyChapter() {},
+    deleteModal() {
+      this.isDelete = true;
+      // var view = window.$("#flipbook").turn("view");
+      // alert("Current view: " + view);
+      // var currentView = view[0];
+      // 현재 페이지로 해당 챕터의 id 역추적하기
+    },
     mainRead() {
       if (window.$("#flipbook")) {
         window.$("#flipbook").turn({
           width: 1200,
           height: 900,
           page: 3,
-          // acceleration: true,
+          // acceleration: true, touch device용
           gradients: true,
+          autoCenter: true,
         });
       } else {
         this.mainRead(1);
@@ -115,7 +143,6 @@ export default {
       await readPastChapter(
         this.timeline.id,
         (res) => {
-          // let page = res.data.page;
           this.timechapter = res.data;
           this.mainRead(3);
         },
@@ -140,8 +167,6 @@ export default {
         console.log("mainRead");
         this.mainRead();
       } else {
-        // 타임라인->책읽기
-        console.log("timelineRead");
         this.timelineRead();
       }
     },

@@ -17,7 +17,7 @@
       </div>
       <div class="timeline-preview-button">
         <v-btn @click="sendTimeline">전문읽기</v-btn>
-        <v-btn>수정</v-btn>
+        <v-btn @click="goToEdit">수정</v-btn>
       </div>
     </div>
     <div class="timeline-title-bottom" @mouseover="closePreview"></div>
@@ -37,6 +37,12 @@ export default {
   props: { timeline: Object },
   mounted() {},
   methods: {
+    goToEdit() {
+      this.$router.push({
+        name: "CreatePast",
+        params: { id: this.timeline.id },
+      });
+    },
     openPreview() {
       this.preview = true;
     },

@@ -33,9 +33,8 @@
       </div>
       <!-- computed에서 v-for작업, html에는 v-if만 -->
       <div v-for="(item, idx) in bookInfo.content" :key="idx">
-        <h2>{{ item.id }}</h2>
         <h1>{{ item.title }}</h1>
-        <p>{{ item.content }}</p>
+        <p v-html="item.content"></p>
         <div class="hard"></div>
         <div class="hard"></div>
       </div>
@@ -46,10 +45,19 @@
       <div>
         <h1>{{ timechapter.title }}</h1>
       </div>
+      <div v-for="(item, idx) in temp" :key="idx">
+        <p v-html="item"></p>
+      </div>
+      <div class="hard"></div>
+      <!-- <div>
+        <h1>{{ timechapter.title }}</h1>
+      </div>
       <div>
         <p>{{ timechapter.content }}</p>
-      </div>
+        <p v-html="timechapter.content"></p>
+      </div> -->
     </div>
+    <p>{{ temp }}</p>
     <v-dialog v-model="dialog" width="25vw">
       <MessageModal
         body-content="정말 삭제하시겠습니까?"
@@ -118,6 +126,7 @@ export default {
       },
       currentId: 0,
       dialog: false,
+      temp: ["", "", "", "", ""],
     };
   },
   methods: {
@@ -163,6 +172,8 @@ export default {
           gradients: true,
           autoCenter: true,
         });
+        console.log("bookInfo.content");
+        console.log(this.bookInfo.content);
       } else {
         this.mainRead(1);
       }
@@ -172,6 +183,23 @@ export default {
         (this.timechapter.id = this.$route.params.id),
         (res) => {
           this.timechapter = res.data;
+          // content에서 pagebreak 제거
+          let timeChapterInfo = res.data.content;
+          this.temp = timeChapterInfo.split(
+            '<div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">'
+          );
+          for (let i = 0; i < this.temp.length; i++) {
+            if (i % 2 === 1) {
+              // let erasePage = this.temp[i].replace(/PAGE([0-9]</div></div>)/g,"")
+              console.log("홀수");
+              console.log(this.temp[i]);
+              let erasePage = this.temp[i].replace(
+                '<div style="-webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%); position: absolute; background-color: white; border: 1px solid black; border-radius: 3px; top: 50%; left: 50%; padding: 2px 10px; justify-content: center;"> PAGE 1 </div>',
+                ""
+              );
+              this.temp[i] = erasePage;
+            }
+          }
           this.mainRead(3);
         },
         (err) => {
@@ -192,8 +220,10 @@ export default {
         this.bookInfo.content.length == 0 ||
         this.bookInfo.content[0].title !== ""
       ) {
+        console.log("mainRead");
         this.mainRead();
       } else {
+        console.log("timelineRead");
         this.timelineRead();
       }
     },

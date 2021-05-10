@@ -15,4 +15,6 @@ router.get("/", verifyToken, ctrl.get_futures_read);
 
 router.put("/", verifyToken, ctrl.put_futures_read);
 
+router.post("/check", verifyToken, ctrl.check_futures);
+
 module.exports = router;

@@ -117,3 +117,13 @@ exports.get_question = (req, res) => {
   };
   res.send(context);
 };
+
+exports.get_selected_question = (req, res) => {
+  const questionId = req.params.id;
+  let question = questions.question();
+  let context = {
+    question: question[questionId],
+    id: questionId,
+  };
+  res.send(context);
+};

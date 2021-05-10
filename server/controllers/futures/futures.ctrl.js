@@ -254,3 +254,25 @@ exports.put_futures_read = (req, res) => {
     res.status(201).json({ success: "수정되었습니다." });
   });
 };
+
+exports.check_futures = async (req, res) => {
+  let year = req.body.year;
+  let month = req.body.month;
+  let day = req.body.day;
+  let book = await models.BookFutures.findOne({
+    where: { UserId: res.locals.userId },
+  });
+  console.log(book);
+  models.ChapterFutures.findAll({
+    where: { BookFutureId: book.id, year: year, month: month, day: day },
+  }).then((result) => {
+    let context = [];
+    result.forEach((chapter) => {
+      let cont = {};
+      cont["id"] = chapter.id;
+      cont["title"] = chapter.title;
+      context.push(cont);
+    });
+    res.status(200).json({ count: context.length, data: context });
+  });
+};

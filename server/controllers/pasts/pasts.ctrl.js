@@ -1,7 +1,7 @@
 const models = require("../../models");
 
 exports.post_pasts_write = async (req, res) => {
-  res.set({ "Access-Control-Allow-Credentials": true });
+  // res.set({ "Access-Control-Allow-Credentials": true });
   let body = await req.body;
   let cutter = 'class="html2pdf__page-break-after"';
   let chapterPage = body.content.split(cutter).length;
@@ -46,14 +46,13 @@ exports.post_pasts_write = async (req, res) => {
   models.ChapterPasts.create(body)
     .then((result) => {
       if (!check) {
-        res
-          .status(201)
-          .json({
-            id: result["dataValues"]["id"],
-            update: result["dataValues"]["updatedAt"],
-          });
+        res.status(201).json({
+          id: result["dataValues"]["id"],
+          update: result["dataValues"]["updatedAt"],
+        });
+      } else {
+        res.status(201).json({ id: result["dataValues"]["id"] });
       }
-      res.status(201).json({ id: result["dataValues"]["id"] });
     })
     .catch(() => {
       res.status(400).json({ error: "잘못된 요청입니다." });
@@ -109,12 +108,7 @@ exports.put_pasts_edit = async (req, res) => {
     res.status(400).json({ error: "연도를 입력해주세요" });
     return;
   }
-  let checkStatus = body.check;
-  let check = false;
-  if (checkStatus === "true") {
-    check = true;
-  }
-  body.check = check;
+  let check = body.check;
   if (check) {
     if (!body.title) {
       res.status(400).json({ error: "제목을 입력해주세요" });
@@ -144,11 +138,11 @@ exports.put_pasts_edit = async (req, res) => {
   models.ChapterPasts.update(body, {
     where: { id: chapterId },
   })
-    .then((result) => {
+    .then(() => {
       if (check) {
         res.status(201).json({ success: "저장되었습니다." });
       } else {
-        let updated = data.updatedAt;
+        let updated = new Date();
         res
           .status(202)
           .json({ success: "자동 저장되었습니다.", update: updated });

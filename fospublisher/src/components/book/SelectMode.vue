@@ -18,7 +18,7 @@
       /><span>읽기</span>
     </button>
     <br />
-    <button>
+    <button @click="$router.push('Design')">
       <img
         class="iconImg"
         src="@/assets/past/design.png"

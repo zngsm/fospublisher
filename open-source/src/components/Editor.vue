@@ -1,88 +1,172 @@
 <template>
   <body :style="styleObject.editorWidth" class="editorWidth">
     <div class=".toolBar">
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('bold')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('bold')"
+      >
         <i class="fas fa-bold"></i>
         <span :style="styleObject.tooltip" class="tooltip">굵게</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('italic')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('italic')"
+      >
         <i class="fas fa-italic"></i>
         <span :style="styleObject.tooltip" class="tooltip">기울임꼴</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('underline')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('underline')"
+      >
         <i class="fas fa-underline"></i>
         <span :style="styleObject.tooltip" class="tooltip">밑줄</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('strikethrough')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('strikethrough')"
+      >
         <i class="fas fa-strikethrough"></i>
         <span :style="styleObject.tooltip" class="tooltip">취소선</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('justifyLeft')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('justifyLeft')"
+      >
         <i class="fas fa-align-left"></i>
         <span :style="styleObject.tooltip" class="tooltip">왼쪽 정렬</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('justifyCenter')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('justifyCenter')"
+      >
         <i class="fas fa-align-center"></i>
         <span :style="styleObject.tooltip" class="tooltip">가운데 정렬</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('justifyRight')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('justifyRight')"
+      >
         <i class="fas fa-align-right"></i>
         <span :style="styleObject.tooltip" class="tooltip">오른쪽 정렬</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('justifyFull')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('justifyFull')"
+      >
         <i class="fas fa-align-justify"></i>
         <span :style="styleObject.tooltip" class="tooltip">양쪽 맞춤</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('cut')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('cut')"
+      >
         <i class="fas fa-cut"></i>
         <span :style="styleObject.tooltip" class="tooltip">잘라내기</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('copy')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('copy')"
+      >
         <i class="fas fa-copy"></i>
         <span :style="styleObject.tooltip" class="tooltip">복사하기</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('indent')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('indent')"
+      >
         <i class="fas fa-indent"></i>
         <span :style="styleObject.tooltip" class="tooltip">들여쓰기</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('outdent')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('outdent')"
+      >
         <i class="fas fa-outdent"></i>
         <span :style="styleObject.tooltip" class="tooltip">내어쓰기</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('subscript')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('subscript')"
+      >
         <i class="fas fa-subscript"></i>
         <span :style="styleObject.tooltip" class="tooltip">아래 첨자</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('superscript')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('superscript')"
+      >
         <i class="fas fa-superscript"></i>
         <span :style="styleObject.tooltip" class="tooltip">위 첨자</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('undo')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('undo')"
+      >
         <i class="fas fa-undo"></i>
         <span :style="styleObject.tooltip" class="tooltip">취소</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('redo')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('redo')"
+      >
         <i class="fas fa-redo"></i>
         <span :style="styleObject.tooltip" class="tooltip">다시 실행</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('insertUnorderedList')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('insertUnorderedList')"
+      >
         <i class="fas fa-list-ul"></i>
         <span :style="styleObject.tooltip" class="tooltip">글머리 기호</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('insertOrderedList')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('insertOrderedList')"
+      >
         <i class="fas fa-list-ol"></i>
         <span :style="styleObject.tooltip" class="tooltip">번호 매기기</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('insertParagraph')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('insertParagraph')"
+      >
         <i class="fas fa-paragraph"></i>
         <span :style="styleObject.tooltip" class="tooltip">줄바꿈</span>
       </button>
-      <button :style="styleObject.toolButton" class="toolButton" @click="execCmd('insertHorizontalRule')">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="execCmd('insertHorizontalRule')"
+      >
         HR
         <span :style="styleObject.tooltip" class="tooltip">가로선</span>
       </button>
 
-      <button :style="styleObject.toolButton" class="toolButton" @click="toggleLinkModal">
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
+        @click="toggleLinkModal"
+      >
         <i class="fas fa-link"></i>
         <span :style="styleObject.tooltip" class="tooltip">링크</span>
       </button>
@@ -90,12 +174,27 @@
       <div id="linkModal" class="modal">
         <div :style="styleObject.modalContent" class="modal-content">
           <h2 style="margin-top: 0">Link</h2>
-          <input :style="styleObject.modalTextInput" v-model="pageLink" class="modalTextInput" type="text" />
-          <button :style="styleObject.modalButton" class="modalButton" @click="toggleLinkModal">OKAY</button>
+          <input
+            :style="styleObject.modalTextInput"
+            v-model="pageLink"
+            class="modalTextInput"
+            type="text"
+          />
+          <button
+            :style="styleObject.modalButton"
+            class="modalButton"
+            @click="toggleLinkModal"
+          >
+            OKAY
+          </button>
         </div>
       </div>
 
-      <button :style="styleObject.toolButton" id="emoji-trigger" class="toolButton">
+      <button
+        :style="styleObject.toolButton"
+        id="emoji-trigger"
+        class="toolButton"
+      >
         😀
         <span :style="styleObject.tooltip" class="tooltip">이모티콘</span>
       </button>
@@ -152,7 +251,9 @@
           </div>
         </div>
       </div>
-      <div :style="styleObject.colorPickerButton" class="colorPickerButton">FONT COLOR</div>
+      <div :style="styleObject.colorPickerButton" class="colorPickerButton">
+        FONT COLOR
+      </div>
       <button :style="styleObject.toolButtonText" class="toolButtonText">
         <input
           class="colorPicker"
@@ -161,7 +262,9 @@
         />
         <span :style="styleObject.tooltip" class="tooltip">글씨 색</span>
       </button>
-      <div :style="styleObject.colorPickerButton" class="colorPickerButton">BACKGROUND COLOR</div>
+      <div :style="styleObject.colorPickerButton" class="colorPickerButton">
+        BACKGROUND COLOR
+      </div>
       <button :style="styleObject.toolButtonText" class="toolButtonText">
         <input
           class="colorPicker"
@@ -171,7 +274,11 @@
         <span :style="styleObject.tooltip" class="tooltip">글꼴 배경색</span>
       </button>
 
-      <button :style="styleObject.toolButtonText" class="toolButtonText" @click="toggleImageModal">
+      <button
+        :style="styleObject.toolButtonText"
+        class="toolButtonText"
+        @click="toggleImageModal"
+      >
         <i class="fas fa-file-image"></i> IMAGE
         <span :style="styleObject.tooltip" class="tooltip">이미지 삽입</span>
       </button>
@@ -187,16 +294,35 @@
             accept="image/png, image/jpeg"
           />
           <div style="font-size: 15px; padding-bottom: 5px">Image link</div>
-          <input :style="styleObject.modalTextInput" v-model="imageLink" class="modalTextInput" type="text" />
-          <button :style="styleObject.modalButton" class="modalButton" @click="toggleImageModal">OKAY</button>
+          <input
+            :style="styleObject.modalTextInput"
+            v-model="imageLink"
+            class="modalTextInput"
+            type="text"
+          />
+          <button
+            :style="styleObject.modalButton"
+            class="modalButton"
+            @click="toggleImageModal"
+          >
+            OKAY
+          </button>
         </div>
       </div>
 
-      <button :style="styleObject.toolButtonText" class="toolButtonText" @click="execCmd('selectAll')">
+      <button
+        :style="styleObject.toolButtonText"
+        class="toolButtonText"
+        @click="execCmd('selectAll')"
+      >
         SELECT ALL
         <span :style="styleObject.tooltip" class="tooltip">전부 선택</span>
       </button>
-      <button :style="styleObject.toolButtonText" class="toolButtonText" @click="exportToPDF()">
+      <button
+        :style="styleObject.toolButtonText"
+        class="toolButtonText"
+        @click="exportToPDF()"
+      >
         <i class="fas fa-file-pdf"></i> PDF
         <span :style="styleObject.tooltip" class="tooltip">PDF 추출</span>
       </button>
@@ -239,13 +365,11 @@ export default {
   },
   methods: {
     test() {
-      console.log('dd')
+      console.log("dd");
     },
-    // JH
     // 명령 삽입 후 자동으로 다음 커서로 이동
     setFocus() {
-      const iFrame = document.getElementsByName("richTextField");
-      $(iFrame).contents().find("body").focus();
+      $('iframe[name="richTextField"]').contents().find("body").focus();
     },
     toggleImageModal() {
       const modal = document.getElementById("imageModal");
@@ -309,6 +433,7 @@ export default {
     // 이미지 삽입 후 드래그 및 리사이즈 기능 추가 함수
     imageDragResize() {
       const vm = this;
+
       $('iframe[name="richTextField"]')
         .contents()
         .find(`#${vm.imageNum}`)
@@ -333,15 +458,24 @@ export default {
           containment: window.richTextField.document.getElementsByTagName(
             "body"
           ),
-          axis: "x",
+          scroll: true,
+          scrollSensitivity: 100,
+          scrollSpeed: 100,
+          // x축 y축 둘 다 가능(axis 속성 제외)
+          // axis: "x",
         });
 
       // 리사이즈 기능을 위한 스타일링 적용(ifram 내부 객체는 style 태그 안에서 css직접적으로 수정 불가)
       // 리사이즈 핸들러 css
+      // 에디터 width
+
       $('iframe[name="richTextField"]')
         .contents()
         .find(`#${vm.imageNum}`)
-        .resizable({ aspectRatio: true, minWidth: 300 });
+        .resizable({
+          aspectRatio: true,
+          minWidth: 50,
+        });
       $('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
@@ -391,7 +525,7 @@ export default {
         .find(`#${vm.imageNum}`)
         .mouseenter(function (event) {
           event.target.style.cursor = "pointer";
-          event.target.style.border = "solid white 1px";
+          event.target.style.border = "solid grey 1px";
           event.target.style.boxSizing = "border-box";
         });
       $('iframe[name="richTextField"]')
@@ -421,26 +555,34 @@ export default {
     insertImage() {
       const imageFile = document.getElementById("ImageFile").files[0];
       // 로컬에서 이미지를 직접 올리는 경우
+      this.setFocus();
       if (imageFile) {
-        var file = imageFile;
-        var reader = new FileReader();
-        var image = new Image();
-        var vm = this;
+        const vm = this;
+        const file = imageFile;
+        const reader = new FileReader();
+        const image = new Image();
+        reader.readAsDataURL(file);
         reader.onloadend = function () {
           image.src = reader.result;
-          window.richTextField.document
-            .getElementsByTagName("body")[0]
-            .appendChild(image);
-          image.style.maxWidth = "100%";
-          // 이미지마다 개별 id를 부여함으로써 imageDragResize 함수에서 이미 기능이 적용된 이미지에는 추가로 작동하지 않도록 조정
-          image.setAttribute("id", vm.imageNum);
-          image.onload = function () {
-            // 이미지가 로드되고 아래 함수가 실행되도록 onload 명령어 사용
-            vm.imageDragResize();
-          };
         };
-        reader.readAsDataURL(file);
-        document.getElementById("ImageFile").value = "";
+        setTimeout(() => {
+          this.execCommandWithArg("insertImage", image.src);
+        }, 100);
+        setTimeout(() => {
+          const imgTags = $('iframe[name="richTextField"]')
+            .contents()
+            .find("img");
+          imgTags.each(function (index, imgTag) {
+            if (imgTag.id == "") {
+              imgTag.setAttribute("id", vm.imageNum);
+              imgTag.style.maxWidth = "100%";
+              imgTag.onload = function () {
+                vm.imageDragResize();
+              };
+              document.getElementById("ImageFile").value = "";
+            }
+          });
+        }, 100);
 
         // 이미지 링크로 올리는 경우
       } else if (this.imageLink != "") {
@@ -471,6 +613,9 @@ export default {
       // 인자가 필요한 명령어인 경우
       // ex. 이미지 삽입시 링크
       window.richTextField.document.execCommand(command, false, arg);
+      setTimeout(() => {
+        this.setFocus();
+      }, 10);
     },
 
     async exportToPDF() {
@@ -492,7 +637,12 @@ export default {
             // dpi: 192,
             // letterRendering: false,
           },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait", precision: 30 },
+          jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait",
+            precision: 30,
+          },
         }
       );
 
@@ -520,9 +670,6 @@ export default {
     const trigger = document.querySelector("#emoji-trigger");
     picker.on("emoji", (selection) => {
       this.execCommandWithArg("insertHTML", selection.emoji);
-      // setTimeout(() => {
-      //   this.setFocus();
-      // }, 200);
     });
 
     trigger.addEventListener("click", () => picker.togglePicker(trigger));
@@ -570,13 +717,18 @@ export default {
       }
     };
 
-    $('iframe[name="richTextField"]').contents().on('DOMSubtreeModified propertychange', function() {
-      const content = window.richTextField.document.getElementsByTagName("body")[0].outerHTML.substring(51).slice(0,-7)
-      vm.$emit("updateContent", content)
-    });
+    $('iframe[name="richTextField"]')
+      .contents()
+      .on("DOMSubtreeModified propertychange", function () {
+        const content = window.richTextField.document
+          .getElementsByTagName("body")[0]
+          .outerHTML.substring(51)
+          .slice(0, -7);
+        vm.$emit("updateContent", content);
+      });
   },
   created() {
-    console.log(this.styleObject)
+    console.log(this.styleObject);
   },
 };
 </script>

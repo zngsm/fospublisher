@@ -10,6 +10,7 @@ import CheckPassword from "../views/member/CheckPassword.vue";
 import Main from "../views/past/Main.vue";
 import CreatePast from "../views/past/CreatePast.vue";
 import ReadPast from "../components/book/ReadPast.vue";
+import Design from "../components/book/Design.vue";
 
 Vue.use(VueRouter);
 
@@ -153,6 +154,19 @@ const routes = [
     path: "/create",
     name: "CreatePast",
     component: CreatePast,
+    props: true,
+    // beforeEnter(to, from, next) {
+    //   if (localStorage.getItem("userId")) {
+    //     next();
+    //   } else {
+    //     next({ name: "Login" });
+    //   }
+    // },
+  },
+  {
+    path: "/design",
+    name: "Design",
+    component: Design,
     props: true,
     // beforeEnter(to, from, next) {
     //   if (localStorage.getItem("userId")) {

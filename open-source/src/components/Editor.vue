@@ -132,6 +132,14 @@
       <button
         :style="styleObject.toolButton"
         class="toolButton"
+        @click="execCmd('removeFormat')"
+      >
+        <i class="fas fa-remove-format"></i>
+        <span :style="styleObject.tooltip" class="tooltip">초기화</span>
+      </button>
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
         @click="execCmd('insertUnorderedList')"
       >
         <i class="fas fa-list-ul"></i>
@@ -315,6 +323,7 @@
         class="toolButtonText"
         @click="execCmd('selectAll')"
       >
+        <i class="fas fa-check"></i>
         SELECT ALL
         <span :style="styleObject.tooltip" class="tooltip">전부 선택</span>
       </button>
@@ -462,9 +471,6 @@ export default {
           containment: window.richTextField.document.getElementsByTagName(
             "body"
           ),
-          scroll: true,
-          scrollSensitivity: 100,
-          scrollSpeed: 100,
           // x축 y축 둘 다 가능(axis 속성 제외)
           // axis: "x",
         });

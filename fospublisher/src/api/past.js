@@ -8,6 +8,13 @@ function getQuestion(id, success, fail) {
     .catch(fail);
 }
 
+function getSelectedQuesion(id, success, fail) {
+  authInstance
+    .get(`api/question/${id}`, {})
+    .then(success)
+    .catch(fail);
+}
+
 // 챕터 CRUD
 function createPastChapter(data, success, fail) {
   authInstance
@@ -54,6 +61,7 @@ function updatePastBook(data, success, fail) {
 
 export {
   getQuestion,
+  getSelectedQuesion,
   createPastChapter,
   readPastChapter,
   updatePastChapter,

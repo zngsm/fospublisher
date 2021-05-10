@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import "@/assets/css/root.css";
 import { checkToken } from "@/api/account";
 
 export default {

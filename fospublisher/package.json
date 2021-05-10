@@ -19,7 +19,7 @@
     "axios": "0.21.1",
     "core-js": "^3.6.5",
     "dragula": "^3.7.3",
-    "fospublisher-vue-text-editor": "^1.0.2",
+    "fospublisher-vue-text-editor": "^1.0.12",
     "jquery": "^3.6.0",
     "jquery-ui-bundle": "^1.12.1-migrate",
     "material-design-icons-iconfont": "6.1.0",

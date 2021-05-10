@@ -1,7 +1,8 @@
 {
   "name": "fospublisher-vue-text-editor",
-  "version": "1.0.3",
+  "version": "1.0.12",
   "description": "",
+  "license": "MIT",
   "main": "dist/fospublisher-vue-text-editor.ssr.js",
   "browser": "dist/fospublisher-vue-text-editor.esm.js",
   "module": "dist/fospublisher-vue-text-editor.esm.js",
@@ -19,10 +20,10 @@
     "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife"
   },
   "dependencies": {
+    "rollup-plugin-scss": "^2.6.1",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.12.1",
-    "jquery-ui-bundle": "^1.12.1-migrate",
-    "rollup-plugin-scss": "^2.6.1"
+    "jquery-ui-bundle": "^1.12.1-migrate"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

@@ -259,28 +259,28 @@
           </div>
         </div>
       </div>
-      <div :style="styleObject.colorPickerButton" class="colorPickerButton">
-        FONT COLOR
+      <div style="display: inline-block;">
+        <div :style="styleObject.colorPickerButton" class="colorPickerButton">FONT COLOR</div>
+        <button :style="styleObject.toolButtonText" class="toolButtonText">
+          <input
+            class="colorPicker"
+            type="color"
+            @change="execCommandWithArg('foreColor', $event.target.value)"
+          />
+          <span :style="styleObject.tooltip" class="tooltip">글씨 색</span>
+        </button>
       </div>
-      <button :style="styleObject.toolButtonText" class="toolButtonText">
-        <input
-          class="colorPicker"
-          type="color"
-          @change="execCommandWithArg('foreColor', $event.target.value)"
-        />
-        <span :style="styleObject.tooltip" class="tooltip">글씨 색</span>
-      </button>
-      <div :style="styleObject.colorPickerButton" class="colorPickerButton">
-        BACKGROUND COLOR
+      <div style="display: inline-block;">
+        <div :style="styleObject.colorPickerButton" class="colorPickerButton">BACKGROUND COLOR</div>
+        <button :style="styleObject.toolButtonText" class="toolButtonText">
+          <input
+            class="colorPicker"
+            type="color"
+            @change="execCommandWithArg('hiliteColor', $event.target.value)"
+          />
+          <span :style="styleObject.tooltip" class="tooltip">글꼴 배경색</span>
+        </button>
       </div>
-      <button :style="styleObject.toolButtonText" class="toolButtonText">
-        <input
-          class="colorPicker"
-          type="color"
-          @change="execCommandWithArg('hiliteColor', $event.target.value)"
-        />
-        <span :style="styleObject.tooltip" class="tooltip">글꼴 배경색</span>
-      </button>
 
       <button
         :style="styleObject.toolButtonText"
@@ -349,15 +349,17 @@
 <script>
 import { EmojiButton } from "@joeattardi/emoji-button";
 import html2pdf from "html2pdf.js";
-import $ from "jquery";
+import jquery from "jquery";
 import "@fortawesome/fontawesome-free/js/all.js";
 
+require( "jquery-ui/ui/widgets/draggable" );
 require("jquery");
 require("jquery-ui-bundle");
 
 export default {
   props: {
     styleObject: Object,
+    content: String,
   },
   data() {
     return {
@@ -373,12 +375,11 @@ export default {
     };
   },
   methods: {
-    test() {
-      console.log("dd");
-    },
+    // JH
     // 명령 삽입 후 자동으로 다음 커서로 이동
     setFocus() {
-      $('iframe[name="richTextField"]').contents().find("body").focus();
+      const iFrame = document.getElementsByName("richTextField");
+      jquery(iFrame).contents().find("body").focus();
     },
     toggleImageModal() {
       const modal = document.getElementById("imageModal");
@@ -408,7 +409,7 @@ export default {
     },
     pageBreak() {
       // 에디터 안에 들어있는 태그 모두 가져오기
-      const childNodes = $('iframe[name="richTextField"]')
+      const childNodes = jquery('iframe[name="richTextField"]')
         .contents()
         .find("body")[0].childNodes;
       const vm = this;
@@ -418,7 +419,7 @@ export default {
         if (childNode.offsetTop > vm.pagination * 500) {
           // class="html2pdf__page-break" <-- htmlpdf 모듈에서 페이지 분절 기능을 담당하는 class
           // 500px마다 해당 class를 담은 div를 삽입한다
-          $(`<br>
+          jquery(`<br>
             <div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">
               <div style="-webkit-transform: translate(-50%,-50%); 
                 transform: translate(-50%,-50%);
@@ -442,29 +443,24 @@ export default {
     // 이미지 삽입 후 드래그 및 리사이즈 기능 추가 함수
     imageDragResize() {
       const vm = this;
-      const bodyWidth = $('iframe[name="richTextField"]')
-        .contents()
-        .find("body")
-        .innerWidth();
-
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#${vm.imageNum}`)
         .wrap(
           `<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`
         );
       // 이미지 위 아래로 빈 칸 추가
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum}`)
         .after("<br>");
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum}`)
         .before("<br>");
 
       // x축 방향으로만 이미지 드래그 가능, richtextField 내에서만 움직일 수 있음
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum}`)
         .draggable({
@@ -477,16 +473,11 @@ export default {
 
       // 리사이즈 기능을 위한 스타일링 적용(ifram 내부 객체는 style 태그 안에서 css직접적으로 수정 불가)
       // 리사이즈 핸들러 css
-
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#${vm.imageNum}`)
-        .resizable({
-          aspectRatio: true,
-          minWidth: 50,
-          maxWidth: bodyWidth,
-        });
-      $('iframe[name="richTextField"]')
+        .resizable({ aspectRatio: true, minWidth: 300 });
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-handle")
@@ -497,7 +488,7 @@ export default {
           "-ms-touch-action": "none",
           "touch-action": "none",
         });
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-e")
@@ -508,7 +499,7 @@ export default {
           top: "0",
           height: "100%",
         });
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-s")
@@ -519,7 +510,7 @@ export default {
           left: "0",
           width: "100%",
         });
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-se")
@@ -530,7 +521,7 @@ export default {
           right: "1px",
           width: "12px",
         });
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#${vm.imageNum}`)
         .mouseenter(function (event) {
@@ -538,7 +529,7 @@ export default {
           event.target.style.border = "solid grey 1px";
           event.target.style.boxSizing = "border-box";
         });
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#${vm.imageNum}`)
         .mouseout(function (event) {
@@ -598,7 +589,7 @@ export default {
       } else if (this.imageLink != "") {
         this.execCommandWithArg("insertImage", this.imageLink);
         const vm = this;
-        const imgTags = $('iframe[name="richTextField"]')
+        const imgTags = jquery('iframe[name="richTextField"]')
           .contents()
           .find("img");
         imgTags.each(function (index, imgTag) {
@@ -629,8 +620,12 @@ export default {
     },
 
     async exportToPDF() {
+      let today = new Date();   
+      let year = today.getFullYear(); 
+      let month = today.getMonth() + 1;  
+      let date = today.getDate(); 
       // 페이지가 캡쳐되기 전에 페이지 분절에 사용된 div를 잠시 숨김 처리
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(".html2pdf__page-break")
         .css("visibility", "hidden");
@@ -639,7 +634,7 @@ export default {
         window.richTextField.document.getElementsByTagName("body")[0],
         {
           margin: 10,
-          filename: "myfile.pdf",
+          filename: `${year}_${month}_${date}.pdf`,
           image: { type: "jpeg", quality: 0.98 },
           html2canvas: {
             scale: 2,
@@ -657,7 +652,7 @@ export default {
       );
 
       // pdf 생성이 완료되면 페이지 분절 표기가 다시 보이도록 설정
-      $('iframe[name="richTextField"]')
+      jquery('iframe[name="richTextField"]')
         .contents()
         .find(".html2pdf__page-break")
         .css("visibility", "visible");
@@ -686,7 +681,7 @@ export default {
 
     // 스크롤 발생 감지해서 pageBreak 함수로 연결
     var vm = this;
-    $('iframe[name="richTextField"]')
+    jquery('iframe[name="richTextField"]')
       .contents()
       .scroll(function () {
         vm.pageBreak();
@@ -727,18 +722,14 @@ export default {
       }
     };
 
-    $('iframe[name="richTextField"]')
-      .contents()
-      .on("DOMSubtreeModified propertychange", function () {
-        const content = window.richTextField.document
-          .getElementsByTagName("body")[0]
-          .outerHTML.substring(51)
-          .slice(0, -7);
-        vm.$emit("updateContent", content);
-      });
-  },
-  created() {
-    console.log(this.styleObject);
+    // 에디터 내용이 변경될때 emit으로 전달
+    jquery('iframe[name="richTextField"]').contents().on('DOMSubtreeModified propertychange', function() {
+      const content = window.richTextField.document.getElementsByTagName("body")[0].outerHTML.substring(51).slice(0,-7)
+      vm.$emit("updateContent", content)
+    });
+
+    // content 불러오는 경우 에디터에 채워넣기
+    window.richTextField.document.getElementsByTagName("body")[0].innerHTML = this.content
   },
 };
 </script>

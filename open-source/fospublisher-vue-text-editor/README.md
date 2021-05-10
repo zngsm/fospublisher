@@ -21,7 +21,7 @@ $ npm i fospublisher-vue-text-editor
 ```vue
 <template>
   <div>
-    <Editor @updateContent="val => content = val" :style-object="styleObject"/>
+    <Editor @updateContent="val => content = val" :content="content" :style-object="styleObject"/>
   </div>
 </template>
 
@@ -76,7 +76,7 @@ export default {
 ```vue
 <template>
   <div>
-    <Editor @updateContent="val => content = val" :style-object="styleObject"/>
+    <Editor @updateContent="val => content = val" :content="content" :style-object="styleObject"/>
   </div>
 </template>
 

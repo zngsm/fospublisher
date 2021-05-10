@@ -41,7 +41,7 @@
         </div>
         <div class="create-editor">
           <Editor
-            @updateContent="(val) => (content = val)"
+            @updateContent="(val) => (form.content = val)"
             :style-object="styleObject"
           />
         </div>
@@ -67,7 +67,7 @@ import {
 import Navbar from "../../components/main/Navbar.vue";
 import { mapState } from "vuex";
 import store from "@/store";
-import Editor from "@fospublisher/vue-text-editor";
+import Editor from "fospublisher-vue-text-editor";
 export default {
   name: "CreatePast",
   components: {
@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       styleObject: {
-        editorWidth: "100px",
+        editorWidth: { width: "100%" },
       },
       id: null,
       questionId: null,
@@ -179,12 +179,12 @@ export default {
     },
     autoCompleted() {
       this.timer = setInterval(() => {
-        if (!window.richTextField.document) {
-          clearInterval(this.timer);
-        }
-        this.form.content = window.richTextField.document.getElementsByTagName(
-          "body"
-        )[0].outerHTML;
+        // if (!window.richTextField.document) {
+        //   clearInterval(this.timer);
+        // }
+        // this.form.content = window.richTextField.document.getElementsByTagName(
+        //   "body"
+        // )[0].outerHTML;
         this.form.check = false;
         if (this.interval) {
           if (!this.chapId) {

@@ -2,7 +2,7 @@
   <div>
     <div :class="{ 'timeline-title': !preview, 'd-none': preview }">
       <p class="timeline-text-hidden" @mouseover="openPreview">
-        {{ timeline.title }}
+        {{ timeline.title ? timeline.title : "제목없음" }}
       </p>
     </div>
     <div
@@ -10,7 +10,7 @@
       @mouseleave="closePreview"
     >
       <div class="timeline-text-hidden text-h6 text-center">
-        {{ timeline.title }}
+        {{ timeline.title ? timeline.title : "제목없음" }}
       </div>
       <div class="timeline-preview-content timeline-text-hidden">
         {{ timeline.content }}

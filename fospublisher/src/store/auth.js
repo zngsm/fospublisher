@@ -4,6 +4,7 @@ export default {
     token: null,
     refreshToken: null,
     userId: null,
+    userInfo: null,
   },
   mutations: {
     setToken(state, token) {
@@ -17,6 +18,9 @@ export default {
     setUserId(state, userId) {
       state.userId = userId;
       localStorage.setItem("userId", state.userId);
+    },
+    setUserInfo(state, info) {
+      state.userInfo = info;
     },
   },
   actions: {},

@@ -2,21 +2,21 @@
   <div class="create-container">
     <Navbar />
     <div class="create-left">
-      <h1 class="create-left-question-title text-center kukde-bold">
-        오늘의 질문
-      </h1>
-      <div class="create-left-question-content kekde-light">
-        {{ todayQuestion }}
+      <div v-if="!edit" class="create-left-section">
+        <h1 class="create-left-question-title text-center">
+          오늘의 질문
+        </h1>
+        <div class="create-left-question-content">
+          {{ todayQuestion }}
+        </div>
+        <button class="create-left-question-button" @click="getTodayQuestion">
+          다른 질문 받기
+        </button>
       </div>
-      <button
-        class="create-left-question-button kekde-light"
-        @click="getTodayQuestion"
-      >
-        다른 질문 받기
-      </button>
+      <div v-else>수정중;;;</div>
     </div>
     <div class="create-right">
-      <form @submit="onSubmit" class="create-right-form">
+      <form class="create-right-form">
         <v-text-field v-model="form.title" label="제목" required></v-text-field>
         <div class="d-flex create-right-year">
           <div class="create-right-year-label">
@@ -43,14 +43,12 @@
           <Editor
             @updateContent="(val) => (form.content = val)"
             :style-object="styleObject"
+            :content="form.content"
           />
-        </div>
-        <div>
-          {{ content }}
         </div>
       </form>
       <div class="create-right-btn">
-        <v-btn large>취소</v-btn>
+        <v-btn large @click="goToBack">취소</v-btn>
         <v-btn large @click="onSubmit">발행</v-btn>
       </div>
     </div>
@@ -60,10 +58,11 @@
 <script>
 import {
   getQuestion,
+  // getSelectedQuesion
   createPastChapter,
-  readPastChapter,
   updatePastChapter,
 } from "@/api/past.js";
+import { checkUserInfo } from "@/api/account";
 import Navbar from "../../components/main/Navbar.vue";
 import { mapState } from "vuex";
 import store from "@/store";
@@ -86,11 +85,17 @@ export default {
     return {
       styleObject: {
         editorWidth: { width: "100%" },
+        toolButton: {
+          backgroundColor: "var(--v-background-base)",
+        },
+        toolButtonText: {
+          backgroundColor: "var(--v-background-base)",
+        },
       },
       id: null,
       questionId: null,
       question: "?",
-      content: null,
+      content: "",
       form: {
         title: "",
         content: "",
@@ -105,42 +110,12 @@ export default {
       auto: null,
       timer: null,
       updateTime: null,
+      exit: false,
     };
   },
   methods: {
-    getData() {
-      if (this.$route.params.id) {
-        this.chapId = this.$route.params.id;
-        readPastChapter(
-          this.chapId,
-          (res) => {
-            this.form.title = res.data.title;
-            this.form.content = res.data.content;
-            this.form.year = res.data.year;
-            this.selected = true;
-            this.edit = true;
-          },
-          (err) => {
-            console.err(err);
-          }
-        );
-      }
-    },
-    getTodayQuestion() {
-      getQuestion(
-        this.todayQuestionId,
-        (res) => {
-          store.commit("question/setQuestion", res.data.question);
-          store.commit("question/setQuestionId", res.data.id);
-        },
-        (err) => console.error(err)
-      );
-    },
     onSubmit(evt) {
       evt.preventDefault();
-      this.form.content = window.richTextField.document.getElementsByTagName(
-        "body"
-      )[0].outerHTML;
       if (!this.form.year) {
         alert("연도를 입력해주세요!");
         return;
@@ -158,18 +133,27 @@ export default {
         createPastChapter(
           this.form,
           (res) => {
-            console.log(res.data.id);
+            this.interval = false;
+            this.$router.push({
+              name: "ReadPast",
+              params: { id: res.data.id },
+            });
           },
           (err) => {
             console.error(err);
           }
         );
       } else {
+        console.log(this.form);
         updatePastChapter(
           this.chapId,
           this.form,
-          (res) => {
-            console.log(res.data.id);
+          () => {
+            this.interval = false;
+            this.$router.push({
+              name: "ReadPast",
+              params: { id: this.chapId },
+            });
           },
           (err) => {
             console.error(err);
@@ -177,22 +161,84 @@ export default {
         );
       }
     },
-    autoCompleted() {
+    goToBack() {
+      this.exit = true;
+      if (!this.chapId) {
+        this.$router.push("Main");
+      } else {
+        this.form.title = sessionStorage.getItem("title");
+        this.form.content = sessionStorage.getItem("content");
+        this.form.year = sessionStorage.getItem("year");
+        updatePastChapter(
+          this.chapId,
+          this.form,
+          () => {
+            sessionStorage.clear();
+            this.$router.push({
+              name: "ReadPast",
+              params: { id: this.chapId },
+            });
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+      }
+    },
+    // 질문 갱신
+    getTodayQuestion() {
+      getQuestion(
+        this.todayQuestionId,
+        (res) => {
+          store.commit("question/setQuestion", res.data.question);
+          store.commit("question/setQuestionId", res.data.id);
+        },
+        (err) => console.error(err)
+      );
+    },
+    // 수정시 기본 데이터 세팅
+    setSessionStorage() {
+      if (this.$route.params.id) {
+        sessionStorage.setItem("chapId", this.$route.params.id);
+      }
+    },
+    async getData() {
+      if (sessionStorage.getItem("chapId")) {
+        this.selected = true;
+        this.edit = true;
+        this.chapId = sessionStorage.getItem("chapId");
+        this.form.title = sessionStorage.getItem("title");
+        this.form.content = sessionStorage.getItem("content");
+        this.form.year = sessionStorage.getItem("year");
+      }
+    },
+    // 년도 선택
+    changeSelect() {
+      this.selected = !this.selected;
+    },
+    calculateYear() {
+      let today = new Date();
+      let year = today.getFullYear();
+      checkUserInfo((res) => {
+        if (res.status === 200) {
+          let userBirth = res.data.user.birthday.split("-")[0];
+          for (year; userBirth <= year; year--) {
+            this.items.push(year);
+          }
+        }
+      });
+    },
+    // 자동저장
+    autoSave() {
       this.timer = setInterval(() => {
-        // if (!window.richTextField.document) {
-        //   clearInterval(this.timer);
-        // }
-        // this.form.content = window.richTextField.document.getElementsByTagName(
-        //   "body"
-        // )[0].outerHTML;
         this.form.check = false;
         if (this.interval) {
           if (!this.chapId) {
-            console.log(this.form);
             createPastChapter(
               this.form,
               (res) => {
                 this.chapId = res.data.id;
+                this.edit = true;
                 this.updateTime = res.data.update;
               },
               (err) => {
@@ -216,42 +262,47 @@ export default {
         }
       }, 30000);
     },
-    // 5초마다 임시저장
     tempStore() {
-      if (this.form.title == "" && this.form.content == "") {
-        setTimeout(() => {
-          this.tempStore();
-        }, 5000);
-      } else if (!this.form.year) {
+      if (
+        !this.form.year ||
+        (this.form.title == "" && this.form.content == "")
+      ) {
         setTimeout(() => {
           this.tempStore();
         }, 5000);
       } else {
         this.interval = true;
-        this.autoCompleted();
+        this.autoSave();
       }
-    },
-    calculateYear() {
-      let today = new Date();
-      let year = today.getFullYear();
-      for (let a = 0; a <= 100; a++) {
-        this.items.push(year - a);
-      }
-    },
-    changeSelect() {
-      this.selected = !this.selected;
     },
   },
   mounted() {
-    // document.getElementsByClassName("editorWidth")[0].style.width = "80px";
-    // this.getTodayQuestion();
     this.calculateYear();
-    this.getData();
     this.tempStore();
   },
+  created() {
+    this.setSessionStorage();
+    this.getData();
+  },
   beforeRouteLeave(to, from, next) {
-    if (window.confirm("정말로 떠나시겠습니까?")) {
-      clearInterval(this.timer);
+    if (!this.form.check) {
+      let message = "";
+      if (this.exit) {
+        message = "작업한 내용이 저장되지 않습니다. 정말 나가시겠습니까?";
+      } else {
+        message =
+          "작업한 내용이 저장되지 않을 수 있습니다. 정말 나가시겠습니까?";
+      }
+      if (window.confirm(message)) {
+        this.interval = false;
+        clearInterval(this.timer);
+        if (sessionStorage.getItem("chapId")) {
+          sessionStorage.clear();
+        }
+        next();
+      }
+    } else {
+      sessionStorage.clear();
       next();
     }
   },
@@ -259,7 +310,15 @@ export default {
     ...mapState({
       todayQuestion: (state) => state.question.todayQuestion,
       todayQuestionId: (state) => state.question.todayQuestionId,
+      userInfo: (state) => state.auth.userInfo,
     }),
+  },
+  watch: {
+    interval: function() {
+      if (this.interval == false) {
+        clearInterval(this.timer);
+      }
+    },
   },
 };
 </script>

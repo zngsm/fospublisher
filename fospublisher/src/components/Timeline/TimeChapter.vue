@@ -12,8 +12,11 @@
       <div class="timeline-text-hidden text-h6 text-center">
         {{ timeline.title ? timeline.title : "제목없음" }}
       </div>
-      <div class="timeline-preview-content timeline-text-hidden">
-        {{ timeline.content }}
+      <div
+        class="timeline-preview-content timeline-text-hidden"
+        v-html="timeline.content"
+      >
+        <!-- {{ timeline.content }} -->
       </div>
       <div class="timeline-preview-button">
         <v-btn @click="sendTimeline">전문읽기</v-btn>
@@ -38,6 +41,10 @@ export default {
   mounted() {},
   methods: {
     goToEdit() {
+      sessionStorage.setItem("chapterId", this.timeline.id);
+      sessionStorage.setItem("title", this.timeline.title);
+      sessionStorage.setItem("content", this.timeline.content);
+      sessionStorage.setItem("year", this.timeline.year);
       this.$router.push({
         name: "CreatePast",
         params: { id: this.timeline.id },

@@ -433,6 +433,10 @@ export default {
     // 이미지 삽입 후 드래그 및 리사이즈 기능 추가 함수
     imageDragResize() {
       const vm = this;
+      const bodyWidth = $('iframe[name="richTextField"]')
+        .contents()
+        .find("body")
+        .innerWidth();
 
       $('iframe[name="richTextField"]')
         .contents()
@@ -467,7 +471,6 @@ export default {
 
       // 리사이즈 기능을 위한 스타일링 적용(ifram 내부 객체는 style 태그 안에서 css직접적으로 수정 불가)
       // 리사이즈 핸들러 css
-      // 에디터 width
 
       $('iframe[name="richTextField"]')
         .contents()
@@ -475,6 +478,7 @@ export default {
         .resizable({
           aspectRatio: true,
           minWidth: 50,
+          maxWidth: bodyWidth,
         });
       $('iframe[name="richTextField"]')
         .contents()
@@ -575,7 +579,7 @@ export default {
           imgTags.each(function (index, imgTag) {
             if (imgTag.id == "") {
               imgTag.setAttribute("id", vm.imageNum);
-              imgTag.style.maxWidth = "100%";
+              imgTag.style.maxWidth = 700;
               imgTag.onload = function () {
                 vm.imageDragResize();
               };
@@ -594,7 +598,7 @@ export default {
         imgTags.each(function (index, imgTag) {
           if (imgTag.id == "") {
             imgTag.setAttribute("id", vm.imageNum);
-            imgTag.style.maxWidth = "100%";
+            imgTag.style.maxWidth = 700;
             imgTag.onload = function () {
               vm.imageDragResize();
             };
@@ -934,6 +938,6 @@ export default {
   border-radius: 3px;
 }
 .editorWidth {
-  width: 1000px;
+  width: 737px;
 }
 </style>

@@ -1,6 +1,6 @@
 {
   "name": "fospublisher-vue-text-editor",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "",
   "license": "MIT",
   "main": "dist/fospublisher-vue-text-editor.ssr.js",

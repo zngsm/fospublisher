@@ -564,7 +564,7 @@ export default {
           this.execCommandWithArg("insertImage", image.src);
         }, 100);
         setTimeout(() => {
-          const imgTags = $('iframe[name="richTextField"]')
+          const imgTags = jquery('iframe[name="richTextField"]')
             .contents()
             .find("img");
           imgTags.each(function (index, imgTag) {

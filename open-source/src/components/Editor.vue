@@ -269,8 +269,6 @@
           />
           <span :style="styleObject.tooltip" class="tooltip">글씨 색</span>
         </button>
-      </div>
-      <div style="display: inline-block;">
         <div :style="styleObject.colorPickerButton" class="colorPickerButton">BACKGROUND COLOR</div>
         <button :style="styleObject.toolButtonText" class="toolButtonText">
           <input
@@ -431,6 +429,7 @@ export default {
                 left: 50%;
                 padding: 2px 10px;
                 justify-content: center;"
+                contenteditable="false" 
               >
                 PAGE ${vm.pagination}
               </div>
@@ -447,7 +446,7 @@ export default {
         .contents()
         .find(`#${vm.imageNum}`)
         .wrap(
-          `<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`
+          `<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block;"></div>`
         );
       // 이미지 위 아래로 빈 칸 추가
       jquery('iframe[name="richTextField"]')
@@ -464,6 +463,7 @@ export default {
         .contents()
         .find(`#draggableHelper${vm.imageNum}`)
         .draggable({
+          connectToSortable: ".ui-wrapper",
           containment: window.richTextField.document.getElementsByTagName(
             "body"
           ),
@@ -570,7 +570,7 @@ export default {
           this.execCommandWithArg("insertImage", image.src);
         }, 100);
         setTimeout(() => {
-          const imgTags = $('iframe[name="richTextField"]')
+          const imgTags = jquery('iframe[name="richTextField"]')
             .contents()
             .find("img");
           imgTags.each(function (index, imgTag) {

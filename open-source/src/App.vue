@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Editor @updateContent="val => content = val" :style-object="styleObject"/>
+    <Editor @updateContent="val => content = val" :content="content" :style-object="styleObject"/>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
   name: 'App',
   data() {
     return {
-      content: '',
+      content: '<div>하하</div>',
       styleObject: {
         editorWidth: {
         },

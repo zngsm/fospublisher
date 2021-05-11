@@ -18,11 +18,17 @@ module.exports = (sequelize, DataTypes) => {
 
   Users.associate = (models) => {
     Users.hasMany(models.BookPasts);
-  };
-
-  Users.associate = (models) => {
     Users.hasMany(models.BookFutures);
+    Users.belongsToMany(models.Users, {
+      through: "Follow",
+      as: "Followers",
+      foreignKey: "followingId",
+    });
+    Users.belongsToMany(models.Users, {
+      through: "Follow",
+      as: "Followings",
+      foreignKey: "followerId",
+    });
   };
-
   return Users;
 };

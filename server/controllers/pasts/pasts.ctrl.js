@@ -11,12 +11,7 @@ exports.post_pasts_write = async (req, res) => {
     },
   });
   let bookId = book.id;
-  let checkStatus = body.check;
-  let check = false;
-  if (checkStatus === "true") {
-    check = true;
-  }
-  body.check = check;
+  let check = body.check;
   if (check) {
     if (!body.title) {
       res.status(400).json({ error: "제목을 입력해주세요" });
@@ -46,9 +41,10 @@ exports.post_pasts_write = async (req, res) => {
   models.ChapterPasts.create(body)
     .then((result) => {
       if (!check) {
+        let updated = String(result["dataValues"]["updatedAt"]);
         res.status(201).json({
           id: result["dataValues"]["id"],
-          update: result["dataValues"]["updatedAt"],
+          update: updated.split(" ")[4],
         });
       } else {
         res.status(201).json({ id: result["dataValues"]["id"] });
@@ -142,10 +138,11 @@ exports.put_pasts_edit = async (req, res) => {
       if (check) {
         res.status(201).json({ success: "저장되었습니다." });
       } else {
-        let updated = new Date();
-        res
-          .status(202)
-          .json({ success: "자동 저장되었습니다.", update: updated });
+        let updated = String(data["updatedAt"]);
+        res.status(202).json({
+          success: "자동 저장되었습니다.",
+          update: updated.split(" ")[1],
+        });
       }
       return;
     })

@@ -5,8 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     content: { type: DataTypes.TEXT, allowNull: true },
     year: { type: DataTypes.INTEGER, allowNull: false },
     order: { type: DataTypes.INTEGER, allowNull: false },
+    question: { type: DataTypes.INTEGER, allowNull: false },
     page: { type: DataTypes.INTEGER, allowNull: false },
     check: { type: DataTypes.BOOLEAN, allowNull: false },
+    share: { type: DataTypes.BOOLEAN, allowNull: false },
   });
 
   ChapterPasts.associate = (models) => {

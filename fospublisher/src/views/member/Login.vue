@@ -150,7 +150,7 @@ export default {
             this.$store.commit("auth/setUserId", res.data.userId);
             setTimeout(() => {
               this.moveToMain();
-            }, 200);
+            }, 1000);
           } else {
             console.log("로그인 에러");
           }

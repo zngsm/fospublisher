@@ -11,12 +11,7 @@ exports.post_futures_write = async (req, res) => {
     },
   });
   let bookId = book.id;
-  let checkStatus = body.check;
-  let check = false;
-  if (checkStatus === "true") {
-    check = true;
-  }
-  body.check = check;
+  let check = body.check;
   if (check) {
     if (!body.title) {
       res.status(400).json({ error: "제목을 입력해주세요" });
@@ -42,16 +37,19 @@ exports.post_futures_write = async (req, res) => {
       });
     }
   }
-  const year = body.year;
-  const count = await models.ChapterFutures.count({
-    where: { year: year },
-  });
   body["page"] = chapterPage;
-  body["order"] = count;
   body["BookFutureId"] = bookId;
   models.ChapterFutures.create(body)
     .then((result) => {
-      res.status(201).json({ id: result["dataValues"]["id"] });
+      if (!check) {
+        let updated = String(result["dataValues"]["updatedAt"]);
+        res.status(201).json({
+          id: result["dataValues"]["id"],
+          update: updated.split(" ")[4],
+        });
+      } else {
+        res.status(201).json({ id: result["dataValues"]["id"] });
+      }
     })
     .catch(() => {
       res.status(400).json({ error: "잘못된 요청입니다." });
@@ -102,12 +100,7 @@ exports.put_futures_edit = async (req, res) => {
     res.status(403).json({ error: "접근 권한이 없습니다." });
     return;
   }
-  let checkStatus = body.check;
-  let check = false;
-  if (checkStatus === "true") {
-    check = true;
-  }
-  body.check = check;
+  let check = body.check;
   if (check) {
     if (!body.title) {
       res.status(400).json({ error: "제목을 입력해주세요" });
@@ -147,10 +140,11 @@ exports.put_futures_edit = async (req, res) => {
       if (check) {
         res.status(201).json({ success: "저장되었습니다." });
       } else {
-        let updated = data.updatedAt;
-        res
-          .status(202)
-          .json({ success: "자동저장되었습니다.", update: updated });
+        let updated = String(data["updatedAt"]);
+        res.status(202).json({
+          success: "자동저장되었습니다.",
+          update: updated.split(" ")[1],
+        });
       }
     })
     .catch(() => {
@@ -262,7 +256,6 @@ exports.check_futures = async (req, res) => {
   let book = await models.BookFutures.findOne({
     where: { UserId: res.locals.userId },
   });
-  console.log(book);
   models.ChapterFutures.findAll({
     where: { BookFutureId: book.id, year: year, month: month, day: day },
   }).then((result) => {

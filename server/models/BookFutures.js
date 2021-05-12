@@ -6,11 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     size: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
     skin: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
     font: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
-    skin_color: {
-      type: DataTypes.STRING,
-      defaultValue: "#654321",
-      allowNull: false,
-    },
     font_color: {
       type: DataTypes.STRING,
       defaultValue: "#000000",

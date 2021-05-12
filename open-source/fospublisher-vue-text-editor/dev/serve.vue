@@ -1,17 +1,41 @@
-<script>
-import Vue from 'vue';
-import FospublisherVueTextEditor from '@/fospublisher-vue-text-editor.vue';
-
-export default Vue.extend({
-  name: 'ServeDev',
-  components: {
-    FospublisherVueTextEditor
-  }
-});
-</script>
-
 <template>
-  <div id="app">
-    <fospublisher-vue-text-editor />
+  <div>
+    <Editor @updateContent="val => content = val" :content="content" :style-object="styleObject"/>
   </div>
 </template>
+
+<script>
+import Editor from '../src/fospublisher-vue-text-editor';
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      content: '<div>하하</div>',
+      styleObject: {
+        editorWidth: {
+        },
+        toolButton: {
+        },
+        toolButtonText: {
+        },
+        dropdownButton: {
+        },
+        modalButton: {
+        },
+        modalContent: {
+        },
+        modalTextInput: {
+        },
+        colorPickerButton: {
+        },
+        tooltip: {
+        }
+      }
+    }
+  },
+  components: {
+    Editor,
+  },
+};
+</script>

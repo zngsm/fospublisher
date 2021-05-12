@@ -1,12 +1,12 @@
 <template>
   <div>
     <navbar />
-    <!-- <v-img
+    <v-img
       contain
       src="../../assets/light/center.png"
       alt="기본조명"
       height="100vh"
-    /> -->
+    />
     <div class="pastBook">
       <PastBook />
     </div>

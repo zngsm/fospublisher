@@ -15,4 +15,6 @@ router.use("/api/questions", require("./questions"));
 
 router.use("/api/images", require("./images"));
 
+router.use("/api/follow", require("./follow"));
+
 module.exports = router;

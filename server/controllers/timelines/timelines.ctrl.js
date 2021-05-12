@@ -16,18 +16,13 @@ exports.get_timelines_read = async (req, res) => {
     let count = 0;
     let lastIdx = 0;
     result.forEach((chapter) => {
-      const year = chapter["dataValues"]["year"];
       let idxCnt = count % 5;
       let idxOrder = parseInt(count / 5);
-      let node = {};
-      node["title"] = chapter["dataValues"]["title"];
-      node["id"] = chapter["dataValues"]["id"];
-      node["order"] = chapter["dataValues"]["order"];
-      node["check"] = chapter["dataValues"]["check"];
-      node["content"] = chapter["dataValues"]["content"];
-      node["year"] = year;
-      node["status"] = "ing";
-      node["idx"] = idxCnt;
+      let node = chapter["dataValues"];
+      delete node["createdAt"];
+      delete node["updatedAt"];
+      delete node["BookPastId"];
+      delete node["page"];
       each5Chapter.push(node);
       if (each5Chapter.length == 5) {
         context[idxOrder] = each5Chapter.slice();

@@ -3,7 +3,7 @@
   flex-direction: row;
 }
 .create-left {
-  width: 50%;
+  width: 45%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,8 +31,15 @@
   font-size: 10px;
   padding: 10px;
 }
+.create-middle {
+  width: 1%;
+  border-left: 3px rgb(202, 202, 202) solid;
+  background: linear-gradient(to right, rgb(235, 232, 232) 2%, white 98%);
+}
 .create-right {
   width: 50%;
+  background-color: white;
+  padding: 0 2.5%;
 }
 .create-right-form {
   margin-top: 50px;

@@ -5,6 +5,7 @@
       <Question v-if="questionChange" class="create-left-section" />
       <QuestionForEdit v-else :question="Number(form.question)" />
     </div>
+    <div class="create-middle"></div>
     <div class="create-right">
       <form class="create-right-form">
         <v-text-field v-model="form.title" label="제목" required></v-text-field>
@@ -98,12 +99,6 @@ export default {
     return {
       styleObject: {
         editorWidth: { width: "100%" },
-        toolButton: {
-          backgroundColor: "var(--v-background-base)",
-        },
-        toolButtonText: {
-          backgroundColor: "var(--v-background-base)",
-        },
       },
       id: null,
       questionChange: true,

@@ -35,27 +35,15 @@ export default {
     items: [
       {
         skin: 0,
-        value: "soft",
+        value: "diary",
       },
       {
         skin: 1,
-        value: "diary",
+        value: "soft",
       },
       {
         skin: 2,
         value: "flower",
-      },
-      {
-        skin: 3,
-        value: "bagediary",
-      },
-      {
-        skin: 4,
-        value: "simple",
-      },
-      {
-        skin: 5,
-        value: "goldFrame",
       },
     ],
   }),

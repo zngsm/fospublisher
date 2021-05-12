@@ -5,7 +5,10 @@
       <v-row style="height: 100vh">
         <v-col cols="6" class="d-flex align-center overflow-auto">
           <div class="container">
-            <div class="img">
+            <div
+              class="img"
+              :class="{ skinZero: isZero, skinOne: isOne, skinTwo: isTwo }"
+            >
               <span
                 :class="{
                   'member-kukde-light': isKukde,
@@ -36,14 +39,35 @@
                     <div style="margin: 10px">
                       <font-size is-required @input="fontSizeReceive" />
                     </div>
-                    <div style="margin: 10px">
-                      <font-color is-required @input="fontColorReceive" />
-                    </div>
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <div>
+                          <v-text-field
+                            v-model="showColor"
+                            label="* 폰트 색상"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </div>
+                      </template>
+                      <v-color-picker
+                        dot-size="25"
+                        hide-inputs
+                        mode="hexa"
+                        swatches-max-height="200"
+                        v-model="color"
+                      ></v-color-picker>
+                    </v-menu>
                     <div style="margin: 10px">
                       <skin is-required @input="skinReceive" />
-                    </div>
-                    <div style="margin: 10px">
-                      <skin-color is-required @input="skinColorReceive" />
                     </div>
                     <v-row>
                       <v-col class="d-flex flex-column justify-space-around">
@@ -78,8 +102,6 @@ import "../../assets/css/font.css";
 import Navbar from "@/components/main/Navbar.vue";
 import FontKind from "./Font.vue";
 import FontSize from "./FontSize.vue";
-import FontColor from "./FontColor.vue";
-import SkinColor from "./SkinColor.vue";
 import Skin from "./Skin.vue";
 export default {
   name: "Design",
@@ -87,22 +109,45 @@ export default {
     Navbar,
     FontKind,
     FontSize,
-    FontColor,
-    SkinColor,
     Skin,
   },
   data: () => ({
     title: "",
     font: "",
     fontSize: "",
-    fontColor: "",
     skin: "",
-    skinColor: "",
-    activeColor: "black",
+    activeColor: "#000000FF",
     activeFontSize: 20,
     isKukde: false,
     isKwandong: false,
+    isZero: true,
+    isOne: false,
+    isTwo: false,
+    type: "hex",
+    hex: "",
   }),
+  computed: {
+    color: {
+      get() {
+        return this[this.type];
+      },
+      set(v) {
+        this[this.type] = v;
+      },
+    },
+    showColor() {
+      if (typeof this.color === "string") return this.color;
+
+      return JSON.stringify(
+        Object.keys(this.color).reduce((color, key) => {
+          color[key] = Number(this.color[key].toFixed(2));
+          return color;
+        }, {}),
+        null,
+        2
+      );
+    },
+  },
   methods: {
     fontReceive(font) {
       this.font = font;
@@ -138,10 +183,25 @@ export default {
     },
     skinReceive(skin) {
       this.skin = skin;
+      console.log(skin);
+      if (skin === 0) {
+        this.isOne = false;
+        this.isTwo = false;
+        this.isZero = true;
+      } else if (skin === 1) {
+        this.isZero = false;
+        this.isTwo = false;
+        this.isOne = true;
+      } else {
+        this.isZero = false;
+        this.isOne = false;
+        this.isTwo = true;
+      }
     },
-    skinColorReceive(skinColor) {
-      this.skinColor = skinColor;
-    },
+    onSubmit() {},
+  },
+  updated() {
+    this.activeColor = this.color;
   },
 };
 </script>
@@ -150,12 +210,11 @@ export default {
 .container {
   width: 800px;
   height: 500px;
-  perspective: 1000px;
+  perspective: 1500px;
   cursor: pointer;
 }
 .img,
 .img::before {
-  background-image: url("https://cdn.crowdpic.net/list-thumb/thumb_l_1D33CF5131DEC3BAE8D83FF7D6EE63B8.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -189,5 +248,17 @@ export default {
   padding-top: 70px;
   font-size: 30px;
   color: black;
+}
+.skinZero,
+.skinZero::before {
+  background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1620747619023.png");
+}
+.skinOne,
+.skinOne::before {
+  background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1620747657994.png");
+}
+.skinTwo,
+.skinTwo::before {
+  background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1620747682861.png");
 }
 </style>

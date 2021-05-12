@@ -10,7 +10,7 @@
         <div class="timeline-img-start">
           <div>
             {{ name }} 님의 탄생 <br />
-            {{ birth.split("T")[0] }}
+            {{ birth.split("-")[0] }}
           </div>
         </div>
         <img
@@ -121,10 +121,20 @@ export default {
       page: 0,
       start: false,
       end: false,
+      year: null,
+      month: null,
+      monthSrc: null,
     };
   },
-  created() {},
+  created() {
+    this.setBirthDate();
+  },
   methods: {
+    setBirthDate() {
+      this.year = this.birth.split("-")[0];
+      this.month = this.birth.split("-")[1];
+      this.monthSrc = this.month + ".png";
+    },
     prevPage() {
       this.page = this.page -= 3;
     },
@@ -132,13 +142,6 @@ export default {
       if (this.page + 1 <= Object.keys(this.totalTimelines).length - 1) {
         this.page = this.page + 3;
       }
-      // this.start = true;
-      // setTimeout(() => {
-      //   (this.start = false), (this.end = true);
-      //   setTimeout(() => {
-      //     this.end = false;
-      //   }, 500);
-      // }, 500);
     },
   },
 };

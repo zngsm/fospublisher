@@ -1,7 +1,17 @@
 <template>
   <div>
     <div :class="{ 'timeline-title': !preview, 'd-none': preview }">
-      <p class="timeline-text-hidden" @mouseover="openPreview">
+      <v-badge
+        v-if="!timeline.check"
+        bordered
+        color="#030352"
+        icon="mdi-pencil-outline"
+      >
+        <p class="timeline-text-hidden" @mouseover="openPreview">
+          {{ timeline.title ? timeline.title : "제목없음" }}
+        </p>
+      </v-badge>
+      <p v-else class="timeline-text-hidden" @mouseover="openPreview">
         {{ timeline.title ? timeline.title : "제목없음" }}
       </p>
     </div>
@@ -20,7 +30,7 @@
       </div>
       <div class="timeline-preview-button">
         <v-btn @click="sendTimeline">전문읽기</v-btn>
-        <v-btn @click="goToEdit">수정</v-btn>
+        <v-btn v-if="!timeline.check" @click="goToEdit">수정</v-btn>
       </div>
     </div>
     <div class="timeline-title-bottom" @mouseover="closePreview"></div>
@@ -41,13 +51,14 @@ export default {
   mounted() {},
   methods: {
     goToEdit() {
-      sessionStorage.setItem("chapterId", this.timeline.id);
       sessionStorage.setItem("title", this.timeline.title);
       sessionStorage.setItem("content", this.timeline.content);
       sessionStorage.setItem("year", this.timeline.year);
+      sessionStorage.setItem("share", this.timeline.share);
+      sessionStorage.setItem("question", this.timeline.question);
       this.$router.push({
         name: "CreatePast",
-        params: { id: this.timeline.id },
+        params: { id: this.timeline.id, status: "PAST" },
       });
     },
     openPreview() {

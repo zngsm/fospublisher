@@ -43,14 +43,18 @@ Common: <img src="https://img.shields.io/badge/GitLab-FCA121?style=flat-square&l
 
 ```text
 $ git clone https://lab.ssafy.com/s04-final/s04p31b201.git
-...
+$ cd server
+$ npm i
+$ npm start
 ```
 
 ### Frontend
 
 ```text
 $ git clone https://lab.ssafy.com/s04-final/s04p31b201.git
-...
+$ cd fospublisher
+$ npm i
+$ npm run serve
 ```
 
 ## 기술 스택

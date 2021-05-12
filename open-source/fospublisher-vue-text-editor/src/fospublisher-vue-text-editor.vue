@@ -132,6 +132,14 @@
       <button
         :style="styleObject.toolButton"
         class="toolButton"
+        @click="execCmd('removeFormat')"
+      >
+        <i class="fas fa-remove-format"></i>
+        <span :style="styleObject.tooltip" class="tooltip">초기화</span>
+      </button>
+      <button
+        :style="styleObject.toolButton"
+        class="toolButton"
         @click="execCmd('insertUnorderedList')"
       >
         <i class="fas fa-list-ul"></i>
@@ -261,8 +269,6 @@
           />
           <span :style="styleObject.tooltip" class="tooltip">글씨 색</span>
         </button>
-      </div>
-      <div style="display: inline-block;">
         <div :style="styleObject.colorPickerButton" class="colorPickerButton">BACKGROUND COLOR</div>
         <button :style="styleObject.toolButtonText" class="toolButtonText">
           <input
@@ -315,6 +321,7 @@
         class="toolButtonText"
         @click="execCmd('selectAll')"
       >
+        <i class="fas fa-check"></i>
         SELECT ALL
         <span :style="styleObject.tooltip" class="tooltip">전부 선택</span>
       </button>
@@ -343,7 +350,7 @@ import html2pdf from "html2pdf.js";
 import jquery from "jquery";
 import "@fortawesome/fontawesome-free/js/all.js";
 
-require( "jquery-ui/ui/widgets/draggable" );
+require("jquery-ui/ui/widgets/draggable");
 require("jquery");
 require("jquery-ui-bundle");
 
@@ -418,10 +425,12 @@ export default {
                 background-color: white;
                 border: 1px solid black;
                 border-radius: 3px;
+                clear: both;
                 top: 50%;  
                 left: 50%;
                 padding: 2px 10px;
                 justify-content: center;"
+                contenteditable="false" 
               >
                 PAGE ${vm.pagination}
               </div>
@@ -438,19 +447,15 @@ export default {
         .contents()
         .find(`#${vm.imageNum}`)
         .wrap(
-          `<div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block"></div>`
+          `<div contenteditable="false" id="wrapper${vm.imageNum}" style="text-align: center;"><div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block;"></div></div>`
         );
       // 이미지 위 아래로 빈 칸 추가
       jquery('iframe[name="richTextField"]')
         .contents()
-        .find(`#draggableHelper${vm.imageNum}`)
-        .after("<br>");
-      jquery('iframe[name="richTextField"]')
-        .contents()
-        .find(`#draggableHelper${vm.imageNum}`)
-        .before("<br>");
+        .find(`#wrapper${vm.imageNum}`)
+        .before("<br>")
+        .after("<br><br>");
 
-      // x축 방향으로만 이미지 드래그 가능, richtextField 내에서만 움직일 수 있음
       jquery('iframe[name="richTextField"]')
         .contents()
         .find(`#draggableHelper${vm.imageNum}`)
@@ -458,13 +463,17 @@ export default {
           containment: window.richTextField.document.getElementsByTagName(
             "body"
           ),
-          scroll: true,
-          scrollSensitivity: 100,
-          scrollSpeed: 100,
-          // x축 y축 둘 다 가능(axis 속성 제외)
-          // axis: "x",
+          axis: "x",
         });
 
+      jquery('iframe[name="richTextField"]')
+        .contents()
+        .find(`#${vm.imageNum}`)
+        .css({
+          'display': 'block',
+          "margin": "0px auto"
+        });
+      
       // 리사이즈 기능을 위한 스타일링 적용(ifram 내부 객체는 style 태그 안에서 css직접적으로 수정 불가)
       // 리사이즈 핸들러 css
       jquery('iframe[name="richTextField"]')
@@ -529,6 +538,7 @@ export default {
         .mouseout(function (event) {
           event.target.style.border = "none";
         });
+
       vm.imageNum += 1;
     },
     insertLink() {

@@ -6,7 +6,7 @@
 >
 > Various features such as `export to PDF`, `pagination`, ` insert image`, `insert link`, etc.
 
-
+![](https://autobiography.s3.ap-northeast-2.amazonaws.com/1620796034308.gif)
 
 ## 2. Installation
 
@@ -17,6 +17,10 @@ $ npm i fospublisher-vue-text-editor
 
 
 ## 3. Usage
+
+> You can type HTML tag in content as initial value.
+>
+> `ex. content: '<div>Hello!<div>'`
 
 ```vue
 <template>
@@ -34,7 +38,7 @@ export default {
     return {
       content: '',
       styleObject: {
-        editorWidth: {
+       editorWidth: {
         },
         toolButton: {
         },
@@ -70,8 +74,11 @@ export default {
 
 > *There are 9 different options, sush as* `editorWidth`*,* `toolButton`*,* `toolButtonText`*,* `dropdownButton`*,* `modalButton`*,* `modalContent`*,* `modalTextInput`*,* `colorPickerButton`*,* `tooltip`.
 >
->*You can change editor style as below.* 
->*Even if you don't change the styling, you need to keep the code structure of the styleObject.*
+> *Even if you don't change the styling, you need to keep the code structure of the styleObject.*
+>
+> *You can change editor style as below.* 
+
+![](https://autobiography.s3.ap-northeast-2.amazonaws.com/1620795983904.PNG)
 
 ```vue
 <template>
@@ -89,15 +96,15 @@ export default {
     return {
       content: '',
       styleObject: {
-        editorWidth: {
+       editorWidth: {
           width: "1000px",
         },
         toolButton: {
-          backgroundColor: 'red'
         },
         toolButtonText: {
         },
         dropdownButton: {
+          backgroundColor: 'red'
         },
         modalButton: {
         },

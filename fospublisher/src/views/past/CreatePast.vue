@@ -189,6 +189,9 @@ export default {
       );
     },
     updatePastCompleted() {
+      if (this.questionChange) {
+        this.form.question = this.todayQuestionId;
+      }
       updatePastChapter(
         this.chapId,
         this.form,
@@ -262,6 +265,9 @@ export default {
       );
     },
     updatePastAuto() {
+      if (this.questionChange) {
+        this.form.question = this.todayQuestionId;
+      }
       updatePastChapter(
         this.chapId,
         this.form,
@@ -367,6 +373,9 @@ export default {
       }
       if (this.$route.params.status) {
         sessionStorage.setItem("status", this.$route.params.status);
+      } else {
+        this.form.check = true;
+        this.$router.push("Main");
       }
       this.status = sessionStorage.getItem("status");
     },

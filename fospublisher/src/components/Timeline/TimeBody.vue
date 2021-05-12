@@ -7,8 +7,9 @@
           <div class="timeline-img-start">
             <div>
               {{ name }} 님의 탄생 <br />
-              {{ birth.split("T")[0] }}
+              {{ year }}
             </div>
+            <img src="`@/assets/timeline/${month}.png`" alt="사진" />
           </div>
           <img
             src="@/assets/timeline/start_final.png"
@@ -22,8 +23,10 @@
           <div class="timeline-img-start">
             <div>
               {{ name }} 님의 탄생 <br />
-              {{ birth.split("T")[0] }}
+              {{ year }}
             </div>
+            <img :src="`../../assets/timeline/${monthSrc}`" alt="사진" />
+            <!-- <img src="@/assets/timeline/11.png" alt="사진" /> -->
           </div>
           <img
             src="@/assets/timeline/start_right.png"
@@ -94,10 +97,22 @@ export default {
     name: String,
   },
   data() {
-    return {};
+    return {
+      year: null,
+      month: null,
+      monthSrc: null,
+    };
   },
-  mounted() {},
-  methods: {},
+  created() {
+    this.setBirthDate();
+  },
+  methods: {
+    setBirthDate() {
+      this.year = this.birth.split("-")[0];
+      this.month = this.birth.split("-")[1];
+      this.monthSrc = this.month + ".png";
+    },
+  },
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <!-- 선택 버튼 -->
   <div class="button-container writer-kwandong">
-    <button @click="$router.push('create')">
+    <button @click="goToCreate">
       <img
         class="iconImg"
         src="@/assets/past/create.png"
@@ -38,7 +38,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goToCreate() {
+      this.$router.push({ name: "CreatePast", params: { status: "PAST" } });
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -50,21 +50,22 @@
 }
 .timeline-img-start {
   width: 183px;
+  text-align: center;
 }
 .timeline-img-start > div {
   position: absolute;
   width: 130px;
-  height: 130px;
-  border: 1px solid;
-  border-radius: 100%;
+  height: 80px;
+  /* border: 1px solid; */
+  border-radius: 10%;
   margin-top: 80px;
   margin-left: 80px;
-  background-color: brown;
+  background-color: ivory;
   z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: black;
 }
 .timeline-img-start-ing {
   margin-top: 84px;

@@ -11,9 +11,9 @@ export default {
   name: 'App',
   data() {
     return {
-      content: '<div>하하</div>',
+      content: '',
       styleObject: {
-        editorWidth: {
+       editorWidth: {
         },
         toolButton: {
         },

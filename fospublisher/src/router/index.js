@@ -11,6 +11,8 @@ import Main from "../views/past/Main.vue";
 import CreatePast from "../views/past/CreatePast.vue";
 import ReadPast from "../components/book/ReadPast.vue";
 import Design from "../components/book/Design.vue";
+import Demo from "../views/Demo.vue";
+
 
 Vue.use(VueRouter);
 
@@ -175,6 +177,11 @@ const routes = [
     //     next({ name: "Login" });
     //   }
     // },
+  },
+  {
+    path: "/demo",
+    name: "Demo",
+    component: Demo,
   },
 ];
 

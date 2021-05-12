@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const models = require("../../models");
 
 exports.post_pasts_write = async (req, res) => {
@@ -14,14 +15,11 @@ exports.post_pasts_write = async (req, res) => {
   let check = body.check;
   if (check) {
     if (!body.title) {
-      res.status(400).json({ error: "제목을 입력해주세요" });
-      return;
+      return res.status(400).json({ error: "제목을 입력해주세요" });
     } else if (!body.content) {
-      res.status(400).json({ error: "내용을 입력해주세요" });
-      return;
+      return res.status(400).json({ error: "내용을 입력해주세요" });
     } else if (!body.year) {
-      res.status(400).json({ error: "연도를 입력해주세요" });
-      return;
+      return res.status(400).json({ error: "연도를 입력해주세요" });
     } else {
       let pageInfo = {
         page: book.page + chapterPage,
@@ -33,7 +31,7 @@ exports.post_pasts_write = async (req, res) => {
   }
   const year = body.year;
   const count = await models.ChapterPasts.count({
-    where: { year: year },
+    where: { year: year, BookPastId: bookId },
   });
   body["page"] = chapterPage;
   body["order"] = count;
@@ -117,6 +115,31 @@ exports.put_pasts_edit = async (req, res) => {
       return;
     }
   }
+  if (data.year != body.year) {
+    const count = await models.ChapterPasts.count({
+      where: { year: body.year, BookPastId: book.id },
+    });
+    body["order"] = count;
+    await models.ChapterPasts.findAll({
+      where: {
+        year: data.year,
+        BookPastId: book.id,
+        id: { [Sequelize.Op.ne]: chapterId },
+      },
+      order: [["order"]],
+    }).then((result) => {
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].order != i) {
+          models.ChapterPasts.update(
+            { order: i },
+            {
+              where: { id: result[i].id },
+            }
+          );
+        }
+      }
+    });
+  }
   let pageInfo = {};
   if (check && data.check) {
     pageInfo["page"] = book.page - data.page + chapterPage;
@@ -134,17 +157,16 @@ exports.put_pasts_edit = async (req, res) => {
   models.ChapterPasts.update(body, {
     where: { id: chapterId },
   })
-    .then(() => {
+    .then((result) => {
       if (check) {
-        res.status(201).json({ success: "저장되었습니다." });
+        return res.status(201).json({ success: "저장되었습니다." });
       } else {
         let updated = String(data["updatedAt"]);
-        res.status(202).json({
+        return res.status(202).json({
           success: "자동 저장되었습니다.",
           update: updated.split(" ")[1],
         });
       }
-      return;
     })
     .catch(() => {
       res.status(400).json({ error: "잘못된 요청입니다." });

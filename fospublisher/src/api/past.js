@@ -10,7 +10,7 @@ function getQuestion(id, success, fail) {
 
 function getSelectedQuesion(id, success, fail) {
   authInstance
-    .get(`api/question/${id}`, {})
+    .get(`api/questions/select/${id}`, {})
     .then(success)
     .catch(fail);
 }

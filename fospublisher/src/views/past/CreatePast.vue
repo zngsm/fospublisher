@@ -2,43 +2,36 @@
   <div class="create-container">
     <Navbar />
     <div class="create-left">
-      <div v-if="!edit" class="create-left-section">
-        <h1 class="create-left-question-title text-center">
-          오늘의 질문
-        </h1>
-        <div class="create-left-question-content">
-          {{ todayQuestion }}
-        </div>
-        <button class="create-left-question-button" @click="getTodayQuestion">
-          다른 질문 받기
-        </button>
-      </div>
-      <div v-else>수정중;;;</div>
+      <Question v-if="questionChange" class="create-left-section" />
+      <QuestionForEdit v-else :question="Number(form.question)" />
     </div>
     <div class="create-right">
       <form class="create-right-form">
         <v-text-field v-model="form.title" label="제목" required></v-text-field>
         <div class="d-flex create-right-year">
-          <div class="create-right-year-label">
-            언제 있었던 일인가요?
-          </div>
-          <div class="create-right-select-year d-flex align-center">
-            <div v-if="selected" class="text-h5">{{ form.year }}년</div>
+          <div
+            v-if="status == 'PAST'"
+            class="create-right-select-year d-flex align-center"
+          >
             <v-select
-              v-else
               v-model="form.year"
               :items="items"
-              label="년도"
+              menu-props="auto"
+              label="언제있었던 일인가요?"
               dense
+              :hint="form.year ? String(form.year) : ''"
+              persistent-hint
             ></v-select>
           </div>
-          <v-btn @click="changeSelect">
-            <span v-if="!selected">선택</span> <span v-else>변경</span>
-          </v-btn>
+          <SelectFutureDate
+            v-else
+            class="create-right-select-year d-flex align-center"
+            :futureDate="futureDate"
+            :minDate="minDate"
+            @changeDate="changeDate"
+          />
         </div>
-        <div v-if="updateTime">
-          {{ updateTime.split("T")[1].split(".")[0] }} 자동저장되었습니다.
-        </div>
+        <div v-if="updateTime">{{ updateTime }} 임시저장되었습니다.</div>
         <div class="create-editor">
           <Editor
             @updateContent="(val) => (form.content = val)"
@@ -48,9 +41,20 @@
         </div>
       </form>
       <div class="create-right-btn">
+        <v-checkbox
+          v-model="form.share"
+          label="자서전에 담기(임시저장글은 자서전에 포함되지 않습니다.)"
+        ></v-checkbox>
         <v-btn large @click="goToBack">취소</v-btn>
         <v-btn large @click="onSubmit">발행</v-btn>
       </div>
+      <v-dialog v-model="dialog" width="25vw">
+        <message-modal
+          v-if="dialog"
+          :body-content="alertMessage"
+          @submit="changeMode"
+        />
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -58,20 +62,29 @@
 <script>
 import {
   getQuestion,
-  // getSelectedQuesion
   createPastChapter,
   updatePastChapter,
 } from "@/api/past.js";
+import { createFutureChapter, updateFutureChapter } from "@/api/future";
 import { checkUserInfo } from "@/api/account";
+import "../../assets/css/CreatePast.css";
 import Navbar from "../../components/main/Navbar.vue";
 import { mapState } from "vuex";
 import store from "@/store";
 import Editor from "fospublisher-vue-text-editor";
+import Question from "../../components/chapter/Question.vue";
+import SelectFutureDate from "../../components/chapter/SelectFutureDate.vue";
+import MessageModal from "../../components/MessageModal.vue";
+import QuestionForEdit from "../../components/chapter/QuestionForEdit.vue";
 export default {
   name: "CreatePast",
   components: {
     Editor,
     Navbar,
+    Question,
+    SelectFutureDate,
+    MessageModal,
+    QuestionForEdit,
   },
   props: {
     bookInfo: {
@@ -93,75 +106,232 @@ export default {
         },
       },
       id: null,
-      questionId: null,
-      question: "?",
-      content: "",
+      questionChange: true,
+      tmpTitle: "",
+      tmpYear: "",
+      tmpMonth: "",
+      tmpDay: "",
+      tmpContent: "",
       form: {
         title: "",
         content: "",
         year: null,
+        month: null,
+        day: null,
         check: false,
+        question: null,
+        share: true,
       },
       interval: false,
       items: [],
       chapId: null,
-      selected: false,
       edit: false,
       auto: null,
       timer: null,
+      timeout: null,
       updateTime: null,
       exit: false,
+      autoSaveKey: true,
+      status: null,
+      minDate: null,
+      maxDate: null,
+      futureDate: null,
+      dialog: false,
+      alertMessage: null,
     };
   },
   methods: {
+    changeQuestion() {
+      this.form.question = this.todayQuestionId;
+    },
+    changeMode() {
+      this.dialog = false;
+    },
+    changeDate(date) {
+      this.futureDate = date;
+      this.form.year = this.futureDate.split("-")[0];
+      this.form.month = this.futureDate.split("-")[1];
+      this.form.day = this.futureDate.split("-")[2];
+    },
+    createPastCompleted() {
+      this.form.question = this.todayQuestionId;
+      createPastChapter(
+        this.form,
+        (res) => {
+          this.interval = false;
+          clearInterval(this.timer);
+          clearTimeout(this.timeout);
+          this.$router.push({
+            name: "ReadPast",
+            params: { id: res.data.id },
+          });
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    createFutureCompleted() {
+      createFutureChapter(
+        this.form,
+        (res) => {
+          this.interval = false;
+          clearInterval(this.timer);
+          clearTimeout(this.timeout);
+          this.$router.push({
+            name: "ReadPast",
+            params: { id: res.data.id },
+          });
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    updatePastCompleted() {
+      updatePastChapter(
+        this.chapId,
+        this.form,
+        () => {
+          this.interval = false;
+          clearInterval(this.timer);
+          clearTimeout(this.timeout);
+          sessionStorage.clear();
+          this.$router.push({
+            name: "ReadPast",
+            params: { id: this.chapId },
+          });
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    updateFutureCompleted() {
+      updateFutureChapter(
+        this.chapId,
+        this.form,
+        () => {
+          this.interval = false;
+          clearInterval(this.timer);
+          clearTimeout(this.timeout);
+          sessionStorage.clear();
+          this.$router.push({
+            name: "ReadPast",
+            params: { id: this.chapId },
+          });
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    createPastAuto() {
+      this.form.question = this.todayQuestionId;
+      createPastChapter(
+        this.form,
+        (res) => {
+          this.chapId = res.data.id;
+          this.edit = true;
+          this.updateTime = res.data.update;
+          this.tmpTitle = this.form.title;
+          this.tmpContent = this.form.content;
+          this.tmpYear = this.form.year;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    createFutureAuto() {
+      createFutureChapter(
+        this.form,
+        (res) => {
+          this.chapId = res.data.id;
+          this.edit = true;
+          this.updateTime = res.data.update;
+          this.tmpTitle = this.form.title;
+          this.tmpContent = this.form.content;
+          this.tmpYear = this.form.year;
+          this.tmpMonth = this.form.month;
+          this.tmpDay = this.form.day;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    updatePastAuto() {
+      updatePastChapter(
+        this.chapId,
+        this.form,
+        (res) => {
+          this.updateTime = res.data.update;
+          this.tmpTitle = this.form.title;
+          this.tmpContent = this.form.content;
+          this.tmpYear = this.form.year;
+          this.tmpMonth = this.form.month;
+          this.tmpDay = this.form.day;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    updateFutureAuto() {
+      updateFutureChapter(
+        this.chapId,
+        this.form,
+        (res) => {
+          this.updateTime = res.data.update;
+          this.tmpTitle = this.form.title;
+          this.tmpContent = this.form.content;
+          this.tmpYear = this.form.year;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
     onSubmit(evt) {
       evt.preventDefault();
       if (!this.form.year) {
-        alert("연도를 입력해주세요!");
+        this.alertMessage = "날짜를 입력해주세요";
+        this.dialog = true;
         return;
       } else if (!this.form.title) {
-        alert("제목을 입력해주세요!");
+        this.alertMessage = "제목을 입력해주세요";
+        this.dialog = true;
         return;
       } else if (!this.form.content) {
-        alert("내용을 입력해주세요!");
+        this.alertMessage = "내용을 입력해주세요";
+        this.dialog = true;
         return;
       }
       this.form.check = true;
       this.interval = false;
+      this.autoSaveKey = false;
       clearInterval(this.timer);
+      clearTimeout(this.timeout);
       if (!this.edit) {
-        createPastChapter(
-          this.form,
-          (res) => {
-            this.interval = false;
-            this.$router.push({
-              name: "ReadPast",
-              params: { id: res.data.id },
-            });
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
+        if (this.status == "PAST") {
+          this.form.question = this.todayQuestionId;
+
+          this.createPastCompleted();
+        } else {
+          this.createFutureCompleted();
+        }
       } else {
-        console.log(this.form);
-        updatePastChapter(
-          this.chapId,
-          this.form,
-          () => {
-            this.interval = false;
-            this.$router.push({
-              name: "ReadPast",
-              params: { id: this.chapId },
-            });
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
+        if (this.status == "PAST") {
+          this.updatePastCompleted();
+        } else {
+          console.log(this.form);
+          this.updateFutureCompleted();
+        }
       }
     },
     goToBack() {
+      this.autoSaveKey = false;
       this.exit = true;
       if (!this.chapId) {
         this.$router.push("Main");
@@ -169,20 +339,13 @@ export default {
         this.form.title = sessionStorage.getItem("title");
         this.form.content = sessionStorage.getItem("content");
         this.form.year = sessionStorage.getItem("year");
-        updatePastChapter(
-          this.chapId,
-          this.form,
-          () => {
-            sessionStorage.clear();
-            this.$router.push({
-              name: "ReadPast",
-              params: { id: this.chapId },
-            });
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
+        if (this.status == "PAST") {
+          this.updatePastCompleted();
+        } else {
+          this.form.month = sessionStorage.getItem("month");
+          this.form.day = sessionStorage.getItem("day");
+          this.updateFutureCompleted();
+        }
       }
     },
     // 질문 갱신
@@ -190,6 +353,7 @@ export default {
       getQuestion(
         this.todayQuestionId,
         (res) => {
+          this.form.question = res.data.id;
           store.commit("question/setQuestion", res.data.question);
           store.commit("question/setQuestionId", res.data.id);
         },
@@ -201,61 +365,98 @@ export default {
       if (this.$route.params.id) {
         sessionStorage.setItem("chapId", this.$route.params.id);
       }
+      if (this.$route.params.status) {
+        sessionStorage.setItem("status", this.$route.params.status);
+      }
+      this.status = sessionStorage.getItem("status");
     },
-    async getData() {
+    getData() {
       if (sessionStorage.getItem("chapId")) {
-        this.selected = true;
         this.edit = true;
+        this.questionChange = false;
         this.chapId = sessionStorage.getItem("chapId");
         this.form.title = sessionStorage.getItem("title");
         this.form.content = sessionStorage.getItem("content");
         this.form.year = sessionStorage.getItem("year");
+        if (this.status != "PAST") {
+          this.form.month = sessionStorage.getItem("month");
+          this.form.day = sessionStorage.getItem("day");
+          this.tmpMonth = this.form.month;
+          this.tmpDay = this.form.day;
+        } else {
+          this.form.share = sessionStorage.getItem("share");
+          this.form.question = sessionStorage.getItem("question");
+        }
+        this.tmpTitle = this.form.title;
+        this.tmpContent = this.form.content;
+        this.tmpYear = this.form.year;
       }
     },
-    // 년도 선택
-    changeSelect() {
-      this.selected = !this.selected;
+    addZero(num, cnt) {
+      let zero = "";
+      num = String(num);
+      if (num.length < cnt) {
+        zero += "0";
+      }
+      return (zero += num);
     },
     calculateYear() {
       let today = new Date();
+      this.minDate =
+        this.addZero(today.getFullYear(), 4) +
+        "-" +
+        this.addZero(today.getMonth() + 1, 2) +
+        "-" +
+        this.addZero(today.getDate(), 2);
       let year = today.getFullYear();
-      checkUserInfo((res) => {
-        if (res.status === 200) {
-          let userBirth = res.data.user.birthday.split("-")[0];
-          for (year; userBirth <= year; year--) {
-            this.items.push(year);
+      if (this.status == "PAST") {
+        checkUserInfo((res) => {
+          if (res.status === 200) {
+            let userBirth = res.data.user.birthday.split("-")[0];
+            for (year; userBirth <= year; year--) {
+              this.items.push(year);
+            }
           }
-        }
-      });
+        });
+      }
     },
-    // 자동저장
     autoSave() {
       this.timer = setInterval(() => {
         this.form.check = false;
-        if (this.interval) {
+        if (
+          this.status == "PAST" &&
+          this.form.title == this.tmpTitle &&
+          this.form.content == this.tmpContent &&
+          this.form.year == this.tmpYear
+        ) {
+          this.timeout = setTimeout(() => {
+            this.tempStore();
+          }, 10000);
+        } else if (
+          this.status != "PAST" &&
+          this.form.title == this.tmpTitle &&
+          this.form.content == this.tmpContent &&
+          this.form.year == this.tmpYear &&
+          this.form.month == this.tmpMonth &&
+          this.form.day == this.tmpDay
+        ) {
+          this.timeout = setTimeout(() => {
+            this.tempStore();
+          }, 10000);
+        } else if (this.interval) {
           if (!this.chapId) {
-            createPastChapter(
-              this.form,
-              (res) => {
-                this.chapId = res.data.id;
-                this.edit = true;
-                this.updateTime = res.data.update;
-              },
-              (err) => {
-                console.error(err);
-              }
-            );
+            if (this.status == "PAST") {
+              this.createPastAuto();
+            } else {
+              this.createFutureAuto();
+            }
           } else {
-            updatePastChapter(
-              this.chapId,
-              this.form,
-              (res) => {
-                this.updateTime = res.data.update;
-              },
-              (err) => {
-                console.error(err);
-              }
-            );
+            if (this.status == "PAST") {
+              console.log(this.form);
+              this.updatePastAuto();
+            } else {
+              this.updateFutureAuto();
+            }
           }
         } else {
           clearInterval(this.timer);
@@ -263,13 +464,38 @@ export default {
       }, 30000);
     },
     tempStore() {
-      if (
-        !this.form.year ||
-        (this.form.title == "" && this.form.content == "")
-      ) {
-        setTimeout(() => {
+      if (this.status == "PAST" && !this.form.year) {
+        this.timeout = setTimeout(() => {
           this.tempStore();
-        }, 5000);
+        }, 10000);
+      } else if (this.status != "PAST" && !this.futureDate) {
+        this.timeout = setTimeout(() => {
+          this.tempStore();
+        }, 10000);
+      } else if (!this.form.title && !this.form.content) {
+        this.timeout = setTimeout(() => {
+          this.tempStore();
+        }, 10000);
+      } else if (
+        this.status == "PAST" &&
+        this.form.title == this.tmpTitle &&
+        this.form.content == this.tmpContent &&
+        this.form.year == this.tmpYear
+      ) {
+        this.timeout = setTimeout(() => {
+          this.tempStore();
+        }, 10000);
+      } else if (
+        this.status != "PAST" &&
+        this.form.title == this.tmpTitle &&
+        this.form.content == this.tmpContent &&
+        this.form.year == this.tmpYear &&
+        this.form.month == this.tmpMonth &&
+        this.form.day == this.tmpDay
+      ) {
+        this.timeout = setTimeout(() => {
+          this.tempStore();
+        }, 10000);
       } else {
         this.interval = true;
         this.autoSave();
@@ -277,12 +503,14 @@ export default {
     },
   },
   mounted() {
-    this.calculateYear();
-    this.tempStore();
+    if (this.autoSaveKey) {
+      this.tempStore();
+    }
   },
   created() {
     this.setSessionStorage();
     this.getData();
+    this.calculateYear();
   },
   beforeRouteLeave(to, from, next) {
     if (!this.form.check) {
@@ -294,11 +522,11 @@ export default {
           "작업한 내용이 저장되지 않을 수 있습니다. 정말 나가시겠습니까?";
       }
       if (window.confirm(message)) {
+        this.autoSaveKey = false;
         this.interval = false;
         clearInterval(this.timer);
-        if (sessionStorage.getItem("chapId")) {
-          sessionStorage.clear();
-        }
+        clearTimeout(this.timeout);
+        sessionStorage.clear();
         next();
       }
     } else {
@@ -317,12 +545,19 @@ export default {
     interval: function() {
       if (this.interval == false) {
         clearInterval(this.timer);
+        clearTimeout(this.timeout);
+        return;
+      }
+    },
+    autoSaveKey: function() {
+      if (this.autoSaveKey == false) {
+        clearInterval(this.timer);
+        clearTimeout(this.timeout);
+        return;
       }
     },
   },
 };
 </script>
 
-<style scoped>
-@import "../../assets/css/CreatePast.css";
-</style>
+<style></style>

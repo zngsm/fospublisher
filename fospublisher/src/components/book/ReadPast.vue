@@ -15,7 +15,7 @@
       </button>
     </div>
     <!-- 책클릭 -> 읽기모드 -->
-    <div
+    <div class="mx-auto"
       v-if="
         this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
       "

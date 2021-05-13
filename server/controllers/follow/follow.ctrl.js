@@ -71,6 +71,26 @@ function EachFollow(a, b) {
   return each;
 }
 
+function checkEachFollow(a, b, c) {
+  let each = [];
+  let goToNext = false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].id == c) {
+      goToNext = true;
+      break;
+    }
+  }
+  if (!goToNext) {
+    return false;
+  }
+  for (let i = 0; i < b.length; i++) {
+    if (b[i].id == c) {
+      return true;
+    }
+  }
+  return false;
+}
+
 exports.get_follow_list = async (req, res) => {
   let requestId = res.locals.userId;
   let requester = await models.Users.findOne({
@@ -165,4 +185,60 @@ exports.get_follower_list = async (req, res) => {
     context.push(followerInfo);
   });
   res.send(context);
+};
+
+exports.get_follow_book = async (req, res) => {
+  let requesterId = res.locals.userId;
+  let followingId = req.params.id;
+  let requester = await models.Users.findOne({
+    where: { id: requesterId },
+    include: [
+      { model: models.Users, as: "Followings" },
+      { model: models.Users, as: "Followers" },
+    ],
+  });
+  let followingList = requester.Followings;
+  let followerList = requester.Followers;
+  console.log(checkEachFollow(followingList, followerList, followingId));
+  if (!checkEachFollow(followingList, followerList, followingId)) {
+    return res.status(403).send({ error: "맞팔로우된 유저가 아닙니다." });
+  }
+  let book = null;
+  const context = {};
+  await models.BookPasts.findOne({
+    where: { UserId: followingId },
+  }).then((result) => {
+    context["cover"] = result["dataValues"];
+    delete context["cover"]["createdAt"];
+    delete context["cover"]["updatedAt"];
+    delete context["cover"]["UserId"];
+    book = result;
+  });
+  await models.ChapterPasts.findAll({
+    where: { BookPastId: book.id, check: true, share: true },
+    order: [["year"], ["order"]],
+  }).then((result) => {
+    const content = [];
+    const list = {};
+    let pageStart = 0;
+    result.forEach((chapter) => {
+      let chap = chapter["dataValues"];
+      delete chap["updatedAt"];
+      delete chap["BookPastId"];
+      content.push(chap);
+      const year = chapter["dataValues"]["year"];
+      let listChap = {};
+      listChap["title"] = chapter["dataValues"]["title"];
+      listChap["id"] = chapter["dataValues"]["id"];
+      listChap["pageStart"] = pageStart;
+      if (year in list === false) {
+        list[year] = [];
+      }
+      list[year].push(listChap);
+      pageStart += chapter["dataValues"]["page"];
+    });
+    context["content"] = content;
+    context["list"] = list;
+    res.send(context);
+  });
 };

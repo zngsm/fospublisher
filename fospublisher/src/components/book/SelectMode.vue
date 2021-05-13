@@ -12,6 +12,7 @@
     </button>
     <br />
     <button class="mt-10">
+    <button @click="$emit('read')">
       <img
         class="iconImg"
         width="60px"

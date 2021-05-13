@@ -135,7 +135,9 @@
 }
 .timeline-title {
   width: auto;
+  font-size: 20px;
   max-width: 150px;
+  min-width: 100px;
   padding: 10px;
   height: 60px;
   margin: 0 35px;
@@ -144,6 +146,7 @@
   justify-content: center;
   align-items: center;
   background-color: white;
+  color: #999696;
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
 }
 .timeline-title-top {
@@ -159,24 +162,32 @@
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
 }
 .timeline-title-hover {
-  margin-top: -140px;
-  width: 300px;
+  margin-top: -190px;
+  width: auto;
+  max-width: 300px;
+  min-width: 200px;
   background-color: white;
   border: 1px solid;
   cursor: pointer;
-  height: 200px;
+  height: 250px;
+  font-size: 26px;
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
+  padding: 5px;
 }
 .timeline-title-hover > div {
   padding: 10px;
 }
 .timeline-preview-content {
-  height: 80px;
+  height: 120px;
   margin-top: 10px;
+  font-size: 14px;
+  color: #999696;
+  text-align: left;
+  word-break: break-all;
 }
 .timeline-preview-button {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 .timeline-year {
   color: white;
@@ -185,25 +196,25 @@
   width: 70px;
   height: 70px;
   border-radius: 100%;
-  font-size: 17px;
+  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: -25px;
   box-shadow: 8px 8px 8px rgb(0, 0, 0, 0.3);
 }
-.timeline-year-hover:hover {
-  cursor: pointer;
-  width: 100px;
-  height: 100px;
-  margin-top: -35px;
-  text-decoration: underline;
-  background-color: rgb(145, 108, 78);
-  box-shadow: 8px 8px 8px rgb(0, 0, 0, 0.3);
-}
 .timeline-text-hidden {
+  margin-bottom: 0px;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
+}
+.timline-text-editing {
+  text-decoration: line-through;
+}
+.timeline-text-icon {
+  position: absolute;
+  top: 0;
 }
 .timeline-edit {
   position: fixed;
@@ -222,6 +233,7 @@
 }
 .v-list-item-selected {
   color: red;
+  font-weight: bold;
 }
 .prev div {
   opacity: 0;

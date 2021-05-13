@@ -32,14 +32,14 @@
   padding: 10px;
 }
 .create-middle {
-  width: 1%;
+  width: 20px;
   border-left: 3px rgb(202, 202, 202) solid;
   background: linear-gradient(to right, rgb(235, 232, 232) 2%, white 98%);
 }
 .create-right {
-  width: 50%;
+  width: 760px;
   background-color: white;
-  padding: 0 2.5%;
+  padding: 0 30px;
 }
 .create-right-form {
   margin-top: 50px;

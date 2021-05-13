@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ondragstart="return false" onselectstart="return false">
     <Navbar />
     <div class="timeline-container">
       <div class="timeline-header">

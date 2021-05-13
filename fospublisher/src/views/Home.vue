@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ondragstart="return false" onselectstart="return false">
     <div class="home">
       <video muted autoplay loop>
         <source src="../assets/video/Train.mp4" type="video/mp4" />
@@ -7,7 +7,7 @@
       <div class="home-body">
         <div class="home-body-about">
           <div class="home-body-logo">
-            <img src="@/assets/logo.png" alt="로고" />
+            <img src="@/assets/logo2.png" alt="로고" />
           </div>
           <div class="home-body-description">
             <div class="home-title">역전기록소</div>

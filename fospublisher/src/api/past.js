@@ -1,15 +1,15 @@
-import { authInstance } from "./index.js";
+import { authInstance, instance } from "./index.js";
 
 // 오늘의 질문
 function getQuestion(id, success, fail) {
-  authInstance
+  instance
     .get(`api/questions/${id}`, {})
     .then(success)
     .catch(fail);
 }
 
 function getSelectedQuesion(id, success, fail) {
-  authInstance
+  instance
     .get(`api/questions/select/${id}`, {})
     .then(success)
     .catch(fail);

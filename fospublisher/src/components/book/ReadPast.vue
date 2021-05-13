@@ -1,17 +1,10 @@
 <template>
   <div>
+    <Navbar />
     <div class="bar">
       <button>
         <v-icon large color="black">mdi-format-list-bulleted</v-icon>
         <p>목차</p>
-      </button>
-      <button @click="modifyChapter">
-        <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
-        <p>수정하기</p>
-      </button>
-      <button @click="deleteModal">
-        <v-icon large color="black">mdi-delete-forever-outline</v-icon>
-        <p>삭제하기</p>
       </button>
     </div>
     <!-- 책클릭 -> 읽기모드 -->
@@ -27,17 +20,25 @@
       <div class="hard">
         <WriterInfo />
       </div>
-      <div><SelectMode /></div>
+      <div class="read-select"><SelectMode @read="read" /></div>
       <div>
         <h1>목차</h1>
       </div>
       <!-- computed에서 v-for작업, html에는 v-if만 -->
       <div v-for="(item, idx) in bookInfo.content" :key="idx">
+        <button @click="modifyChapter(item)">
+          <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
+          <p>수정하기</p>
+        </button>
+        <button @click="deleteModal(item.id)">
+          <v-icon large color="black">mdi-delete-forever-outline</v-icon>
+          <p>삭제하기</p>
+        </button>
         <h1>{{ item.title }}</h1>
         <p v-html="item.content"></p>
-        <div class="hard"></div>
-        <div class="hard"></div>
       </div>
+      <div class="hard"></div>
+      <div class="hard"></div>
     </div>
     <!-- 타임라인 -> 읽기모드 -->
     <div v-else id="flipbook">
@@ -69,14 +70,14 @@
 
 <script>
 import { readPastChapter, deletePastChapter } from "@/api/past";
+import Navbar from "@/components/main/Navbar.vue";
 import WriterInfo from "../member/WriterInfo.vue";
 import SelectMode from "./SelectMode.vue";
 import MessageModal from "../MessageModal.vue";
-// import { mdiFileDocumentEditOutline } from "@mdi/js";
 
 export default {
   name: "ReadPast",
-  components: { WriterInfo, SelectMode, MessageModal },
+  components: { Navbar, WriterInfo, SelectMode, MessageModal },
   props: {
     bookInfo: {
       type: Object,
@@ -124,24 +125,38 @@ export default {
           },
         ],
       },
-      currentId: 0,
       dialog: false,
       temp: ["", "", "", "", ""],
     };
   },
   methods: {
-    deleteChapter() {
+    read() {
+      this.mainRead(5);
+    },
+    modifyChapter(data) {
+      let chapter = data;
+      sessionStorage.setItem("title", chapter.title);
+      sessionStorage.setItem("content", chapter.content);
+      sessionStorage.setItem("year", chapter.year);
+      sessionStorage.setItem("share", chapter.share);
+      sessionStorage.setItem("question", chapter.question);
+      this.$router.push({
+        name: "CreatePast",
+        params: { id: chapter.id, status: "PAST" },
+      });
+    },
+    deleteModal(id) {
       console.log("delete");
       this.dialog = false;
-      let id = this.currentId;
+      let currentId = id;
       deletePastChapter(
-        id,
+        currentId,
         () => {
           // timeline에서 삭제면 일대기로, 읽기모드에서 삭제면 저자소개로 돌아가기
           if (this.$route.params.id) {
             this.$router.push("timeline");
           } else {
-            this.mainRead();
+            this.mainRead(3);
           }
         },
         (err) => {
@@ -150,24 +165,12 @@ export default {
         }
       );
     },
-    modifyChapter() {},
-    deleteModal() {
-      this.dialog = !this.dialog;
-      let view = window.$("#flipbook").turn("view");
-      let currentView = view[0];
-      let index = currentView - 4; // 내용이 여러장이면,,
-      if (this.bookInfo.content[0].title !== "") {
-        this.currentId = this.bookInfo.content[index].id;
-      } else {
-        this.currentId = this.$route.params.id;
-      }
-    },
-    mainRead() {
+    mainRead(num) {
       if (window.$("#flipbook")) {
         window.$("#flipbook").turn({
-          width: 1200,
-          height: 900,
-          page: 3,
+          width: 1026,
+          height: 700,
+          page: num,
           // acceleration: true, touch device용
           gradients: true,
           autoCenter: true,
@@ -193,8 +196,10 @@ export default {
               // let erasePage = this.temp[i].replace(/PAGE([0-9]</div></div>)/g,"")
               console.log("홀수");
               console.log(this.temp[i]);
+
               let erasePage = this.temp[i].replace(
-                '<div style="-webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%); position: absolute; background-color: white; border: 1px solid black; border-radius: 3px; top: 50%; left: 50%; padding: 2px 10px; justify-content: center;"> PAGE 1 </div>',
+                `<di, style="-webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%); position: absolute; background-color: white; border: 1px solid black; border-radius: 3px; top: 50%; left: 50%; padding: 2px 10px; justify-content: center;"> PAGE ${i +
+                  1}</div></div>`,
                 ""
               );
               this.temp[i] = erasePage;
@@ -221,7 +226,7 @@ export default {
         this.bookInfo.content[0].title !== ""
       ) {
         console.log("mainRead");
-        this.mainRead();
+        this.mainRead(3);
       } else {
         console.log("timelineRead");
         this.timelineRead();
@@ -232,6 +237,8 @@ export default {
     setTimeout(() => {
       this.getInfo();
     }, 200);
+    console.log(this.bookInfo);
+    sessionStorage.setItem("bookInfo", this.bookInfo);
   },
 };
 </script>

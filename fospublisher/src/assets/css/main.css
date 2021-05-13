@@ -1,9 +1,44 @@
-.pastBook {
+.main-img {
   position: absolute;
-  top: 20%;
-  left: 34%;
+  top: 30px;
+  /* width: 1320px; */
+  height: 695px;
+  margin-left: 370.36px;
 }
 
+.main-pastBook-container {
+  position: absolute;
+  width: 231.66px;
+  height: 327.24px;
+  top: 230px;
+  left: 550px;
+}
+
+.main-pastBook {
+  width: 231.66px;
+  height: 327.24px;
+  border: 1px solid black;
+  background-color: #ffffff;
+  font-size: 20px;
+}
+
+.main-futureBook-container {
+  position: absolute;
+  width: 231.66px;
+  height: 327.24px;
+  top: 230px;
+  left: 875px;
+}
+
+.main-futureBook {
+  width: 231.66px;
+  height: 327.24px;
+  border: 1px solid black;
+  background-color: #fcdde2;
+  font-size: 20px;
+}
+
+/* 네브바 */
 .navbar {
   position: sticky;
   float: left;
@@ -28,9 +63,87 @@
   margin-bottom: 0;
 }
 
-.navbar-question {
-  height: 70vh;
+.navbar-question-container {
+  display: block;
+  width: 1523px;
+  background-color: blue;
+  color: white;
+}
+.navbar-question-container:hover .navbar-question {
+  display: block;
+}
+
+.question {
+  display: flex;
+  position: sticky;
+  top: 0;
+  width: 1423px;
+  height: 30px;
+  margin-left: 113.1px;
+  background-color: #493732;
+  color: white;
+  /* height: 70vh;
   margin-top: 10%;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: auto; */
+}
+/* 
+.question {
+  display: inline-block;
+  width: 1370px;
+} */
+input[id="menuicon"] {
+  display: none;
+}
+input[id="menuicon"] + label {
+  display: block;
+  width: 60px;
+  height: 40px;
+  /* absolute의 기준이 되도록 position relative */
+  position: relative;
+  cursor: pointer;
+}
+input[id="menuicon"] + label i {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  border-radius: 30px;
+  /* background:white; */
+  transition: all 0.35s;
+}
+.sidebar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  background: green;
+  color: black;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  transition: all 0.35s;
+}
+/* input 다음에 있는 label, label 다음에 있는 div 선택 */
+input[id="menuicon"]:checked + label + div {
+  top: -30px;
+}
+
+input[id="menuicon"] + label + i {
+  display: block;
+  width: 60px;
+  height: 50px;
+  position: fixed;
+  right: 0;
+  top: calc(50% - 25px);
+  transition: all 0.35s;
+  cursor: pointer;
+  z-index: 2;
+}
+input[id="menuicon"]:checked + label {
+  z-index: 2;
+}
+input[id="menuicon"]:checked + label i {
+  z-index: 2;
+  /* transform: rotate(90deg); */
 }

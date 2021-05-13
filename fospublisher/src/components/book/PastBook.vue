@@ -1,15 +1,20 @@
 <template>
-  <div
-    v-if="bookInfo"
-    class="Main__past-book"
-    @click="sendBookInfo"
-    :style="{
-      backgroundColor: bookInfo.cover.skin_color,
-      fontColor: bookInfo.cover.font_color,
-      fontSize: fontSize,
-    }"
-  >
-    <p>{{ bookInfo.cover.title }}</p>
+  <div>
+    <div
+      v-if="bookInfo"
+      @click="sendBookInfo"
+      class="main-pastBook"
+      :style="{
+        backgroundColor: bookInfo.cover.skin_color,
+        fontColor: bookInfo.cover.font_color,
+        fontSize: fontSize,
+      }"
+    >
+      <p>{{ bookInfo.cover.title }}</p>
+    </div>
+    <!-- <div v-else class="main-pastBook">
+      과거책
+    </div> -->
   </div>
 </template>
 
@@ -18,7 +23,18 @@ import { readPastBook } from "@/api/past";
 export default {
   data: () => {
     return {
-      bookInfo: null,
+      bookInfo: {
+        cover: {
+          page: 0,
+          title: "",
+          size: 0,
+          skin: 0,
+          font: 0,
+          font_color: "#000000",
+        },
+        content: [],
+        list: {},
+      },
       fontSize: null,
     };
   },
@@ -49,10 +65,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.Main__past-book {
-  width: 294px;
-  height: 416px;
-  border: 1px solid black;
-}
-</style>
+<style></style>

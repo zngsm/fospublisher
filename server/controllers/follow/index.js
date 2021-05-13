@@ -13,4 +13,6 @@ router.get("/list/following", verifyToken, ctrl.get_following_list);
 
 router.get("/list/follower", verifyToken, ctrl.get_follower_list);
 
+router.get("/book/:id", verifyToken, ctrl.get_follow_book);
+
 module.exports = router;

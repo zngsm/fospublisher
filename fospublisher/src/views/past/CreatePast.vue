@@ -152,6 +152,35 @@ export default {
       this.form.month = this.futureDate.split("-")[1];
       this.form.day = this.futureDate.split("-")[2];
     },
+    insertPageBreak() {
+      const iframe = window
+        .$('iframe[name="richTextField"]')
+        .contents()
+        .find("body");
+      const childNodes = window
+        .$('iframe[name="richTextField"]')
+        .contents()
+        .find("body")[0].childNodes;
+      var pageNum = Math.ceil((iframe.height() / 1044) * 1.1);
+      for (var i = 1; i <= pageNum; i++) {
+        for (var j = 0; j < childNodes.length; j++) {
+          if (
+            childNodes[j].offsetTop <= 1044 * i &&
+            childNodes[j].offsetTop + childNodes[j].offsetHeight > 1044 * i
+          ) {
+            window
+              .$(
+                `
+            <div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">
+            </div>
+            `
+              )
+              .insertBefore(childNodes[j]);
+            break;
+          }
+        }
+      }
+    },
     createPastCompleted() {
       this.form.question = this.todayQuestionId;
       createPastChapter(
@@ -552,14 +581,14 @@ export default {
     }),
   },
   watch: {
-    interval: function() {
+    interval: function () {
       if (this.interval == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);
         return;
       }
     },
-    autoSaveKey: function() {
+    autoSaveKey: function () {
       if (this.autoSaveKey == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);

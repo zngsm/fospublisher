@@ -73,8 +73,6 @@
 
 <script>
 import NavProfile from "./NavProfile.vue";
-import { getQuestion } from "@/api/past.js";
-import store from "@/store";
 import { mapState } from "vuex";
 export default {
   name: "Navbar",
@@ -114,12 +112,6 @@ export default {
         }
       });
     },
-  },
-  mounted() {
-    getQuestion(1, (res) => {
-      store.commit("question/setQuestion", res.data.question);
-      store.commit("question/setQuestionId", res.data.id);
-    });
   },
   computed: {
     ...mapState({

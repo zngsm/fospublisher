@@ -30,16 +30,14 @@
                   {{ validationErrors.username }}
                 </div>
                 <!-- -------------------------------------------------------- -->
-                <v-form>
-                  <v-text-field
-                    label="비밀번호"
-                    v-model.lazy="password"
-                    type="password"
-                    autocomplete="off"
-                    @keyup.enter="onLogin"
-                  >
-                  </v-text-field>
-                </v-form>
+                <v-text-field
+                  label="비밀번호"
+                  v-model.lazy="password"
+                  type="password"
+                  autocomplete="off"
+                  @keyup.enter="onLogin"
+                >
+                </v-text-field>
                 <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
                 <div
                   class="validation-kwandong"
@@ -59,7 +57,6 @@
                     dark
                     depressed
                     x-large
-                    type="submit"
                     @click="onLogin"
                   >
                     로그인
@@ -148,9 +145,7 @@ export default {
             this.$store.commit("auth/setToken", res.data.token);
             this.$store.commit("auth/setRefreshToken", res.data.refreshToken);
             this.$store.commit("auth/setUserId", res.data.userId);
-            setTimeout(() => {
-              this.moveToMain();
-            }, 1000);
+            this.moveToMain();
           } else {
             console.log("로그인 에러");
           }

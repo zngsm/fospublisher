@@ -214,11 +214,32 @@ export default {
     },
     // 패스워드+질문 변경 요청
     changePw() {
-      this.fillData();
-      this.makeForm();
-      setTimeout(() => {
-        this.doEdit();
-      }, 50);
+      if (
+        this.question === null ||
+        this.answer === null ||
+        this.question === "" ||
+        this.answer === ""
+      ) {
+        checkUserInfo(
+          (res) => {
+            if (res.status === 200) {
+              this.question = res.data.user.question;
+              this.answer = res.data.user.answer;
+              this.form = {
+                userId: this.userId,
+                password: this.password,
+                passwordConfirm: this.passwordConfirm,
+                question: this.question,
+                answer: this.answer,
+              };
+              this.doEdit();
+            }
+          },
+          () => {
+            return;
+          }
+        );
+      }
     },
   },
   created() {

@@ -9,8 +9,27 @@
         />
         <div class="timeline-img-start">
           <div>
-            {{ name }} 님의 탄생 <br />
-            {{ birth.split("-")[0] }}
+            <h3 style="margin: 5px;">Train Ticket</h3>
+            <v-row style="margin: -1px;">
+              <v-col style="padding: 0;">
+                <h4 style="margin: 10px;">{{ name }}</h4>
+              </v-col>
+              <div
+                style="width: 0.1px; border: 1px solid brown; height: 50px;"
+              ></div>
+              <v-col style="margin-top: 5px; padding: 0;">
+                <h5>발행일</h5>
+                <h5>
+                  {{
+                    birth.split("-")[0] +
+                      "-" +
+                      birth.split("-")[1] +
+                      "-" +
+                      birth.split("-")[2].split(" ")[0]
+                  }}
+                </h5>
+              </v-col>
+            </v-row>
           </div>
         </div>
         <img

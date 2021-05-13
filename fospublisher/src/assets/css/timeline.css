@@ -54,15 +54,15 @@
 }
 .timeline-img-start > div {
   position: absolute;
-  width: 130px;
-  height: 80px;
-  /* border: 1px solid; */
-  border-radius: 10%;
-  margin-top: 80px;
-  margin-left: 80px;
+  width: 190px;
+  height: 100px;
+  border: 4px dashed brown;
+  /* border-radius: 10%; */
+  margin-top: 100px;
+  margin-left: 20px;
   background-color: ivory;
   z-index: 1;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   color: black;

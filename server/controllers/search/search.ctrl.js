@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const models = require("../../models");
 
-exports.search_user = async (req, res) => {
+exports.search_username = async (req, res) => {
   const user = req.params.user;
   let context = [];
 
@@ -10,15 +10,17 @@ exports.search_user = async (req, res) => {
       [Sequelize.Op.or]: [{ username: { [Sequelize.Op.like]: user } }],
     },
   }).then((result) => {
-    let userInfo = {
-      id: result.id,
-      username: result.username,
-      nickname: result.nickname,
-      img: result.img,
-      birthday: result.birthday,
-      introduce: result.introduce,
-    };
-    context.push(userInfo);
+    if (result) {
+      let userInfo = {
+        id: result.id,
+        username: result.username,
+        nickname: result.nickname,
+        img: result.img,
+        birthday: result.birthday,
+        introduce: result.introduce,
+      };
+      context.push(userInfo);
+    }
   });
 
   await models.Users.findAll({

@@ -1,5 +1,9 @@
 <template>
-  <div class="create-container">
+  <div
+    class="create-container"
+    ondragstart="return false"
+    onselectstart="return false"
+  >
     <Navbar />
     <div class="create-left">
       <Question v-if="questionChange" class="create-left-section" />
@@ -98,7 +102,7 @@ export default {
   data() {
     return {
       styleObject: {
-        editorWidth: { width: "100%" },
+        editorWidth: { width: "699px" },
       },
       id: null,
       questionChange: true,

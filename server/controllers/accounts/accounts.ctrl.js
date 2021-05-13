@@ -67,44 +67,48 @@ exports.post_accounts_signup = async (req, res) => {
     imgUrl = body.img;
   }
 
-  await models.Users.create({
-    username: body.username,
-    password: hashPassword,
-    salt: salt,
-    birthday: body.birthday,
-    nickname: body.nickname,
-    introduce: body.introduce,
-    img: imgUrl,
-    question: body.question,
-    answer: body.answer,
-  })
-    .then(async () => {
-      let result = await models.Users.findOne({
-        where: {
-          username: body.username,
-        },
-      });
-
-      const nickname = result.dataValues.nickname;
-
-      await models.BookPasts.create({
-        title: `${nickname}님의 자서전`,
-        UserId: result.dataValues.id,
-      });
-
-      await models.BookFutures.create({
-        title: `${nickname}님의 미래예측 자서전`,
-        UserId: result.dataValues.id,
-      });
-
-      res.status(201).json({
-        result: "회원가입에 성공하였습니다.",
-        userId: result.dataValues.id,
-      });
+  try {
+    await models.Users.create({
+      username: body.username,
+      password: hashPassword,
+      salt: salt,
+      birthday: body.birthday,
+      nickname: body.nickname,
+      introduce: body.introduce,
+      img: imgUrl,
+      question: body.question,
+      answer: body.answer,
     })
-    .catch(() => {
-      res.status(400).send("잘못된 요청입니다.");
-    });
+      .then(async () => {
+        let result = await models.Users.findOne({
+          where: {
+            username: body.username,
+          },
+        });
+
+        const nickname = result.dataValues.nickname;
+
+        await models.BookPasts.create({
+          title: `${nickname}님의 자서전`,
+          UserId: result.dataValues.id,
+        });
+
+        await models.BookFutures.create({
+          title: `${nickname}님의 미래예측 자서전`,
+          UserId: result.dataValues.id,
+        });
+
+        res.status(201).json({
+          result: "회원가입에 성공하였습니다.",
+          userId: result.dataValues.id,
+        });
+      })
+      .catch(() => {
+        res.status(400).send("잘못된 요청입니다.");
+      });
+  } catch {
+    res.status(400).send("잘못된 요청입니다.");
+  }
 };
 
 exports.post_accounts_login = async (req, res) => {

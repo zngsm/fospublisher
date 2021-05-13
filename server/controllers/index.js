@@ -17,4 +17,6 @@ router.use("/api/images", require("./images"));
 
 router.use("/api/follow", require("./follow"));
 
+router.use("/api/search", require("./search"));
+
 module.exports = router;

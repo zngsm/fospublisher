@@ -11,7 +11,7 @@
             <p class="member-kukde-light">비밀번호 확인</p>
             <div class="d-flex align-center flex-column">
               <div style="width: 25vw">
-                <v-form ref="form">
+                <v-form ref="form" v-on:submit.prevent="changePassword">
                   <v-text-field
                     label="현재 비밀번호"
                     v-model.lazy="password"

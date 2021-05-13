@@ -73,15 +73,13 @@
                     <!-- -------------------------------------------------------- -->
                   </div>
                   <div>
-                    <v-form ref="form">
-                      <v-text-field
-                        label="* 비 밀 번 호 확 인"
-                        type="password"
-                        autocomplete="off"
-                        v-model.lazy="passwordConfirm"
-                      >
-                      </v-text-field>
-                    </v-form>
+                    <v-text-field
+                      label="* 비 밀 번 호 확 인"
+                      type="password"
+                      autocomplete="off"
+                      v-model.lazy="passwordConfirm"
+                    >
+                    </v-text-field>
                     <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
                     <div
                       class="validation-kwandong"

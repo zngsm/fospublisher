@@ -35,7 +35,7 @@
         <img
           v-if="page == Object.keys(totalTimelines).length - 1"
           src="@/assets/timeline/start_final.png"
-          class="timeline-img-road-start"
+          class="timeline-img-road-start-final"
         />
         <img
           v-else
@@ -145,15 +145,8 @@ export default {
       monthSrc: null,
     };
   },
-  created() {
-    this.setBirthDate();
-  },
+  created() {},
   methods: {
-    setBirthDate() {
-      this.year = this.birth.split("-")[0];
-      this.month = this.birth.split("-")[1];
-      this.monthSrc = this.month + ".png";
-    },
     prevPage() {
       this.page = this.page -= 3;
     },

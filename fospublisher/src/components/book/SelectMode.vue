@@ -11,7 +11,7 @@
       /><span>쓰기</span>
     </button>
     <br />
-    <button class="mt-10">
+    <!-- <button class="mt-10"> -->
     <button @click="$emit('read')">
       <img
         class="iconImg"
@@ -59,32 +59,34 @@
         alt="유저목록 아이콘"
       /><span>유저목록</span>
     </button>
-    
-    <InviteModal 
-      v-if="openInviteModal == true" 
-      :openInviteModal="openInviteModal" 
-      @closeInviteModal="openInviteModal = false" />
 
-    <FollowListModal 
-      v-if="openFollowListModal == true" 
-      :openFollowListModal="openFollowListModal" 
-      @closeFollowListModal="openFollowListModal = false" />
+    <InviteModal
+      v-if="openInviteModal == true"
+      :openInviteModal="openInviteModal"
+      @closeInviteModal="openInviteModal = false"
+    />
+
+    <FollowListModal
+      v-if="openFollowListModal == true"
+      :openFollowListModal="openFollowListModal"
+      @closeFollowListModal="openFollowListModal = false"
+    />
   </div>
 </template>
 
 <script>
-import InviteModal from '@/components/follow/InviteModal.vue'
-import FollowListModal from '@/components/follow/FollowListModal.vue'
+import InviteModal from "@/components/follow/InviteModal.vue";
+import FollowListModal from "@/components/follow/FollowListModal.vue";
 export default {
   data() {
     return {
       openInviteModal: false,
-      openFollowListModal: false
-    }
+      openFollowListModal: false,
+    };
   },
   components: {
     InviteModal,
-    FollowListModal
+    FollowListModal,
   },
   methods: {
     goToCreate() {

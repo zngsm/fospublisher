@@ -28,11 +28,10 @@
                 </v-col>
               </v-row>
             </div>
-            <!-- <img src="`@/assets/timeline/${month}.png`" alt="사진" /> -->
           </div>
           <img
             src="@/assets/timeline/start_final.png"
-            class="timeline-img-road-start"
+            class="timeline-img-road-start-final"
           />
         </div>
       </div>
@@ -63,8 +62,6 @@
                 </v-col>
               </v-row>
             </div>
-            <img :src="`../../assets/timeline/${monthSrc}`" alt="사진" />
-            <!-- <img src="@/assets/timeline/11.png" alt="사진" /> -->
           </div>
           <img
             src="@/assets/timeline/start_right.png"
@@ -141,16 +138,8 @@ export default {
       monthSrc: null,
     };
   },
-  created() {
-    this.setBirthDate();
-  },
-  methods: {
-    setBirthDate() {
-      this.year = this.birth.split("-")[0];
-      this.month = this.birth.split("-")[1];
-      this.monthSrc = this.month + ".png";
-    },
-  },
+  created() {},
+  methods: {},
 };
 </script>
 

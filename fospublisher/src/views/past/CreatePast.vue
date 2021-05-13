@@ -309,6 +309,7 @@ export default {
         this.dialog = true;
         return;
       }
+      // 쪼개기
       this.form.check = true;
       this.interval = false;
       this.autoSaveKey = false;
@@ -381,6 +382,7 @@ export default {
         this.chapId = sessionStorage.getItem("chapId");
         this.form.title = sessionStorage.getItem("title");
         this.form.content = sessionStorage.getItem("content");
+        // 다시 분리하기
         this.form.year = sessionStorage.getItem("year");
         if (this.status != "PAST") {
           this.form.month = sessionStorage.getItem("month");

@@ -2,20 +2,27 @@
   <div>
     <Navbar />
     <div class="timeline-container">
-      <div class="timeline-header d-flex justify-content-between">
-        <div class="timeline-header-btn">
-          <v-btn v-if="!edit" @click="changeEditMode">편집모드</v-btn>
-          <v-btn v-else @click="changeEditMode">편집 중</v-btn>
+      <div class="timeline-header">
+        <div class="timeline-header-title">
+          일대기
         </div>
-        <div class="timeline-header-toggle">
-          <v-switch
-            v-model="sliceContents"
-            inset
-            :label="sliceContents ? '부분' : '전체'"
-          ></v-switch>
+        <div class="timeline-header-content">
+          당신의 인생 여정을 한눈에 확인해보세요
+        </div>
+        <div class="timeline-header-option d-flex justify-content-between">
+          <div class="timeline-header-btn d-flex align-center">
+            <v-btn v-if="!edit" @click="changeEditMode">편집모드</v-btn>
+            <v-btn v-else @click="changeEditMode">편집 중</v-btn>
+          </div>
+          <div class="timeline-header-toggle">
+            <v-switch
+              v-model="sliceContents"
+              inset
+              :label="sliceContents ? '부분' : '전체'"
+            ></v-switch>
+          </div>
         </div>
       </div>
-
       <TimeBody
         v-if="!sliceContents"
         :totalTimelines="totalTimelines"

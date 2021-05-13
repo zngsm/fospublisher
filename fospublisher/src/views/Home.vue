@@ -1,18 +1,77 @@
 <template>
-  <v-container>
-    <p>로그인 페이지로 이동</p>
-    <v-btn @click="$router.push('Login')">로그인</v-btn>
-    <v-btn @click="$router.push('timeline')">타임라인</v-btn>
-    <nav-profile></nav-profile>
-    <writer-info></writer-info>
-  </v-container>
+  <div>
+    <div class="home">
+      <video muted autoplay loop>
+        <source src="../assets/video/Train.mp4" type="video/mp4" />
+      </video>
+      <div class="home-body">
+        <div class="home-body-about">
+          <div class="home-body-logo">
+            <img src="@/assets/logo.png" alt="로고" />
+          </div>
+          <div class="home-body-description">
+            <div class="home-title">역전기록소</div>
+            <div class="home-content">; 당신의 여정을 기록하세요</div>
+          </div>
+        </div>
+        <!-- <p class="home-body-question">{{ todayQuestion }}</p> -->
+        <p class="typing" id="typingQuestion"></p>
+        <v-btn class="home-body-btn" @click="start">지금 시작하기</v-btn>
+        <!-- <div class="home-body-btn" @click="start">지금 시작하기</div> -->
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import NavProfile from "../components/main/NavProfile.vue";
-import WriterInfo from "../components/member/WriterInfo.vue";
+import "@/assets/css/home.css";
+import { getQuestion } from "@/api/past.js";
+import { mapState } from "vuex";
+import store from "@/store";
+import jquery from "jquery";
+require("jquery");
 export default {
   name: "Home",
-  components: { NavProfile, WriterInfo },
+  data() {
+    return {
+      questionWordBreak: [],
+      typingBool: false,
+      typingIdx: 0,
+    };
+  },
+  methods: {
+    start() {
+      if (localStorage.getItem("userId")) {
+        this.$router.push("Main");
+      } else {
+        this.$router.push("Login");
+      }
+    },
+  },
+  mounted() {
+    getQuestion(1, (res) => {
+      store.commit("question/setQuestion", res.data.question);
+      store.commit("question/setQuestionId", res.data.id);
+      this.questionWordBreak = this.todayQuestion.split("");
+    });
+    if (!this.typingBool) {
+      this.typingBool = true;
+      let tyInt = setInterval(() => {
+        if (this.typingIdx < this.questionWordBreak.length) {
+          jquery(".typing").append(this.questionWordBreak[this.typingIdx]);
+          this.typingIdx++;
+        } else {
+          clearInterval(tyInt);
+        }
+      }, 200);
+    }
+  },
+  computed: {
+    ...mapState({
+      todayQuestion: (state) => state.question.todayQuestion,
+      todayQuestionId: (state) => state.question.todayQuestionId,
+    }),
+  },
 };
 </script>
+<style></style>

@@ -1,6 +1,6 @@
 .timeline-container {
   width: 1372px;
-  margin-left: 113px;
+  margin-left: 143px;
   padding-bottom: 50px;
 }
 .timeline-header {
@@ -47,6 +47,10 @@
 .timeline-img-road-start {
   width: 1131px;
   margin-top: 124px;
+}
+.timeline-img-road-start-final {
+  width: 1131px;
+  margin-top: 107px;
 }
 .timeline-img-start {
   width: 183px;

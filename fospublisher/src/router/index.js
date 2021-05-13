@@ -104,13 +104,13 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
-    beforeEnter: (to, from, next) => {
-      if (localStorage.getItem("userId")) {
-        next({ name: "Main" });
-      } else {
-        next();
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if (localStorage.getItem("userId")) {
+    //     next({ name: "Main" });
+    //   } else {
+    //     next();
+    //   }
+    // },
   },
   {
     path: "/checkPassword",

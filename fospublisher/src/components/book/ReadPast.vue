@@ -21,8 +21,8 @@
       "
       id="flipbook"
     >
-      <div class="hard">
-        {{ bookInfo.cover.title }}
+      <div class="hard d-flex">
+        <div class="mx-auto my-auto" style="fontSize: 50px;">{{ bookInfo.cover.title }}</div>
       </div>
       <div class="hard">
         <WriterInfo />
@@ -57,7 +57,7 @@
         <p v-html="timechapter.content"></p>
       </div> -->
     </div>
-    <p>{{ temp }}</p>
+    <!-- <p>{{ temp }}</p> -->
     <v-dialog v-model="dialog" width="25vw">
       <MessageModal
         body-content="정말 삭제하시겠습니까?"

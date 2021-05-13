@@ -11,6 +11,11 @@
         일대기
       </button>
     </div>
+    <div>
+      <button class="navtab main-kukde-light" @click="$router.push('library')">
+        보관함
+      </button>
+    </div>
     <p class="navbar-question nav-kukde-light">{{ todayQuestion }}</p>
     <!-- <div v-for="(item, idx) in question" :key="idx">
       <p class="navbar-question nav-kukde-light">{{ item }}</p>

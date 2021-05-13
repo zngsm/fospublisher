@@ -1,14 +1,15 @@
 <template>
   <div>
     <navbar />
-    <v-img
-      contain
-      src="../../assets/light/center.png"
-      alt="기본조명"
-      height="100vh"
-    />
-    <div class="pastBook">
-      <PastBook />
+    <div style="text-align: center;">
+      <img
+        height="900px"
+        src="../../assets/light/center.png"
+        alt="기본조명"
+      />
+      <div class="pastBook">
+        <PastBook />
+      </div>
     </div>
   </div>
 </template>
@@ -36,4 +37,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.pastBook {
+  position: absolute;
+  top: 210px;
+  left: 50%; 
+  transform: translateX(-280px);
+}
+</style>

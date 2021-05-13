@@ -12,6 +12,7 @@ import CreatePast from "../views/past/CreatePast.vue";
 import ReadPast from "../components/book/ReadPast.vue";
 import Design from "../components/book/Design.vue";
 import Demo from "../views/Demo.vue";
+import Library from "../views/Library.vue";
 
 
 Vue.use(VueRouter);
@@ -182,6 +183,18 @@ const routes = [
     path: "/demo",
     name: "Demo",
     component: Demo,
+  },
+  {
+    path: "/library",
+    name: "Library",
+    component: Library,
+    // beforeEnter(to, from, next) {
+    //   if (localStorage.getItem("userId")) {
+    //     next();
+    //   } else {
+    //     next({ name: "Login" });
+    //   }
+    // },
   },
 ];
 

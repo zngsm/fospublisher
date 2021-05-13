@@ -1,7 +1,7 @@
 <template>
   <!-- 선택 버튼 -->
-  <div class="button-container writer-kwandong mt-10">
-    <button @click="goToCreate" class="mt-10">
+  <div class="button-container writer-kwandong ">
+    <button @click="goToCreate" class="button-each">
       <img
         class="iconImg"
         width="70px"
@@ -10,9 +10,7 @@
         style="width:52px vertical-align:bottom"
       /><span>쓰기</span>
     </button>
-    <br />
-    <!-- <button class="mt-10"> -->
-    <button @click="$emit('read')">
+    <button @click="$emit('read')" class="button-each">
       <img
         class="iconImg"
         width="60px"
@@ -20,8 +18,7 @@
         alt="읽기 아이콘"
       /><span>읽기</span>
     </button>
-    <br />
-    <button @click="$router.push('Design')" class="mt-10">
+    <button @click="$router.push('Design')" class="button-each">
       <img
         class="iconImg"
         width="60px"
@@ -29,9 +26,8 @@
         alt="디자인 아이콘"
       /><span>디자인</span>
     </button>
-    <br />
 
-    <button class="mt-10">
+    <button class="button-each">
       <img
         class="iconImg"
         width="70px"
@@ -39,9 +35,8 @@
         alt="출품 아이콘"
       /><span>출품</span>
     </button>
-    <br />
 
-    <button class="mt-10" @click="openInviteModal = true">
+    <button @click="openInviteModal = true" class="button-each">
       <img
         class="iconImg"
         width="70px"
@@ -49,9 +44,8 @@
         alt="유저검색 아이콘"
       /><span>유저검색</span>
     </button>
-    <br />
 
-    <button class="mt-10" @click="openFollowListModal = true">
+    <button @click="openFollowListModal = true" class="button-each">
       <img
         class="iconImg"
         width="100px"

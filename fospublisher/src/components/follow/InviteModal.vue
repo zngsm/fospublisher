@@ -6,17 +6,17 @@
       width="500"
     >
       <v-card
-        class="member-kukde-light justify-center d-flex align-content-space-around flex-wrap"
+        class="member-kukde-light py-1"
         min-height="20vh"
       >
         <v-card-title>
-          <v-row class="justify-center">
+          <v-row class="justify-center" style="fontSize: 30px;">
             초대
           </v-row>
         </v-card-title>
 
         <v-card-text>
-          <v-row class="justify-center mx-4 mt-5 align-baseline">
+          <v-row class="justify-center mx-1 mt-5 align-baseline">
             <v-text-field
               label="유저 검색"
               v-model="username"
@@ -28,9 +28,11 @@
             </v-btn>
           </v-row>
         </v-card-text>
-        <v-card
+            <v-card
+              v-scroll.self="onScroll"
+              class="overflow-y-auto mx-auto"
+              height="300"
               max-width="450"
-              class="mx-auto"
             >
               <v-list three-line>
                 <template v-for="(item, index) in items">
@@ -74,6 +76,8 @@
   </div>
 </template>
 <script>
+// import { followUser } from "@/api/follow";
+
 export default {
   props: [
     'openInviteModal',

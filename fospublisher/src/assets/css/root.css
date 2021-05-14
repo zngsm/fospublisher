@@ -14,6 +14,23 @@
   font-style: normal;
 }
 
+:root {
+  /* color */
+  --color-main: #f5f4ee;
+  --color-dark: #231815;
+  --color-white: #ffffff;
+  --color-black: #141414;
+  /* 폰트 color */
+  --font-main: #231815;
+
+  /* size */
+  --font-large: 23x;
+  --font-medium: 17px;
+  --font-small: 13.5px;
+  --size-button: 130px;
+}
+
 #app {
   font-family: GyeonggiBatang;
+  color: #231815;
 }

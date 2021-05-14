@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="member-kukde-light justify-center d-flex align-content-space-around flex-wrap"
+    class="justify-center d-flex align-content-space-around flex-wrap"
     min-height="20vh"
   >
     <v-card-title>

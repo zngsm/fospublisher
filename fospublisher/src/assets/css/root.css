@@ -34,3 +34,19 @@
   font-family: GyeonggiBatang;
   color: #231815;
 }
+
+/* 각 페이지의 제목 */
+.page-title-bold{
+  font-family: GyeonggiTitleM;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.validation{
+  font-family: GyeonggiBatang;
+  font-size: 12px;
+  font-weight: 800;
+  color: red;
+  margin-top: -17px;
+  text-align: left;
+}

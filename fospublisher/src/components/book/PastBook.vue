@@ -57,6 +57,7 @@ export default {
     readPastBook(
       (res) => {
         this.bookInfo = res.data;
+        sessionStorage.setItem("bookInfo", JSON.stringify(this.bookInfo));
         this.getFontSize(res.data.cover.font);
       },
       (err) => console.error(err)

@@ -1,26 +1,31 @@
 <template>
   <div>
     <Navbar />
-    <div class="bar">
+    <!-- <div class="bar">
       <button>
         <v-icon large color="black">mdi-format-list-bulleted</v-icon>
         <p>목차</p>
       </button>
-    </div>
+    </div> -->
     <!-- 책클릭 -> 읽기모드 -->
-    <div class="mx-auto"
+    <div
+      class="mx-auto"
       v-if="
         this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
       "
       id="flipbook"
     >
       <div class="hard d-flex">
-        <div class="mx-auto my-auto" style="fontSize: 50px;">{{ bookInfo.cover.title }}</div>
+        <div class="mx-auto my-auto" style="fontSize: 50px;">
+          {{ bookInfo.cover.title }}
+        </div>
       </div>
       <div class="hard">
         <WriterInfo />
       </div>
-      <div class="read-select"><SelectMode @read="read" /></div>
+      <div class="read-select">
+        <SelectMode @read="read" />
+      </div>
       <div>
         <h1>목차</h1>
       </div>
@@ -49,6 +54,7 @@
       <div v-for="(item, idx) in temp" :key="idx">
         <p v-html="item"></p>
       </div>
+
       <div class="hard"></div>
       <!-- <div>
         <h1>{{ timechapter.title }}</h1>
@@ -125,13 +131,14 @@ export default {
           },
         ],
       },
+      currentId: null,
       dialog: false,
       temp: ["", "", "", "", ""],
     };
   },
   methods: {
     read() {
-      this.mainRead(5);
+      window.$("#flipbook").turn("next");
     },
     modifyChapter(data) {
       let chapter = data;
@@ -147,19 +154,26 @@ export default {
     },
     deleteModal(id) {
       console.log("delete");
-      this.dialog = false;
-      let currentId = id;
+      this.dialog = true;
+      this.currentId = id;
+    },
+    deleteChapter() {
+      let id = this.currentId;
+      console.log("currentId", this.currentId);
+      console.log("id", id);
       deletePastChapter(
-        currentId,
+        id,
         () => {
           // timeline에서 삭제면 일대기로, 읽기모드에서 삭제면 저자소개로 돌아가기
           if (this.$route.params.id) {
             this.$router.push("timeline");
           } else {
-            this.mainRead(3);
+            window.$("#flipbook").turn("next");
           }
+          this.dialog = false;
         },
         (err) => {
+          this.dialog = false;
           console.error(err);
           alert("삭제 실패하였습니다. 다시 시도해주세요");
         }
@@ -212,33 +226,47 @@ export default {
         }
       );
     },
-    turn() {
-      window.$("#flipbook").bind("turning", function(event, page) {
-        if (page == 1) {
-          event.preventDefault();
-        }
-      });
-    },
     getInfo() {
       // 메인->책읽기
-      if (
-        this.bookInfo.content.length == 0 ||
-        this.bookInfo.content[0].title !== ""
-      ) {
-        console.log("mainRead");
-        this.mainRead(3);
-      } else {
+      // if (info) {
+      //   console.log("mainRead");
+      //   this.bookInfo = info;
+      //   this.mainRead(3);
+      // } else {
+      //   console.log("timelineRead");
+      //   this.timelineRead();
+      // }
+      if (this.$route.params.id) {
         console.log("timelineRead");
         this.timelineRead();
+      } else {
+        // let info = JSON.parse(sessionStorage.getItem("bookInfo"));
+        // this.bookInfo = info;
+        console.log("bookInfo에 info");
+        console.log(this.bookInfo);
+        this.mainRead(3);
       }
+      // if (
+      //   this.bookInfo.content.length == 0 ||
+      //   this.bookInfo.content[0].title !== ""
+      // ) {
+      //   console.log("mainRead");
+      //   this.mainRead(3);
+      // } else {
+      //   console.log("timelineRead");
+      //   this.timelineRead();
+      // }
     },
   },
+  // watch: {
+  //   bookInfo() {
+  //     this.bookInfo = JSON.parse(sessionStorage.getItem("bookInfo"));
+  //   },
+  // },
   mounted() {
     setTimeout(() => {
       this.getInfo();
     }, 200);
-    console.log(this.bookInfo);
-    sessionStorage.setItem("bookInfo", this.bookInfo);
   },
 };
 </script>

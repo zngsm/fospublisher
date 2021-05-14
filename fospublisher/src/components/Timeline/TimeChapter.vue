@@ -8,24 +8,9 @@
         >lock</v-icon
       >
 
-      <v-badge
-        v-if="!timeline.check"
-        bordered
-        Dot
-        color="rgba(0,0,0,0.3)"
-        icon="mdi-pencil-outline"
-        title="작성중입니다."
-      >
-        <div class="timeline-text-hidden" @mouseover="openPreview">
-          {{ timeline.title ? timeline.title : "제목없음" }}
-        </div>
-      </v-badge>
-      <div v-else class="timeline-text-hidden" @mouseover="openPreview">
+      <div class="timeline-text-hidden" @mouseover="openPreview">
         {{ timeline.title ? timeline.title : "제목없음" }}
       </div>
-      <!-- <div class="timeline-text-hidden" @mouseover="openPreview">
-        {{ timeline.title ? timeline.title : "제목없음" }}
-      </div> -->
     </div>
     <div
       :class="{ 'timeline-title-hover': preview, 'd-none': !preview }"

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import createPersistedState from "vuex-persistedstate";
 import auth from "./auth";
 import error from "./error";
 import timeline from "./timeline";
@@ -26,4 +26,9 @@ export default new Vuex.Store({
     },
   },
   modules: { auth, error, timeline, question },
+  plugins: [
+    createPersistedState({
+      paths: ["question"],
+    }),
+  ],
 });

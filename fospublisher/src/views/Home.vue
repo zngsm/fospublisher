@@ -48,22 +48,45 @@ export default {
       }
     },
   },
-  mounted() {
-    getQuestion(1, (res) => {
-      store.commit("question/setQuestion", res.data.question);
-      store.commit("question/setQuestionId", res.data.id);
-      this.questionWordBreak = this.todayQuestion.split("");
-    });
-    if (!this.typingBool) {
-      this.typingBool = true;
-      let tyInt = setInterval(() => {
-        if (this.typingIdx < this.questionWordBreak.length) {
-          jquery(".typing").append(this.questionWordBreak[this.typingIdx]);
-          this.typingIdx++;
-        } else {
-          clearInterval(tyInt);
+  async mounted() {
+    let today = new Date().toLocaleDateString();
+    let savedDay = localStorage.getItem("today");
+    if (!savedDay || savedDay != today || !this.todayQuestion) {
+      await getQuestion(
+        this.todayQuestionId ? this.todayQuestionId : 1,
+        (res) => {
+          store.commit("question/setQuestion", res.data.question);
+          store.commit("question/setQuestionId", res.data.id);
+          this.questionWordBreak = this.todayQuestion.split("");
+          if (!this.typingBool) {
+            this.typingBool = true;
+            let tyInt = setInterval(() => {
+              if (this.typingIdx < this.questionWordBreak.length) {
+                jquery(".typing").append(
+                  this.questionWordBreak[this.typingIdx]
+                );
+                this.typingIdx++;
+              } else {
+                clearInterval(tyInt);
+              }
+            }, 200);
+          }
         }
-      }, 200);
+      );
+      localStorage.setItem("today", today);
+    } else {
+      this.questionWordBreak = this.todayQuestion.split("");
+      if (!this.typingBool) {
+        this.typingBool = true;
+        let tyInt = setInterval(() => {
+          if (this.typingIdx < this.questionWordBreak.length) {
+            jquery(".typing").append(this.questionWordBreak[this.typingIdx]);
+            this.typingIdx++;
+          } else {
+            clearInterval(tyInt);
+          }
+        }, 200);
+      }
     }
   },
   computed: {

@@ -343,6 +343,10 @@ export default {
         return;
       }
       // 쪼개기
+      console.log(this.form.content);
+      this.insertPageBreak();
+      console.log(this.form.content);
+
       this.form.check = true;
       this.interval = false;
       this.autoSaveKey = false;
@@ -360,7 +364,6 @@ export default {
         if (this.status == "PAST") {
           this.updatePastCompleted();
         } else {
-          console.log(this.form);
           this.updateFutureCompleted();
         }
       }
@@ -491,7 +494,6 @@ export default {
             }
           } else {
             if (this.status == "PAST") {
-              console.log(this.form);
               this.updatePastAuto();
             } else {
               this.updateFutureAuto();
@@ -581,14 +583,14 @@ export default {
     }),
   },
   watch: {
-    interval: function () {
+    interval: function() {
       if (this.interval == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);
         return;
       }
     },
-    autoSaveKey: function () {
+    autoSaveKey: function() {
       if (this.autoSaveKey == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);

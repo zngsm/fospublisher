@@ -184,6 +184,7 @@
   color: #999696;
   text-align: left;
   word-break: break-all;
+  overflow: hidden;
 }
 .timeline-preview-button {
   display: flex;

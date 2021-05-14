@@ -49,7 +49,7 @@ export default {
     sendBookInfo() {
       this.$router.push({
         name: "ReadPast",
-        params: { bookInfo: this.bookInfo },
+        params: { bookInfo: this.bookInfo, status: "PAST" },
       });
     },
   },

@@ -142,6 +142,7 @@ export default {
     },
     modifyChapter(data) {
       let chapter = data;
+      let status = this.$route.status;
       sessionStorage.setItem("title", chapter.title);
       sessionStorage.setItem("content", chapter.content);
       sessionStorage.setItem("year", chapter.year);
@@ -149,7 +150,7 @@ export default {
       sessionStorage.setItem("question", chapter.question);
       this.$router.push({
         name: "CreatePast",
-        params: { id: chapter.id, status: "PAST" },
+        params: { id: chapter.id, status: status },
       });
     },
     deleteModal(id) {

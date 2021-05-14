@@ -1,9 +1,7 @@
 <template>
   <v-container fluid class="member-kwandong">
     <v-row class="align-center" style="height: 100vh">
-      <v-col cols="6">
-        <left-side></left-side>
-      </v-col>
+      <v-col cols="6"> </v-col>
       <v-divider vertical></v-divider>
       <v-col cols="6">
         <v-row justify="center">
@@ -63,13 +61,11 @@
 </template>
 
 <script>
-import "../../assets/css/font.css";
-import LeftSide from "../../components/member/LeftSide";
 import MessageModal from "../../components/MessageModal";
 import { passwordConfirm } from "@/api/account";
 
 export default {
-  components: { LeftSide, MessageModal },
+  components: { MessageModal },
   data: () => ({
     password: "",
     form: "",

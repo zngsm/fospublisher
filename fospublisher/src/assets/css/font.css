@@ -25,10 +25,6 @@
   letter-spacing: 1vw;
   padding-bottom: 12px;
 }
-.introduce-kwandong {
-  font-family: "Kwandong-otf";
-  font-size: 1.5vh;
-}
 .validation-kwandong {
   font-family: "Kwandong-otf";
   font-size: 12px;
@@ -38,14 +34,6 @@
 .member-kukde-light {
   font-family: "Kukde-aLt";
   line-height: 5vw;
-  font-size: 1.8vw;
-  font-weight: 200;
-}
-.kukde-bold {
-  font-family: "Kukde-bBd";
-}
-.kekde-light {
-  font-family: "Kukde-aLt";
   font-size: 1.8vw;
   font-weight: 200;
 }

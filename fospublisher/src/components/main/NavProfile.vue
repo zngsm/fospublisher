@@ -2,10 +2,10 @@
   <v-col>
     <v-container fluid>
       <v-row justify="center">
-        <v-menu bottom min-width="12vw" rounded offset-x>
+        <v-menu bottom min-width="60px" rounded offset-x>
           <template v-slot:activator="{ on }">
-            <v-btn fab icon v-on="on" width="10vh" height="10vh" id="test">
-              <v-avatar size="10vh">
+            <v-btn fab icon v-on="on" width="100px" height="100px" id="test">
+              <v-avatar size="100px">
                 <img :src="url" style="object-fit: cover" />
               </v-avatar>
             </v-btn>

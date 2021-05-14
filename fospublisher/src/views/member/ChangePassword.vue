@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="member-kwandong">
+  <v-container fluid>
     <v-row class="align-center" style="height: 100vh">
       <v-col cols="6">
         <left-side></left-side>
@@ -8,7 +8,7 @@
       <v-col cols="6">
         <v-row justify="center">
           <div style="width: 30vw">
-            <p class="member-kukde-light">비밀번호 변경</p>
+            <p>비밀번호 변경</p>
             <v-row class="justify-center align-content-around">
               <v-col class="d-flex flex-column justify-space-around">
                 <div>
@@ -114,14 +114,12 @@
 </template>
 
 <script>
-import "../../assets/css/font.css";
-import LeftSide from "../../components/member/LeftSide";
 import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 import MessageModal from "../../components/MessageModal";
 import { editPassword, checkUserInfo, editQuestion } from "@/api/account";
 import { mapState } from "vuex";
 export default {
-  components: { LeftSide, PasswordQuestion, MessageModal },
+  components: { PasswordQuestion, MessageModal },
   data: () => ({
     form: "",
     password: "",

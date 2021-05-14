@@ -1,14 +1,22 @@
 <template>
-  <v-container fluid>
-    <v-row class="align-center" style="height: 100vh">
-      <v-col cols="6">
-        <left-side></left-side>
+  <v-container fluid grid-list-md fill-height>
+    <v-row>
+      <v-col cols="6" class="d-flex align-center justify-end pa-16">
+        <div>
+          <v-img
+            contain
+            src="../../assets/logo.png"
+            alt="역전출판사"
+            height="300px"
+          />
+        </div>
       </v-col>
       <v-divider vertical></v-divider>
-      <v-col cols="6">
-        <v-row justify="center">
-          <div style="width: 30vw">
-            <p>비밀번호 변경</p>
+      <v-col cols="6" class="d-flex align-center pa-16">
+        <div>
+          <p class="page-title-bold">비밀번호 변경</p>
+          <br />
+          <div class="member-input-size">
             <v-row class="justify-center align-content-around">
               <v-col class="d-flex flex-column justify-space-around">
                 <div>
@@ -21,7 +29,7 @@
                   ></v-text-field>
                   <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
                   <div
-                    class="validation-kwandong"
+                    class="validation"
                     v-if="
                       validationErrors.password !== undefined ||
                       this.password == ''
@@ -43,7 +51,7 @@
                   </v-text-field>
                   <!-- validation에 에러가 존재한다면, 해당 key에 해당하는 value(메세지) 보여주기 -->
                   <div
-                    class="validation-kwandong"
+                    class="validation"
                     v-if="
                       validationErrors.passwordConfirm !== undefined ||
                       this.passwordConfirm == ''
@@ -62,52 +70,44 @@
               </v-col>
             </v-row>
           </div>
-          <div class="text-center">
-            <v-row class="justify-center">
+
+          <v-row class="justify-center">
+            <v-btn color="#fff" class="ma-5 member-btn-size" large to="/"
+              >취소</v-btn
+            >
+            <div v-if="!userId">
               <v-btn
-                color="#fff"
-                class="ma-5"
-                style="width: 12vw"
-                to="/"
-                x-large
-                >취소</v-btn
+                color="#231815"
+                class="ma-5 member-btn-size"
+                dark
+                large
+                type="submit"
+                @click="changePw"
+                >비밀번호 변경</v-btn
               >
-              <div v-if="!userId">
-                <v-btn
-                  color="#231815"
-                  class="ma-5"
-                  style="width: 12vw"
-                  dark
-                  x-large
-                  type="submit"
-                  @click="changePw"
-                  >비밀번호 변경</v-btn
-                >
-              </div>
-              <div v-else>
-                <v-btn
-                  color="#231815"
-                  class="ma-5"
-                  style="width: 12vw"
-                  dark
-                  x-large
-                  type="submit"
-                  @click="changePwOnly"
-                  >비밀번호 변경</v-btn
-                >
-              </div>
-              <!-- Start 비밀번호 변경 모달 -->
-              <v-dialog v-model="dialog" width="25vw">
-                <message-modal
-                  v-if="isSuccessChangePw"
-                  body-content="변경이 완료되었습니다."
-                  @submit="moveToLogin"
-                />
-              </v-dialog>
-              <!-- End  비밀번호 변경 모달 -->
-            </v-row>
-          </div>
-        </v-row>
+            </div>
+            <div v-else>
+              <v-btn
+                color="#231815"
+                class="ma-5 member-btn-size"
+                dark
+                large
+                type="submit"
+                @click="changePwOnly"
+                >비밀번호 변경</v-btn
+              >
+            </div>
+            <!-- Start 비밀번호 변경 모달 -->
+            <v-dialog v-model="dialog" width="25vw">
+              <message-modal
+                v-if="isSuccessChangePw"
+                body-content="변경이 완료되었습니다."
+                @submit="moveToLogin"
+              />
+            </v-dialog>
+            <!-- End  비밀번호 변경 모달 -->
+          </v-row>
+        </div>
       </v-col>
     </v-row>
   </v-container>

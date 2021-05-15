@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import "../../assets/css/member.css";
 import MessageModal from "../../components/MessageModal";
 import { passwordConfirm } from "@/api/account";
 

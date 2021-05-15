@@ -98,7 +98,7 @@
               >
             </div>
             <!-- Start 비밀번호 변경 모달 -->
-            <v-dialog v-model="dialog" width="25vw">
+            <v-dialog v-model="dialog" width="300px">
               <message-modal
                 v-if="isSuccessChangePw"
                 body-content="변경이 완료되었습니다."

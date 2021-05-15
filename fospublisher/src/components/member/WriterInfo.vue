@@ -3,21 +3,14 @@
     <v-col cols="10" class="align-center">
       <div v-if="!editMode" class="justify-center align-center text-center">
         <v-col>
-          <v-btn
-            class="d-flex offset-9"
-            fab
-            x-large
-            text
-            @click="changeMode"
-            style="margin-bottom: -6vh"
-          >
+          <v-btn class="d-flex offset-9" fab x-large text @click="changeMode">
             <v-col>
               <v-icon x-large>mdi-file-document-edit-outline</v-icon>
               <p class="ma-0">수정하기</p>
             </v-col>
           </v-btn>
           <avatar-select editInfo></avatar-select>
-          <div class="writer-kwandong">{{ nickname }}</div>
+          <div>{{ nickname }}</div>
           <v-divider class="ma-3"></v-divider>
           <div
             v-html="addEnter"
@@ -36,7 +29,6 @@
               @sendImg="imgReceive"
             ></avatar-select>
             <v-text-field
-              class="writer-kwandong"
               rounded
               outlined
               dense
@@ -48,7 +40,7 @@
             <v-divider class="ma-3"></v-divider>
             <date-picker editMode @birthday="dateReceive" />
             <v-divider class="ma-3"></v-divider>
-            <div class="introduce-kwandong text-start">
+            <div class="text-start">
               <v-textarea
                 clearable
                 auto-grow
@@ -60,25 +52,25 @@
             </div>
             <v-row class="justify-space-around">
               <v-btn
-                class="writer-kwandong"
                 color="#fff"
-                style="width: 15vw; margin: 1vh 0"
+                class="ma-5 member-btn-size"
+                large
                 @click="changeMode"
               >
                 취소
               </v-btn>
               <v-btn
-                class="writer-kwandong"
                 color="#231815"
-                style="width: 15vw; margin: 1vh 0"
+                class="ma-5 member-btn-size"
                 dark
+                large
                 type="submit"
                 @click="editUserInfo"
               >
                 회원정보 변경
               </v-btn>
               <!-- Start 회원정보수정 모달 -->
-              <v-dialog v-model="dialog" width="25vw">
+              <v-dialog v-model="dialog" width="300px">
                 <message-modal
                   v-if="isEdited"
                   body-content="회원정보 수정이 완료되었습니다."

@@ -43,6 +43,30 @@
           class="timeline-img-road-start"
         />
       </div>
+      <div
+        v-else-if="page == Object.keys(totalTimelines).length - 1"
+        class="timeline-img-start-ing"
+      >
+        <TimeNode
+          :timelines="totalTimelines[page]"
+          class="timeline timeline-chapter"
+          :idx="String(page)"
+        />
+        <img
+          @click="prevPage"
+          src="@/assets/timeline/tunnel_cut.png"
+          class="timeline-img-tunnel timeline-img-tunnel-prev-position"
+        />
+        <span @click="prevPage" class="timeline-img-tunnel-prev">
+          <img
+            src="https://img.icons8.com/metro/40/ffffff/long-arrow-left.png"
+          />
+        </span>
+        <img
+          src="@/assets/timeline/final_right.png"
+          class="timeline-img-road-left-right"
+        />
+      </div>
       <div v-else class="timeline-img-start-ing">
         <TimeNode
           :timelines="totalTimelines[page]"
@@ -54,7 +78,11 @@
           src="@/assets/timeline/tunnel_cut.png"
           class="timeline-img-tunnel timeline-img-tunnel-prev-position"
         />
-        <span @click="prevPage" class="timeline-img-tunnel-prev">이전</span>
+        <span @click="prevPage" class="timeline-img-tunnel-prev">
+          <img
+            src="https://img.icons8.com/metro/40/ffffff/long-arrow-left.png"
+          />
+        </span>
         <img
           src="@/assets/timeline/left_right.png"
           class="timeline-img-road-left-right"
@@ -118,7 +146,11 @@
           src="@/assets/timeline/tunnel_short.png"
           class="timeline-img-tunnel timeline-img-tunnel-next-position"
         />
-        <span @click="nextPage" class="timeline-img-tunnel-next">다음</span>
+        <span @click="nextPage" class="timeline-img-tunnel-next">
+          <img
+            src="https://img.icons8.com/metro/40/ffffff/long-arrow-right.png"
+          />
+        </span>
       </div>
     </div>
   </div>

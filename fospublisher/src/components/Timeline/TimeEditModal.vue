@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title>
-        <span class="headline">편집모드</span>
+        <span class="headline">순서편집</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -111,7 +111,7 @@ export default {
         context[i] = selectedData;
       }
       updateTimeline(context, this.$emit("getTimeline"), (err) => {
-        console.log(err);
+        console.error(err);
       });
       this.$store.commit("timeline/setEditMode", !this.edit);
     },
@@ -134,7 +134,7 @@ export default {
           this.allData = res.data;
         },
         (err) => {
-          console.log(err);
+          console.error(err);
         }
       );
     },

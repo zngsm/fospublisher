@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     goToCreate() {
-      let status = this.$route.status;
+      let status = this.$route.params.status;
       this.$router.push({ name: "CreatePast", params: { status: status } });
     },
   },

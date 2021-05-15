@@ -11,7 +11,7 @@
         </div>
         <div class="timeline-header-option d-flex justify-content-between">
           <div class="timeline-header-btn d-flex align-center">
-            <v-btn v-if="!edit" @click="changeEditMode">편집모드</v-btn>
+            <v-btn v-if="!edit" @click="changeEditMode">순서편집</v-btn>
             <v-btn v-else @click="changeEditMode">편집 중</v-btn>
           </div>
           <div class="timeline-header-toggle">
@@ -64,7 +64,7 @@ export default {
       birth: null,
       name: null,
       dialogue: false,
-      sliceContents: true,
+      sliceContents: false,
     };
   },
   created() {

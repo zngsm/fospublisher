@@ -106,7 +106,7 @@
   position: absolute;
   color: white;
   left: 54px;
-  top: -55px;
+  top: -65px;
 }
 .timeline-img-tunnel-prev:hover {
   text-decoration: underline;
@@ -119,8 +119,8 @@
 }
 .timeline-img-tunnel-next {
   position: absolute;
-  bottom: 30px;
-  right: 72px;
+  bottom: 15px;
+  right: 65px;
   color: white;
 }
 .timeline-img-tunnel-next:hover {
@@ -135,7 +135,7 @@
 }
 .timeline-title {
   width: auto;
-  font-size: 20px;
+  font-size: var(--font-medium);
   max-width: 150px;
   min-width: 100px;
   padding: 10px;
@@ -148,6 +148,7 @@
   background-color: white;
   color: #999696;
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 .timeline-title-top {
   height: 50px;
@@ -170,7 +171,7 @@
   border: 1px solid;
   cursor: pointer;
   height: 250px;
-  font-size: 26px;
+  font-size: var(--font-large);
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3);
   padding: 5px;
 }
@@ -180,35 +181,41 @@
 .timeline-preview-content {
   height: 120px;
   margin-top: 10px;
-  font-size: 14px;
-  color: #999696;
+  font-size: var(--font-small);
+  color: var(--color-dark);
   text-align: left;
   word-break: break-all;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .timeline-preview-button {
   display: flex;
   justify-content: space-around;
 }
 .timeline-year {
+  cursor: default;
   color: white;
   margin: auto;
   background-color: rgb(114, 85, 62);
   width: 70px;
   height: 70px;
   border-radius: 100%;
-  font-size: 20px;
+  font-size: var(--font-large);
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: -25px;
   box-shadow: 8px 8px 8px rgb(0, 0, 0, 0.3);
 }
+.timeline-text-delete {
+  text-decoration: line-through;
+}
 .timeline-text-hidden {
   margin-bottom: 0px;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  max-height: 50px;
 }
 .timline-text-editing {
   text-decoration: line-through;

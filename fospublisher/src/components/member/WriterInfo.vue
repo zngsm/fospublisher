@@ -12,10 +12,7 @@
           <avatar-select editInfo></avatar-select>
           <div>{{ nickname }}</div>
           <v-divider class="ma-3"></v-divider>
-          <div
-            v-html="addEnter"
-            class="md-col-9 introduce-kwandong text-start ma-10"
-          >
+          <div v-html="addEnter" class="md-col-9 text-start ma-10">
             {{ introduce }}
           </div>
         </v-col>
@@ -87,6 +84,7 @@
 </template>
 
 <script>
+import "../../assets/css/member.css";
 import AvatarSelect from "./AvatarSelect";
 import DatePicker from "./DatePicker";
 import MessageModal from "../../components/MessageModal";

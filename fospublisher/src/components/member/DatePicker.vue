@@ -10,7 +10,6 @@
     <template v-slot:activator="{ on, attrs }">
       <div v-if="!editMode">
         <v-text-field
-          class="writer-kwandong"
           v-model="birthday"
           label="* 생 일"
           append-icon="mdi-calendar"
@@ -21,7 +20,6 @@
       </div>
       <div v-else>
         <v-text-field
-          class="writer-kwandong"
           v-model="birthday"
           label="생 일"
           append-icon="mdi-calendar"

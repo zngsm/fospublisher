@@ -114,6 +114,7 @@
 </template>
 
 <script>
+import "../../assets/css/member.css";
 import PasswordQuestion from "../../components/member/PasswordQuestion.vue";
 import MessageModal from "../../components/MessageModal";
 import { editPassword, checkUserInfo, editQuestion } from "@/api/account";

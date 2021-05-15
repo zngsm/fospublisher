@@ -5,3 +5,9 @@
 .member-btn-size{
     width: 120px;
 }
+
+.member-logo{
+    position: fixed;
+    top: 50px;
+    left: 50px;
+}

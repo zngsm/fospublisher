@@ -2,52 +2,23 @@
   <div class="navbar">
     <input type="checkbox" id="menuicon" />
     <label for="menuicon">
-      <!-- <div> -->
-      <i v-if="!isQuestion" class="material-icons" @click="!isQuestion"
-        >expand_less</i
-      >
-      <i v-if="isQuestion" class="material-icons" @click="!isQuestion"
-        >expand_more</i
-      >
+      <i
+        v-if="!isQuestion"
+        class="material-icons"
+        style="color:var(--color-dark);"
+        @click="isQuestion = true"
+        >expand_more
+      </i>
+      <i v-if="isQuestion" class="material-icons" @click="isQuestion = false"
+        >expand_less
+      </i>
       <!-- <v-icon @click="displayQuestion" color="white" style="z-index:2"
           >mdi-chevron-double-up</v-icon
         >-->
-      <!-- </div> -->
     </label>
     <div class="sidebar">
       <span>{{ todayQuestion }}</span>
-      <i class="material-icons">expand_less</i>
-      <i class="material-icons">expand_more</i>
     </div>
-    <!-- <div>
-      <div
-        :class="{ noquestion: !isQuestion, question: isQuestion }"
-        style="display:flex; justify-content: center; text-align: center; display: '';"
-      >
-        <p>{{ todayQuestion }}</p>
-      </div>
-      <v-btn
-        v-if="isQuestion"
-        x-small
-        fab
-        text
-        style="position:absolute; display:block; margin-left:1450px; margin-top:-31px;"
-        ><v-icon @click="displayQuestion" color="white"
-          >mdi-chevron-double-up</v-icon
-        >
-      </v-btn>
-      <v-btn
-        v-if="!isQuestion"
-        x-small
-        fab
-        text
-        style="position:absolute; display:block; margin-left:1450px; margin-top:-31px;"
-        ><v-icon @click="displayQuestion" color="black"
-          >mdi-chevron-double-down</v-icon
-        >
-      </v-btn>
-    </div> -->
-
     <NavProfile />
     <div>
       <button class="navtab main-kukde-light" @click="goToMain">
@@ -64,10 +35,6 @@
         보관함
       </button>
     </div>
-    <p class="navbar-question nav-kukde-light">{{ todayQuestion }}</p>
-    <!-- <div v-for="(item, idx) in question" :key="idx">
-      <p class="navbar-question nav-kukde-light">{{ item }}</p>
-    </div> -->
   </div>
 </template>
 

@@ -99,6 +99,8 @@ input[id="menuicon"] + label {
   display: block;
   width: 60px;
   height: 40px;
+  margin-left: 113px;
+  z-index: 2;
   /* absolute의 기준이 되도록 position relative */
   position: relative;
   cursor: pointer;
@@ -111,14 +113,17 @@ input[id="menuicon"] + label i {
   border-radius: 30px;
   /* background:white; */
   transition: all 0.35s;
+  color: white;
 }
 .sidebar {
   display: flex;
   justify-content: center;
-  width: 100%;
+  margin-left: 113.1px;
+  text-align: center;
+  width: 1400px;
   height: 30px;
-  background: green;
-  color: black;
+  background: var(--color-dark);
+  color: var(--color-white);
   position: fixed;
   top: 0;
   z-index: 1;
@@ -142,8 +147,4 @@ input[id="menuicon"] + label + i {
 }
 input[id="menuicon"]:checked + label {
   z-index: 2;
-}
-input[id="menuicon"]:checked + label i {
-  z-index: 2;
-  /* transform: rotate(90deg); */
 }

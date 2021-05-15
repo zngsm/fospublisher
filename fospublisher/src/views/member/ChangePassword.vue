@@ -140,15 +140,19 @@ export default {
   methods: {
     // 로그인 페이지로 이동
     moveToLogin() {
-      this.$router.push("/login");
+      if (this.userId) {
+        this.$router.push("/login");
+      } else {
+        this.$router.push("/main");
+      }
     },
     // 모달 종료
     closeDialog() {
       this.isSuccessChangePw = false;
       this.dialog = false;
     },
-    // 폼 만들기
-    makeForm() {
+    // 패스워드만 변경
+    changePwOnly() {
       this.form = {
         userId: this.userId,
         password: this.password,
@@ -156,31 +160,6 @@ export default {
         question: this.question,
         answer: this.answer,
       };
-    },
-    // 데이터 채우기
-    fillData() {
-      if (
-        this.question === null ||
-        this.answer === null ||
-        this.question === "" ||
-        this.answer === ""
-      ) {
-        checkUserInfo(
-          (res) => {
-            if (res.status === 200) {
-              this.question = res.data.user.question;
-              this.answer = res.data.user.answer;
-            }
-          },
-          () => {
-            return;
-          }
-        );
-      }
-    },
-    // 패스워드만 변경
-    changePwOnly() {
-      this.makeForm();
       editPassword(
         this.form,
         (res) => {
@@ -222,14 +201,11 @@ export default {
         checkUserInfo(
           (res) => {
             if (res.status === 200) {
-              this.question = res.data.user.question;
-              this.answer = res.data.user.answer;
               this.form = {
-                userId: this.userId,
                 password: this.password,
                 passwordConfirm: this.passwordConfirm,
-                question: this.question,
-                answer: this.answer,
+                question: res.data.user.question,
+                answer: res.data.user.answer,
               };
               this.doEdit();
             }
@@ -238,6 +214,8 @@ export default {
             return;
           }
         );
+      } else {
+        this.doEdit();
       }
     },
   },

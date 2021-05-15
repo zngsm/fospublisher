@@ -206,6 +206,18 @@ exports.delete_pasts_delete = async (req, res) => {
     });
 };
 
+exports.get_pasts_cover = async (req, res) => {
+  await models.BookPasts.findOne({
+    where: { UserId: res.locals.userId },
+  })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch(() => {
+      res.status(404).send({ error: "책 정보를 찾을 수 없습니다." });
+    });
+};
+
 exports.get_pasts_read = async (req, res) => {
   const context = {};
   let book = null;

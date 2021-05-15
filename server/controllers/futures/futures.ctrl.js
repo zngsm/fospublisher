@@ -269,3 +269,15 @@ exports.check_futures = async (req, res) => {
     res.status(200).json({ count: context.length, data: context });
   });
 };
+
+exports.get_futures_cover = async (req, res) => {
+  await models.BookFutures.findOne({
+    where: { UserId: res.locals.userId },
+  })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch(() => {
+      res.status(404).send({ error: "책 정보를 찾을 수 없습니다." });
+    });
+};

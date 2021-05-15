@@ -5,6 +5,8 @@ const ctrl = require("./pasts.ctrl");
 
 router.post("/", verifyToken, ctrl.post_pasts_write);
 
+router.get("/cover", verifyToken, ctrl.get_pasts_cover);
+
 router.put("/:chapter_id", verifyToken, ctrl.put_pasts_edit);
 
 router.delete("/:chapter_id", verifyToken, ctrl.delete_pasts_delete);

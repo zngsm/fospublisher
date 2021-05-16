@@ -57,7 +57,7 @@
           <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
           <p>수정</p>
         </button>
-        <button @click="deleteModal(item.id)">
+        <button @click="deleteModal(item.id, idx)">
           <v-icon large color="black">mdi-delete-forever-outline</v-icon>
           <p>삭제</p>
         </button>
@@ -71,6 +71,14 @@
     <div v-else id="flipbook">
       <div class="hard"></div>
       <div>
+        <button @click="modifyChapter(timechapter)">
+          <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
+          <p>수정</p>
+        </button>
+        <button @click="deleteModal(timechapter.id)">
+          <v-icon large color="black">mdi-delete-forever-outline</v-icon>
+          <p>삭제</p>
+        </button>
         <h1>{{ timechapter.title }}</h1>
       </div>
       <div v-for="(item, idx) in temp" :key="idx">
@@ -98,7 +106,7 @@
 
 <script>
 import { readPastChapter, deletePastChapter } from "@/api/past";
-import { readFutureChapter } from "@/api/future";
+import { readFutureChapter, deleteFutureChapter } from "@/api/future";
 import Navbar from "@/components/main/Navbar.vue";
 import WriterInfo from "../member/WriterInfo.vue";
 import SelectMode from "./SelectMode.vue";
@@ -155,6 +163,7 @@ export default {
         ],
       },
       currentId: null,
+      currentIdx: null,
       dialog: false,
       years: null,
       temp: ["", "", "", "", ""],
@@ -182,32 +191,48 @@ export default {
         params: { id: chapter.id, status: status },
       });
     },
-    deleteModal(id) {
+    deleteModal(id, idx) {
       console.log("delete");
+      console.log(id);
       this.dialog = true;
       this.currentId = id;
+      this.currentIdx = idx;
     },
     deleteChapter() {
       let id = this.currentId;
+      let idx = this.currentIdx;
       console.log("currentId", this.currentId);
       console.log("id", id);
-      deletePastChapter(
-        id,
-        () => {
-          // timeline에서 삭제면 일대기로, 읽기모드에서 삭제면 저자소개로 돌아가기
-          if (this.$route.params.id) {
-            this.$router.push("timeline");
-          } else {
-            window.$("#flipbook").turn("next");
+      if (this.$route.params.status === "FUTURE") {
+        deleteFutureChapter(
+          id,
+          () => {
+            this.bookInfo.content.splice(idx, 1);
+            window.$("#flipbook").turn("page", 3);
+          },
+          (err) => {
+            console.error(err);
           }
-          this.dialog = false;
-        },
-        (err) => {
-          this.dialog = false;
-          console.error(err);
-          alert("삭제 실패하였습니다. 다시 시도해주세요");
-        }
-      );
+        );
+      } else {
+        deletePastChapter(
+          id,
+          () => {
+            // timeline에서 삭제면 일대기로, 읽기모드에서 삭제면 저자소개로 돌아가기
+            if (this.$route.params.id) {
+              this.$router.push("timeline");
+            } else {
+              this.bookInfo.content.splice(idx, 1);
+              window.$("#flipbook").turn("page", 3);
+            }
+          },
+          (err) => {
+            console.error(err);
+            alert("삭제 실패하였습니다. 다시 시도해주세요");
+          }
+        );
+      }
+      this.dialog = false;
     },
     cutPage() {
       // 페이지네이션
@@ -255,6 +280,7 @@ export default {
           (this.timechapter.id = this.$route.params.id),
           (res) => {
             this.timechapter = res.data;
+            this.timechapter.id = this.$route.params.id;
             // content에서 pagebreak 제거
             this.info = res.data.content;
             this.cutPage();
@@ -270,6 +296,8 @@ export default {
           id,
           (res) => {
             this.timechapter = res.data;
+            console.log("timechapter");
+            console.log(this.timechapter);
             this.info = res.data.content;
             this.cutPage();
           },

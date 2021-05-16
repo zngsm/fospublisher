@@ -1,39 +1,44 @@
 <template>
-  <div class="navbar">
-    <input type="checkbox" id="menuicon" />
-    <label for="menuicon">
-      <i
-        v-if="!isQuestion"
-        class="material-icons"
-        style="color:var(--color-dark);"
-        @click="isQuestion = true"
-        >expand_more
-      </i>
-      <i v-if="isQuestion" class="material-icons" @click="isQuestion = false"
-        >expand_less
-      </i>
-      <!-- <v-icon @click="displayQuestion" color="white" style="z-index:2"
+  <div>
+    <div class="navbar">
+      <input type="checkbox" id="menuicon" />
+      <label for="menuicon">
+        <i
+          v-if="!isQuestion"
+          class="material-icons"
+          style="color:var(--color-dark);"
+          @click="isQuestion = true"
+          >expand_more
+        </i>
+        <i v-if="isQuestion" class="material-icons" @click="isQuestion = false"
+          >expand_less
+        </i>
+        <!-- <v-icon @click="displayQuestion" color="white" style="z-index:2"
           >mdi-chevron-double-up</v-icon
         >-->
-    </label>
-    <div class="sidebar">
-      <span>{{ todayQuestion }}</span>
-    </div>
-    <NavProfile />
-    <div>
-      <button class="navtab main-kukde-light" @click="goToMain">
-        책장
-      </button>
-    </div>
-    <div>
-      <button class="navtab main-kukde-light" @click="goToTimeline">
-        일대기
-      </button>
-    </div>
-    <div>
-      <button class="navtab main-kukde-light" @click="$router.push('library')">
-        보관함
-      </button>
+      </label>
+      <div class="sidebar">
+        <span>{{ todayQuestion }}</span>
+      </div>
+      <NavProfile />
+      <div>
+        <button class="navtab main-kukde-light" @click="goToMain">
+          책장
+        </button>
+      </div>
+      <div>
+        <button class="navtab main-kukde-light" @click="goToTimeline">
+          일대기
+        </button>
+      </div>
+      <div>
+        <button
+          class="navtab main-kukde-light"
+          @click="$router.push('library')"
+        >
+          보관함
+        </button>
+      </div>
     </div>
   </div>
 </template>

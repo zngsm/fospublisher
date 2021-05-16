@@ -1,6 +1,6 @@
 <template>
   <!-- 선택 버튼 -->
-  <div class="button-container writer-dong">
+  <div class="button-container writer-kwandong2">
     <button @click="goToCreate" class="button-each">
       <img
         class="iconImg"
@@ -93,5 +93,5 @@ export default {
 
 <style scoped>
 @import "../../assets/css/font.css";
-@import "../../assets/css/ReadPast.css";
+/* @import "../../assets/css/ReadPast.css"; */
 </style>

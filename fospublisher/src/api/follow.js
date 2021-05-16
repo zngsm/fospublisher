@@ -3,7 +3,7 @@ import { authInstance } from "./index.js";
 // 유저 팔로우 하기
 function followUser(user, success, fail) {
   authInstance
-    .post(`api/follow`, {})
+    .post(`api/follow`, user)
     .then(success)
     .catch(fail);
 }

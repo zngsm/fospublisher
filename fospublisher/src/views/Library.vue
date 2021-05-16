@@ -1,31 +1,88 @@
 <template>
   <div>
+    <Navbar />
     <div class="slider">
       <input type="radio" name="testimonial" id="t-1">
       <input type="radio" name="testimonial" id="t-2">
-      <input type="radio" name="testimonial" id="t-3" checked>
+      <input type="radio" name="testimonial" id="t-3">
       <input type="radio" name="testimonial" id="t-4">
-      <input type="radio" name="testimonial" id="t-5">
+      <input type="radio" name="testimonial" id="t-5" checked>
       <div class="testimonials">
-        <label class="item" for="t-1">
-          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt="picture">
-          <p>Description 1</p>
+        <label class="item book t-1" for="t-1">
+          <div class="back"><img src="../assets/covers/AnyConv.com__diary.png" alt="picture"></div>
+          <div class="page6 d-flex justify-center">
+            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+          </div>
+          <div class="page5"></div>
+          <div class="page4"></div>
+          
+          <div class="page3"></div>
+          <div class="page2"> </div>
+          <div class="page1"></div>
+          <div class="front">
+            <p>Description 1</p>
+            <img src="../assets/covers/AnyConv.com__diary.png" alt="picture">
+          </div>
         </label>
-        <label class="item" for="t-2">
-          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt="picture">
-          <p>Description 2</p>
+        <label class="item book t-2" for="t-2">
+          <div class="back"><img src="../assets/covers/AnyConv.com__goldFrame.png" alt="picture"></div>
+          <div class="page6 d-flex justify-center">
+            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+          </div>
+          <div class="page5"></div>
+          <div class="page4"></div>
+          <div class="page3"></div>
+          <div class="page2"></div>
+          <div class="page1"></div>
+          <div class="front">
+            <p>Description 2</p> 
+            <img src="../assets/covers/AnyConv.com__goldFrame.png" alt="picture">
+          </div>
         </label>
-        <label class="item" for="t-3">
-          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt="picture">
-          <p>Description 3</p>
+        <label class="item book t-3" for="t-3">
+          <div class="back"><img src="../assets/covers/AnyConv.com__soft.png" alt="picture"></div>
+          <div class="page6 d-flex justify-center">
+            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+          </div>
+          <div class="page5"></div>
+          <div class="page4"></div>
+          <div class="page3"></div>
+          <div class="page2"></div>
+          <div class="page1"></div>
+          <div class="front">
+            <p>Description 3</p>
+            <img src="../assets/covers/AnyConv.com__soft.png" alt="picture">
+          </div>
         </label>
-        <label class="item" for="t-4">
-          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt="picture">
-          <p>Description 4</p>
+        <label class="item book t-4" for="t-4">
+          <div class="back"><img src="../assets/covers/flower.png" alt="picture"></div>
+          <div class="page6 d-flex justify-center">
+            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+          </div>
+          <div class="page5"></div>
+          <div class="page4"></div>
+          <div class="page3"></div>
+          <div class="page2"></div>
+          <div class="page1"></div>
+          <div class="front">
+            <p>Description 4</p>
+            <img src="../assets/covers/flower.png" alt="picture">
+          </div>
         </label>
-        <label class="item" for="t-5">
-          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt="picture">
-          <p>Description 5</p>
+        <label class="item book t-5" for="t-5">
+          <div class="back"><img src="../assets/covers/bagediary.png" alt="picture"></div>
+          <div class="page6 d-flex justify-center">
+            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+          </div>
+          <div class="page5"></div>
+          <div class="page4"></div>
+          <div class="page3"></div>
+          <div class="page2"></div>
+          <div class="page1"></div>
+          <div class="front">
+            <p>Description 5</p>
+            <img src="../assets/covers/bagediary.png" alt="picture">
+          </div>
         </label>
       </div>
       <div class="dots">
@@ -40,11 +97,46 @@
 </template>
 
 <script>
+import Navbar from "@/components/main/Navbar.vue";
 
+export default {
+  components: {
+    Navbar
+  },
+  methods: {
+    test(event) {
+      console.log(event)
+    }
+  },
+  mounted() {
+    // console.log(document.getElementsByName('testimonial'))
+    document.getElementsByName('testimonial').forEach(function(item) {
+      // console.log(item.checked)
+      if (item.checked == true) {
+        document.getElementsByClassName(item.id)[0].classList.add('bookHover')
+      }
+      item.addEventListener('change', function(){
+        document.getElementsByClassName('item').forEach(function(book) {
+          if (book.classList[2] == item.id) {
+            book.classList.add('bookHover')
+          } else {
+            book.classList.remove('bookHover')
+          }
+        })
+      });
+    })
+    
+
+  },
+}
 </script>
-<style>
+<style scoped>
+/* .slider {
+  background-image: url(../assets/light/center4.png) !important;
+  background-size: 120%;
+  background-position: 0 720px;
+} */
 .slider {
-  top: 20%;
   width: 100%;
 }
 .slider input {
@@ -55,35 +147,41 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 350px;
+  min-height: 1100px;
   perspective: 1000px;
   overflow: hidden;
 }
 .testimonials .item {
-  top: 0;
+  /* top: 0; */
   position: absolute;
-  box-sizing: border-box;
-  background-color: #0A0220;
-  padding: 30px;
-  width: 450px;
+  /* box-sizing: border-box; */
+  /* background-color: #0A0220; */
+  /* padding: 30px; */
+  /* width: 450px; */
   text-align: center;
   transition: transform 0.4s;
-  -webkit-transform-style: preserve-3d;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
   user-select: none;
   cursor: pointer;
 }
 .testimonials .item img {
-  width: 100px;
-  border-radius: 50%;
-  border: 13px solid #3B344D;
+  height: 500px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  width: 380px;
+  border-bottom-right-radius: 1em;
+  border-top-right-radius: 1em;
+  /* border-radius: 50%; */
+  /* border: 13px solid #3B344D; */
+  -webkit-box-reflect: below 5px linear-gradient(transparent, transparent, #0004);
 }
-.testimonials .item p {
-  color: #ddd;
+.testimonials .item .front p {
+  position: absolute;
+  top: 10%;
+  left: 30%;
+  font-size: 30px;
+  z-index: 10;
+  /* color: #ddd; */
 }
-.testimonials .item h2 {
-  font-size: 14px;
-}
+
 .dots {
   display: flex;
   justify-content: center;
@@ -237,5 +335,103 @@
 }
 #t-5:checked ~ .testimonials label[for="t-5"] {
   z-index: 4;
+}
+
+
+.book {
+  transform-style: preserve-3d;
+  position: relative;
+  height: 500px;
+  cursor: pointer;
+  backface-visibility: visible;
+}
+
+.front, .back, .page1, .page2, .page3, .page4, .page5, .page6 {
+  transform-style: preserve-3d;
+  position: absolute;
+  width: 360px;
+  height: 500px;
+  top: 0; left: 0;
+  transform-origin: left center;
+  transition: transform .5s ease-in-out, box-shadow .35s ease-in-out;
+}
+
+.front, .page1, .page3, .page5 {
+  border-bottom-right-radius: .5em;
+  border-top-right-radius: .5em;
+}
+
+.back, .page2, .page4, .page6 {
+  border-bottom-right-radius: .5em;
+  border-top-right-radius: .5em;
+}
+
+.page1 { 
+  background: #efefef;
+}
+
+.page2 {
+  background: #efefef;
+}
+
+.page3 {
+  background: #f5f5f5;
+}
+
+.page4 {
+  background: #f5f5f5;
+}
+
+.page5 {
+  background: #fafafa;
+}
+
+.page6 {
+  background: #fdfdfd;
+}
+
+.book .bookBtn {
+  z-index: 10;
+  position: absolute;
+  top: 200px;
+  /* left: 150px; */
+}
+.bookHover:hover .front {
+  transform: rotateY(-160deg) scale(1.1);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.bookHover:hover .page1 {
+  transform: rotateY(-150deg) scale(1.1);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.bookHover:hover .page2 {
+  transform: rotateY(-30deg) scale(1.1);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.bookHover:hover .page3 {
+  transform: rotateY(-140deg) scale(1.1);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.bookHover:hover .page4 {
+  transform: rotateY(-40deg) scale(1.1);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.bookHover:hover .page5 {
+  transform: rotateY(-130deg) scale(1.1);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.bookHover:hover .page6 {
+  transform: rotateY(-50deg) scale(1.1);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.bookHover:hover .back {
+  transform: rotateY(-20deg) scale(1.1);
 }
 </style>

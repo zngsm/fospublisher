@@ -3,8 +3,21 @@ const models = require("../../models");
 
 exports.search_username = async (req, res) => {
   const user = req.params.user;
+  let requesterId = res.locals.userId;
   let context = [];
-
+  let requester = await models.Users.findOne({
+    where: { id: requesterId },
+    include: [
+      { model: models.Users, as: "Followings" },
+      { model: models.Users, as: "Followers" },
+    ],
+  });
+  let followingList = requester.Followings.map((f) => {
+    return f.username;
+  });
+  let followerList = requester.Followers.map((f) => {
+    return f.username;
+  });
   await models.Users.findOne({
     where: {
       [Sequelize.Op.or]: [{ username: { [Sequelize.Op.like]: user } }],
@@ -18,7 +31,15 @@ exports.search_username = async (req, res) => {
         img: result.img,
         birthday: result.birthday,
         introduce: result.introduce,
+        following: false,
+        follower: false,
       };
+      if (followingList.includes(user)) {
+        userInfo["following"] = true;
+      }
+      if (followerList.includes(user)) {
+        userInfo["follower"] = true;
+      }
       context.push(userInfo);
     }
   });
@@ -39,7 +60,15 @@ exports.search_username = async (req, res) => {
         img: result.img,
         birthday: result.birthday,
         introduce: result.introduce,
+        following: false,
+        follower: false,
       };
+      if (followingList.includes(result.username)) {
+        userInfo["following"] = true;
+      }
+      if (followerList.includes(result.username)) {
+        userInfo["follower"] = true;
+      }
       context.push(userInfo);
     }
   });

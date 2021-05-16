@@ -103,6 +103,8 @@ import Navbar from "@/components/main/Navbar.vue";
 import FontKind from "./Font.vue";
 import FontSize from "./FontSize.vue";
 import Skin from "./Skin.vue";
+import { updatePastBook } from "@/api/past.js";
+import { updateFutureBook } from "@/api/future.js";
 export default {
   name: "Design",
   components: {
@@ -112,6 +114,8 @@ export default {
     Skin,
   },
   data: () => ({
+    id: "",
+    page: "",
     title: "",
     font: "",
     fontSize: "",
@@ -183,7 +187,6 @@ export default {
     },
     skinReceive(skin) {
       this.skin = skin;
-      console.log(skin);
       if (skin === 0) {
         this.isOne = false;
         this.isTwo = false;
@@ -198,10 +201,81 @@ export default {
         this.isTwo = true;
       }
     },
-    onSubmit() {},
+    onSubmit() {
+      const form = {
+        id: this.id,
+        page: this.page,
+        title: this.title,
+        size: this.fontSize,
+        skin: this.skin,
+        font: this.font,
+        font_color: this.activeColor,
+      };
+      if (this.$route.params.status === "PAST") {
+        updatePastBook(
+          form,
+          () => {
+            this.$router.replace("/main");
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+      } else {
+        updateFutureBook(
+          form,
+          () => {
+            this.$router.replace("/main");
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+      }
+    },
   },
   updated() {
     this.activeColor = this.color;
+  },
+  created() {
+    const cover = this.$route.params.bookInfo.cover;
+    this.id = cover.id;
+    this.page = cover.page;
+    this.title = cover.title;
+    this.font = cover.font;
+    if (cover.font === 0) {
+      this.isKukde = true;
+      this.isKwandong = false;
+    } else {
+      this.isKukde = false;
+      this.isKwandong = true;
+    }
+    this.fontSize = cover.size;
+    if (cover.size === 0) {
+      this.activeFontSize = 20;
+    } else if (cover.size === 1) {
+      this.activeFontSize = 25;
+    } else if (cover.size === 2) {
+      this.activeFontSize = 30;
+    } else if (cover.size === 3) {
+      this.activeFontSize = 35;
+    } else {
+      this.activeFontSize = 40;
+    }
+    this.activeColor = cover.font_color;
+    if (cover.skin === 0) {
+      this.isOne = false;
+      this.isTwo = false;
+      this.isZero = true;
+    } else if (cover.skin === 1) {
+      this.isZero = false;
+      this.isTwo = false;
+      this.isOne = true;
+    } else {
+      this.isZero = false;
+      this.isOne = false;
+      this.isTwo = true;
+    }
   },
 };
 </script>

@@ -18,7 +18,7 @@
         alt="읽기 아이콘"
       /><span>읽기</span>
     </button>
-    <button @click="$router.push('Design')" class="button-each">
+    <button @click="goToDesign" class="button-each">
       <img
         class="iconImg"
         width="60px"
@@ -86,6 +86,14 @@ export default {
     goToCreate() {
       let status = this.$route.params.status;
       this.$router.push({ name: "CreatePast", params: { status: status } });
+    },
+    goToDesign() {
+      let status = this.$route.params.status;
+      let bookInfo = this.$route.params.bookInfo;
+      this.$router.push({
+        name: "Design",
+        params: { bookInfo: bookInfo, status: status },
+      });
     },
   },
 };

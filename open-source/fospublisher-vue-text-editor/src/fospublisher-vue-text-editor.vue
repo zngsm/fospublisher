@@ -259,8 +259,10 @@
           </div>
         </div>
       </div>
-      <div style="display: inline-block;">
-        <div :style="styleObject.colorPickerButton" class="colorPickerButton">FONT COLOR</div>
+      <div style="display: inline-block">
+        <div :style="styleObject.colorPickerButton" class="colorPickerButton">
+          FONT COLOR
+        </div>
         <button :style="styleObject.toolButtonText" class="toolButtonText">
           <input
             class="colorPicker"
@@ -269,7 +271,9 @@
           />
           <span :style="styleObject.tooltip" class="tooltip">글씨 색</span>
         </button>
-        <div :style="styleObject.colorPickerButton" class="colorPickerButton">BACKGROUND COLOR</div>
+        <div :style="styleObject.colorPickerButton" class="colorPickerButton">
+          BACKGROUND COLOR
+        </div>
         <button :style="styleObject.toolButtonText" class="toolButtonText">
           <input
             class="colorPicker"
@@ -333,6 +337,14 @@
         <i class="fas fa-file-pdf"></i> PDF
         <span :style="styleObject.tooltip" class="tooltip">PDF 추출</span>
       </button>
+      <button
+        :style="styleObject.toolButtonText"
+        class="toolButtonText"
+        @click="exportToWord()"
+      >
+        <i class="fas fa-file-word"></i> Word
+        <span :style="styleObject.tooltip" class="tooltip">Word 추출</span>
+      </button>
     </div>
 
     <iframe
@@ -369,16 +381,16 @@ export default {
       imageLink: "",
       imageNum: 0,
       pageLink: "",
-      pagination: 1,
     };
   },
   methods: {
-    // JH
-    // 명령 삽입 후 자동으로 다음 커서로 이동
+    // move focus
     setFocus() {
       const iFrame = document.getElementsByName("richTextField");
       jquery(iFrame).contents().find("body").focus();
     },
+
+    // toggle image input modal
     toggleImageModal() {
       const modal = document.getElementById("imageModal");
       if (modal.style.display == "block") {
@@ -391,6 +403,8 @@ export default {
         modal.style.display = "block";
       }
     },
+
+    // toggle page link modal
     toggleLinkModal() {
       const modal = document.getElementById("linkModal");
       if (modal.style.display == "block") {
@@ -402,86 +416,69 @@ export default {
         modal.style.display = "block";
       }
     },
+
+    // toggle dropdown function
     toggleDropdown(arg) {
       document.getElementById(arg).classList.toggle("show");
     },
-    pageBreak() {
-      // 에디터 안에 들어있는 태그 모두 가져오기
-      const childNodes = jquery('iframe[name="richTextField"]')
-        .contents()
-        .find("body")[0].childNodes;
-      const vm = this;
-      childNodes.forEach(function (childNode) {
-        // 각 태그의 y축 시작 위치는 childNode.offsetTop
-        // pagination 1부터 시작, 500px마다 페이지 분절하는 것으로 설정
-        if (childNode.offsetTop > vm.pagination * 500) {
-          // class="html2pdf__page-break" <-- htmlpdf 모듈에서 페이지 분절 기능을 담당하는 class
-          // 500px마다 해당 class를 담은 div를 삽입한다
-          jquery(`<br>
-            <div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">
-              <div style="-webkit-transform: translate(-50%,-50%); 
-                transform: translate(-50%,-50%);
-                position: absolute; 
-                background-color: white;
-                border: 1px solid black;
-                border-radius: 3px;
-                clear: both;
-                top: 50%;  
-                left: 50%;
-                padding: 2px 10px;
-                justify-content: center;"
-                contenteditable="false" 
-              >
-                PAGE ${vm.pagination}
-              </div>
-            </div>
-            <br>`).insertBefore(childNode);
-          vm.pagination += 1;
-        }
+
+    // insert page link
+    insertLink() {
+      this.execCommandWithArg("createLink", this.pageLink);
+
+      const links = window.richTextField.document.querySelectorAll("a");
+
+      links.forEach((item) => {
+        item.target = "_blank";
+
+        // turn off the iframe design mode to active link function
+        item.addEventListener("mouseover", () => {
+          window.richTextField.document.designMode = "Off";
+        });
+
+        // turn on the iframe design mode after inserting link
+        item.addEventListener("mouseout", () => {
+          window.richTextField.document.designMode = "On";
+        });
       });
+      this.pageLink = "";
     },
-    // 이미지 삽입 후 드래그 및 리사이즈 기능 추가 함수
+
+    // drag and resize image file
     imageDragResize() {
       const vm = this;
-      jquery('iframe[name="richTextField"]')
-        .contents()
+      const iframeContents = jquery('iframe[name="richTextField"]').contents();
+
+      // wrap image with <div> and <br> tag
+      iframeContents
         .find(`#${vm.imageNum}`)
         .wrap(
           `<div contenteditable="false" id="wrapper${vm.imageNum}" style="text-align: center;"><div id="draggableHelper${vm.imageNum}" contenteditable="false" style="display:inline-block;"></div></div>`
         );
-      // 이미지 위 아래로 빈 칸 추가
-      jquery('iframe[name="richTextField"]')
-        .contents()
+
+      iframeContents
         .find(`#wrapper${vm.imageNum}`)
         .before("<br>")
         .after("<br><br>");
 
-      jquery('iframe[name="richTextField"]')
-        .contents()
-        .find(`#draggableHelper${vm.imageNum}`)
-        .draggable({
-          containment: window.richTextField.document.getElementsByTagName(
-            "body"
-          ),
-          axis: "x",
-        });
+      // drag function
+      iframeContents.find(`#draggableHelper${vm.imageNum}`).draggable({
+        containment: window.richTextField.document.getElementsByTagName("body"),
+        axis: "x",
+      });
 
-      jquery('iframe[name="richTextField"]')
-        .contents()
-        .find(`#${vm.imageNum}`)
-        .css({
-          'display': 'block',
-          "margin": "0px auto"
-        });
-      
+      iframeContents.find(`#${vm.imageNum}`).css({
+        display: "block",
+        margin: "0px auto",
+      });
+
       // 리사이즈 기능을 위한 스타일링 적용(ifram 내부 객체는 style 태그 안에서 css직접적으로 수정 불가)
-      // 리사이즈 핸들러 css
-      jquery('iframe[name="richTextField"]')
-        .contents()
+      // resiae function
+      iframeContents
         .find(`#${vm.imageNum}`)
         .resizable({ aspectRatio: true, minWidth: 300 });
-      jquery('iframe[name="richTextField"]')
-        .contents()
+
+      iframeContents
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-handle")
         .css({
@@ -491,8 +488,8 @@ export default {
           "-ms-touch-action": "none",
           "touch-action": "none",
         });
-      jquery('iframe[name="richTextField"]')
-        .contents()
+
+      iframeContents
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-e")
         .css({
@@ -502,8 +499,8 @@ export default {
           top: "0",
           height: "100%",
         });
-      jquery('iframe[name="richTextField"]')
-        .contents()
+
+      iframeContents
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-s")
         .css({
@@ -513,8 +510,8 @@ export default {
           left: "0",
           width: "100%",
         });
-      jquery('iframe[name="richTextField"]')
-        .contents()
+
+      iframeContents
         .find(`#draggableHelper${vm.imageNum} > .ui-wrapper`)
         .children(".ui-resizable-se")
         .css({
@@ -524,59 +521,49 @@ export default {
           right: "1px",
           width: "12px",
         });
-      jquery('iframe[name="richTextField"]')
-        .contents()
-        .find(`#${vm.imageNum}`)
-        .mouseenter(function (event) {
-          event.target.style.cursor = "pointer";
-          event.target.style.border = "solid grey 1px";
-          event.target.style.boxSizing = "border-box";
-        });
-      jquery('iframe[name="richTextField"]')
-        .contents()
-        .find(`#${vm.imageNum}`)
-        .mouseout(function (event) {
-          event.target.style.border = "none";
-        });
 
+      // mouse enter function
+      iframeContents.find(`#${vm.imageNum}`).mouseenter(function (event) {
+        event.target.style.cursor = "Move";
+        event.target.style.border = "solid grey 1px";
+        event.target.style.boxSizing = "border-box";
+      });
+
+      // mouse out function
+      iframeContents.find(`#${vm.imageNum}`).mouseout(function (event) {
+        event.target.style.border = "none";
+      });
+
+      // set image number for each image
       vm.imageNum += 1;
     },
-    insertLink() {
-      this.execCommandWithArg("createLink", this.pageLink);
-      const links = window.richTextField.document.querySelectorAll("a");
-      links.forEach((item) => {
-        item.target = "_blank";
-        // 링크 삽입 후 클릭하면 링크로 이동할 수 있도록 디자인 모드 끔
-        item.addEventListener("mouseover", () => {
-          window.richTextField.document.designMode = "Off";
-        });
-        // 링크 삽입 후 다른 작업이 가능하도록 디자인 모드 다시 킴
-        item.addEventListener("mouseout", () => {
-          window.richTextField.document.designMode = "On";
-        });
-      });
-      this.pageLink = "";
-    },
+
+    // insert image with file
     insertImage() {
       const imageFile = document.getElementById("ImageFile").files[0];
-      // 로컬에서 이미지를 직접 올리는 경우
+
       this.setFocus();
+
       if (imageFile) {
         const vm = this;
         const file = imageFile;
         const reader = new FileReader();
         const image = new Image();
+
         reader.readAsDataURL(file);
         reader.onloadend = function () {
           image.src = reader.result;
         };
+
         setTimeout(() => {
           this.execCommandWithArg("insertImage", image.src);
         }, 100);
+
         setTimeout(() => {
           const imgTags = jquery('iframe[name="richTextField"]')
             .contents()
             .find("img");
+
           imgTags.each(function (index, imgTag) {
             if (imgTag.id == "") {
               imgTag.setAttribute("id", vm.imageNum);
@@ -589,13 +576,15 @@ export default {
           });
         }, 100);
 
-        // 이미지 링크로 올리는 경우
+        // insert image with link
       } else if (this.imageLink != "") {
         this.execCommandWithArg("insertImage", this.imageLink);
+
         const vm = this;
         const imgTags = jquery('iframe[name="richTextField"]')
           .contents()
           .find("img");
+
         imgTags.each(function (index, imgTag) {
           if (imgTag.id == "") {
             imgTag.setAttribute("id", vm.imageNum);
@@ -608,32 +597,33 @@ export default {
         this.imageLink = "";
       }
     },
+
+    // execCommand without argument
+    // ex. font weight, insert horizontal line
     execCmd(command) {
-      // 인자가 필요없는 명령어인 경우
-      // ex. 글씨 굵게 하기, 가로선 넣기 등
       window.richTextField.document.execCommand(command, false, null);
       this.setFocus();
     },
+
+    // execCommand with argument
+    // ex. insert image or emoji
     execCommandWithArg(command, arg) {
-      // 인자가 필요한 명령어인 경우
-      // ex. 이미지 삽입시 링크
       window.richTextField.document.execCommand(command, false, arg);
       setTimeout(() => {
         this.setFocus();
       }, 10);
     },
 
+    // export to PDF
     async exportToPDF() {
-      let today = new Date();   
-      let year = today.getFullYear(); 
-      let month = today.getMonth() + 1;  
-      let date = today.getDate(); 
-      // 페이지가 캡쳐되기 전에 페이지 분절에 사용된 div를 잠시 숨김 처리
-      jquery('iframe[name="richTextField"]')
-        .contents()
-        .find(".html2pdf__page-break")
-        .css("visibility", "hidden");
-      // html2pdf npm 모듈 사용, 에디터 내용을 캡쳐하여 이를 pdf로 변환하는 방식
+      let today = new Date();
+      let year = today.getFullYear();
+      let month = today.getMonth() + 1;
+      let date = today.getDate();
+
+      // use "html2pdf npm"
+      // capture contents of editor
+      // change to pdf
       await html2pdf(
         window.richTextField.document.getElementsByTagName("body")[0],
         {
@@ -654,44 +644,68 @@ export default {
           },
         }
       );
+    },
 
-      // pdf 생성이 완료되면 페이지 분절 표기가 다시 보이도록 설정
-      jquery('iframe[name="richTextField"]')
-        .contents()
-        .find(".html2pdf__page-break")
-        .css("visibility", "visible");
+    // export to Word
+    exportToWord() {
+      var html =
+        "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+      var footer = "</body></html>";
+      var content =
+        html +
+        window.richTextField.document.getElementsByTagName("body")[0]
+          .innerHTML +
+        footer;
+
+      // link url
+      var url =
+        "data:application/vnd.ms-word;charset=utf-8," +
+        encodeURIComponent(content);
+
+      // file name
+      var filename = "sample_A4" + ".doc";
+
+      // Creates the  download link element dynamically
+      var downloadLink = document.createElement("a");
+
+      document.body.appendChild(downloadLink);
+
+      // Link to the file
+      downloadLink.href = url;
+
+      // Setting up file name
+      downloadLink.download = filename;
+
+      // triggering the function
+      downloadLink.click();
+
+      // Remove the a tag after donwload starts.
+      document.body.removeChild(downloadLink);
     },
   },
+
   mounted() {
-    // richTextField의 내용을 수정할 수 있도록 디자인 모드를 켜줌
-    window.richTextField.document.designMode = "On";
+    const iframe = window.richTextField.document;
+    var vm = this;
 
-    // 문자가 richTextField의 너비를 넘어섰을 때 자동으로 줄바꿈
-    window.richTextField.document.getElementsByTagName(
-      "body"
-    )[0].style.wordBreak = "break-all";
-    window.richTextField.document.getElementsByTagName("body")[0].style.margin =
-      "10px";
-    // window.richTextField.document.getElementsByTagName('body')[0].style.pageBreakBefore = "auto"
+    // turn on the design mode
+    iframe.designMode = "On";
 
-    // 이모티콘 선택하면 커서 위치에 삽입할 수 있도록 하는 코드
+    // auto line break according to the width
+    iframe.getElementsByTagName("body")[0].style.wordBreak = "break-all";
+    iframe.getElementsByTagName("body")[0].style.margin = "10px";
+
+    // insert emoji at cursor position
     const picker = new EmojiButton();
     const trigger = document.querySelector("#emoji-trigger");
+
     picker.on("emoji", (selection) => {
       this.execCommandWithArg("insertHTML", selection.emoji);
     });
 
     trigger.addEventListener("click", () => picker.togglePicker(trigger));
 
-    // 스크롤 발생 감지해서 pageBreak 함수로 연결
-    var vm = this;
-    jquery('iframe[name="richTextField"]')
-      .contents()
-      .scroll(function () {
-        vm.pageBreak();
-      });
-
-    // 드롭다운이 열려있거나 모달이 열려있는데 다른 곳을 클릭하면 자동으로 닫히도록 설정
+    // dropdown close with click event
     window.onclick = function (event) {
       if (!event.target.matches(".dropdownButton")) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -713,7 +727,7 @@ export default {
       }
     };
 
-    window.richTextField.document.onclick = function (event) {
+    iframe.onclick = function (event) {
       if (!event.target.matches(".dropdownButton")) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
@@ -726,14 +740,19 @@ export default {
       }
     };
 
-    // 에디터 내용이 변경될때 emit으로 전달
-    jquery('iframe[name="richTextField"]').contents().on('DOMSubtreeModified propertychange', function() {
-      const content = window.richTextField.document.getElementsByTagName("body")[0].outerHTML.substring(51).slice(0,-7)
-      vm.$emit("updateContent", content)
-    });
+    // send updated contents to parent
+    jquery('iframe[name="richTextField"]')
+      .contents()
+      .on("DOMSubtreeModified propertychange", function () {
+        const content = window.richTextField.document
+          .getElementsByTagName("body")[0]
+          .outerHTML.substring(51)
+          .slice(0, -7);
+        vm.$emit("updateContent", content);
+      });
 
-    // content 불러오는 경우 에디터에 채워넣기
-    window.richTextField.document.getElementsByTagName("body")[0].innerHTML = this.content
+    // receive the contents from parent
+    iframe.getElementsByTagName("body")[0].innerHTML = this.content;
   },
 };
 </script>

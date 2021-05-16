@@ -44,7 +44,7 @@
                   </p>
                 </div>
                 <div>
-                  <p>__ {{ item.pageStart + 5 }} 쪽</p>
+                  <p>{{ item.pageStart + 5 }} 쪽</p>
                 </div>
               </div>
             </v-expansion-panel-content>
@@ -55,11 +55,11 @@
       <div v-for="(item, idx) in bookInfo.content" :key="idx">
         <button @click="modifyChapter(item)">
           <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
-          <p>수정하기</p>
+          <p>수정</p>
         </button>
         <button @click="deleteModal(item.id)">
           <v-icon large color="black">mdi-delete-forever-outline</v-icon>
-          <p>삭제하기</p>
+          <p>삭제</p>
         </button>
         <h1>{{ item.title }}</h1>
         <p v-html="item.content"></p>
@@ -98,6 +98,7 @@
 
 <script>
 import { readPastChapter, deletePastChapter } from "@/api/past";
+import { readFutureChapter } from "@/api/future";
 import Navbar from "@/components/main/Navbar.vue";
 import WriterInfo from "../member/WriterInfo.vue";
 import SelectMode from "./SelectMode.vue";
@@ -157,6 +158,7 @@ export default {
       dialog: false,
       years: null,
       temp: ["", "", "", "", ""],
+      info: null,
     };
   },
   methods: {
@@ -169,7 +171,7 @@ export default {
     },
     modifyChapter(data) {
       let chapter = data;
-      let status = this.$route.status;
+      let status = this.$route.params.status;
       sessionStorage.setItem("title", chapter.title);
       sessionStorage.setItem("content", chapter.content);
       sessionStorage.setItem("year", chapter.year);
@@ -207,6 +209,29 @@ export default {
         }
       );
     },
+    cutPage() {
+      // 페이지네이션
+      console.log("info");
+      console.log(this.info);
+      this.temp = this.info.split(
+        '<div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">'
+      );
+      for (let i = 0; i < this.temp.length; i++) {
+        if (i % 2 === 1) {
+          // let erasePage = this.temp[i].replace(/PAGE([0-9]</div></div>)/g,"")
+          console.log("홀수");
+          console.log(this.temp[i]);
+
+          let erasePage = this.temp[i].replace(
+            `<di, style="-webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%); position: absolute; background-color: white; border: 1px solid black; border-radius: 3px; top: 50%; left: 50%; padding: 2px 10px; justify-content: center;"> PAGE ${i +
+              1}</div></div>`,
+            ""
+          );
+          this.temp[i] = erasePage;
+        }
+      }
+      this.mainRead(3);
+    },
     mainRead(num) {
       if (window.$("#flipbook")) {
         window.$("#flipbook").turn({
@@ -224,74 +249,53 @@ export default {
       }
     },
     async timelineRead() {
-      await readPastChapter(
-        (this.timechapter.id = this.$route.params.id),
-        (res) => {
-          this.timechapter = res.data;
-          // content에서 pagebreak 제거
-          let timeChapterInfo = res.data.content;
-          this.temp = timeChapterInfo.split(
-            '<div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">'
-          );
-          for (let i = 0; i < this.temp.length; i++) {
-            if (i % 2 === 1) {
-              // let erasePage = this.temp[i].replace(/PAGE([0-9]</div></div>)/g,"")
-              console.log("홀수");
-              console.log(this.temp[i]);
-
-              let erasePage = this.temp[i].replace(
-                `<di, style="-webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%); position: absolute; background-color: white; border: 1px solid black; border-radius: 3px; top: 50%; left: 50%; padding: 2px 10px; justify-content: center;"> PAGE ${i +
-                  1}</div></div>`,
-                ""
-              );
-              this.temp[i] = erasePage;
-            }
+      if (this.$route.params.status === "PAST") {
+        console.log("past");
+        await readPastChapter(
+          (this.timechapter.id = this.$route.params.id),
+          (res) => {
+            this.timechapter = res.data;
+            // content에서 pagebreak 제거
+            this.info = res.data.content;
+            this.cutPage();
+          },
+          (err) => {
+            console.error(err);
           }
-          this.mainRead(3);
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+        );
+      } else {
+        console.log("future");
+        let id = this.$route.params.id;
+        await readFutureChapter(
+          id,
+          (res) => {
+            this.timechapter = res.data;
+            this.info = res.data.content;
+            this.cutPage();
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+      }
     },
     getInfo() {
-      // 메인->책읽기
-      // if (info) {
-      //   console.log("mainRead");
-      //   this.bookInfo = info;
-      //   this.mainRead(3);
-      // } else {
-      //   console.log("timelineRead");
-      //   this.timelineRead();
-      // }
       if (this.$route.params.id) {
         console.log("timelineRead");
         this.timelineRead();
       } else {
-        // let info = JSON.parse(sessionStorage.getItem("bookInfo"));
-        // this.bookInfo = info;
         console.log("bookInfo에 info");
         console.log(this.bookInfo);
-        this.years = Object.keys(this.bookInfo.list);
+        if (
+          this.bookInfo.content.length == 0 ||
+          this.bookInfo.content[0].title !== ""
+        ) {
+          this.years = Object.keys(this.bookInfo.list);
+        }
         this.mainRead(3);
       }
-      // if (
-      //   this.bookInfo.content.length == 0 ||
-      //   this.bookInfo.content[0].title !== ""
-      // ) {
-      //   console.log("mainRead");
-      //   this.mainRead(3);
-      // } else {
-      //   console.log("timelineRead");
-      //   this.timelineRead();
-      // }
     },
   },
-  // watch: {
-  //   bookInfo() {
-  //     this.bookInfo = JSON.parse(sessionStorage.getItem("bookInfo"));
-  //   },
-  // },
   mounted() {
     setTimeout(() => {
       this.getInfo();

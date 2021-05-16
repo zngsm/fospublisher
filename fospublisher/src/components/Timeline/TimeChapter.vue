@@ -105,7 +105,7 @@ export default {
     sendTimeline() {
       this.$router.push({
         name: "ReadPast",
-        params: { id: this.timeline.id },
+        params: { id: this.timeline.id, status: "PAST" },
       });
     },
   },

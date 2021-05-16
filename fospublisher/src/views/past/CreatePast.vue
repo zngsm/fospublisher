@@ -191,7 +191,7 @@ export default {
           clearTimeout(this.timeout);
           this.$router.push({
             name: "ReadPast",
-            params: { id: res.data.id },
+            params: { id: res.data.id, status: "FUTURE" },
           });
         },
         (err) => {
@@ -208,7 +208,7 @@ export default {
           clearTimeout(this.timeout);
           this.$router.push({
             name: "ReadPast",
-            params: { id: res.data.id },
+            params: { id: res.data.id, status: "FUTURE" },
           });
         },
         (err) => {

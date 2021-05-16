@@ -92,13 +92,12 @@
   display: inline-block;
   width: 1370px;
 } */
+
 input[id="menuicon"] {
   display: none;
 }
 input[id="menuicon"] + label {
   display: block;
-  width: 60px;
-  height: 40px;
   margin-left: 113px;
   z-index: 2;
   /* absolute의 기준이 되도록 position relative */
@@ -107,11 +106,10 @@ input[id="menuicon"] + label {
 }
 input[id="menuicon"] + label i {
   display: block;
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 5px;
   border-radius: 30px;
-  /* background:white; */
   transition: all 0.35s;
   color: white;
 }

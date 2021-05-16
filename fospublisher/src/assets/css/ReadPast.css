@@ -8,27 +8,28 @@
 }
 
 #flipbook {
-  width: 1200px;
-  height: 900px;
+  width: 1026px;
+  height: 650px;
+  /* margin: auto; */
   margin: auto !important;
 }
 
 #flipbook .page {
-  width: 600px;
-  height: 900px;
+  width: 1026px;
+  height: 650px;
   background-color: white;
   /* line-height: 300px;
   font-size: 20px; */
   text-align: center;
 }
 
-/* #flipbook .page-wrapper {
+#flipbook .page-wrapper {
   -webkit-perspective: 2000px;
   -moz-perspective: 2000px;
   -ms-perspective: 2000px;
   -o-perspective: 2000px;
   perspective: 2000px;
-} */
+}
 
 #flipbook .hard {
   /* background: #ccc !important; */
@@ -87,6 +88,16 @@
   display: flex;
   flex-direction: column;
 }
+.readpast-index {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+}
+.readpast-index:hover {
+  background-color: var(--color-hover);
+}
 .button-container {
   /* line-height: 500px; */
   display: flex;
@@ -97,6 +108,7 @@
   height: 700px;
   padding: 10%;
 }
+
 .button-each {
   width: 280px;
   display: flex;

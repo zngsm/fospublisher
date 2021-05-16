@@ -1,15 +1,9 @@
 <template>
   <div>
     <Navbar />
-    <!-- <div class="bar">
-      <button>
-        <v-icon large color="black">mdi-format-list-bulleted</v-icon>
-        <p>목차</p>
-      </button>
-    </div> -->
     <!-- 책클릭 -> 읽기모드 -->
+    <div style="width:100%; height:60px;"><span></span></div>
     <div
-      class="mx-auto"
       v-if="
         this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
       "
@@ -26,8 +20,36 @@
       <div class="read-select">
         <SelectMode @read="read" />
       </div>
-      <div>
+      <div
+        v-if="
+          this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
+        "
+      >
         <h1>목차</h1>
+        <v-expansion-panels flat hover style="width:400px;" class="mx-auto">
+          <v-expansion-panel v-for="(year, i) in years" :key="i">
+            <v-expansion-panel-header>
+              {{ year }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <div
+                v-for="(item, idx) in bookInfo.list[year]"
+                :key="idx"
+                class="readpast-index"
+                @click="goPage(item.pageStart)"
+              >
+                <div>
+                  <p>
+                    <b>{{ item.title }}</b>
+                  </p>
+                </div>
+                <div>
+                  <p>__ {{ item.pageStart + 5 }} 쪽</p>
+                </div>
+              </div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </div>
       <!-- computed에서 v-for작업, html에는 v-if만 -->
       <div v-for="(item, idx) in bookInfo.content" :key="idx">
@@ -133,12 +155,17 @@ export default {
       },
       currentId: null,
       dialog: false,
+      years: null,
       temp: ["", "", "", "", ""],
     };
   },
   methods: {
     read() {
       window.$("#flipbook").turn("next");
+    },
+    goPage(p) {
+      let pageNum = p + 5;
+      window.$("#flipbook").turn("page", pageNum);
     },
     modifyChapter(data) {
       let chapter = data;
@@ -184,7 +211,7 @@ export default {
       if (window.$("#flipbook")) {
         window.$("#flipbook").turn({
           width: 1026,
-          height: 700,
+          height: 650,
           page: num,
           // acceleration: true, touch device용
           gradients: true,
@@ -245,6 +272,7 @@ export default {
         // this.bookInfo = info;
         console.log("bookInfo에 info");
         console.log(this.bookInfo);
+        this.years = Object.keys(this.bookInfo.list);
         this.mainRead(3);
       }
       // if (

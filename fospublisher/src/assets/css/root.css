@@ -20,6 +20,7 @@
   --color-dark: #231815;
   --color-white: #ffffff;
   --color-black: #141414;
+  --color-hover: rgb(239, 239, 239);
   /* 폰트 color */
   --font-main: #231815;
 
@@ -49,4 +50,11 @@
   color: red;
   margin-top: -17px;
   text-align: left;
+}
+
+.writer-kwandong {
+  font-family: GyeonggiBatang;
+  font-size: 30px;
+  letter-spacing: 1vw;
+  padding-bottom: 12px;
 }

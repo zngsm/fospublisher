@@ -59,12 +59,24 @@ exports.remove_follow = async (req, res) => {
   res.json({ success: `${following.nickname} 의 팔로우를 취소했습니다.` });
 };
 
-function EachFollow(a, b) {
+function returnEachFollow(a, b) {
   let each = [];
   for (let i = 0; i < a.length; i++) {
     for (let j = 0; j < b.length; j++) {
       if (a[i].id == b[j].id) {
         each.push(a[i]);
+      }
+    }
+  }
+  return each;
+}
+
+function EachFollow(a, b) {
+  let each = [];
+  for (let i = 0; i < a.length; i++) {
+    for (let j = 0; j < b.length; j++) {
+      if (a[i].id == b[j].id) {
+        each.push(a[i].id);
       }
     }
   }
@@ -102,8 +114,10 @@ exports.get_follow_list = async (req, res) => {
   });
   let followingList = requester.Followings;
   let followerList = requester.Followers;
-  let eachFollowers = EachFollow(followingList, followerList);
-  let eachFollowInfo = [];
+  let eachFollowers = returnEachFollow(followingList, followerList);
+  let eachFollowInfo = [eachFollowers.length];
+  let contextArray = [];
+  let contextIdx = 0;
   for (let follower of eachFollowers) {
     let context = {};
     let followerId = follower.id;
@@ -121,7 +135,18 @@ exports.get_follow_list = async (req, res) => {
     delete bookInfo["updatedAt"];
     delete bookInfo["UserId"];
     context["book"] = bookInfo;
-    eachFollowInfo.push(context);
+    if (contextIdx < 4) {
+      contextArray.push(context);
+      contextIdx++;
+    } else if (contextIdx == 4) {
+      contextArray.push(context);
+      eachFollowInfo.push(contextArray);
+      contextArray = [];
+      contextIdx = 0;
+    }
+  }
+  if (contextArray) {
+    eachFollowInfo.push(contextArray);
   }
   res.send(eachFollowInfo);
 };
@@ -139,7 +164,9 @@ exports.get_following_list = async (req, res) => {
   let followerList = requester.Followers;
   let each = EachFollow(followingList, followerList);
   let context = [];
+  console.log("팔로워", followerList);
   followingList.forEach(async (following) => {
+    console.log(following);
     let followingInfo = {};
     followingInfo["id"] = following.id;
     followingInfo["nickname"] = following.nickname;
@@ -147,7 +174,7 @@ exports.get_following_list = async (req, res) => {
     followingInfo["introduce"] = following.introduce;
     followingInfo["img"] = following.img;
     followingInfo["time"] = following.Follow.createdAt;
-    if (each.includes(following)) {
+    if (each.includes(following.id)) {
       followingInfo["each"] = true;
     } else {
       followingInfo["each"] = false;
@@ -156,6 +183,7 @@ exports.get_following_list = async (req, res) => {
   });
   res.send(context);
 };
+
 exports.get_follower_list = async (req, res) => {
   let requesterId = res.locals.userId;
   let requester = await models.Users.findOne({
@@ -169,7 +197,9 @@ exports.get_follower_list = async (req, res) => {
   let followerList = requester.Followers;
   let each = EachFollow(followingList, followerList);
   let context = [];
+  // console.log("팔로워", followerList);
   followerList.forEach(async (follower) => {
+    // console.log(follower);
     let followerInfo = {};
     followerInfo["id"] = follower.id;
     followerInfo["nickname"] = follower.nickname;
@@ -177,7 +207,7 @@ exports.get_follower_list = async (req, res) => {
     followerInfo["introduce"] = follower.introduce;
     followerInfo["img"] = follower.img;
     followerInfo["time"] = follower.Follow.createdAt;
-    if (each.includes(follower)) {
+    if (each.includes(follower.id)) {
       followerInfo["each"] = true;
     } else {
       followerInfo["each"] = false;
@@ -199,7 +229,6 @@ exports.get_follow_book = async (req, res) => {
   });
   let followingList = requester.Followings;
   let followerList = requester.Followers;
-  console.log(checkEachFollow(followingList, followerList, followingId));
   if (!checkEachFollow(followingList, followerList, followingId)) {
     return res.status(403).send({ error: "맞팔로우된 유저가 아닙니다." });
   }

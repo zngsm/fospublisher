@@ -7,7 +7,12 @@
           <div class="container">
             <div
               class="img"
-              :class="{ skinZero: isZero, skinOne: isOne, skinTwo: isTwo }"
+              :class="{
+                skinZero: isZero,
+                skinOne: isOne,
+                skinTwo: isTwo,
+                skinThree: isThree,
+              }"
             >
               <span
                 :class="{
@@ -127,6 +132,7 @@ export default {
     isZero: true,
     isOne: false,
     isTwo: false,
+    isThree: false,
     type: "hex",
     hex: "",
   }),
@@ -188,17 +194,25 @@ export default {
     skinReceive(skin) {
       this.skin = skin;
       if (skin === 0) {
+        this.isZero = true;
         this.isOne = false;
         this.isTwo = false;
-        this.isZero = true;
+        this.isThree = false;
       } else if (skin === 1) {
         this.isZero = false;
-        this.isTwo = false;
         this.isOne = true;
-      } else {
+        this.isTwo = false;
+        this.isThree = false;
+      } else if (skin === 2) {
         this.isZero = false;
         this.isOne = false;
         this.isTwo = true;
+        this.isThree = false;
+      } else {
+        this.isZero = false;
+        this.isOne = false;
+        this.isTwo = false;
+        this.isThree = true;
       }
     },
     onSubmit() {
@@ -264,17 +278,25 @@ export default {
     }
     this.activeColor = cover.font_color;
     if (cover.skin === 0) {
+      this.isZero = true;
       this.isOne = false;
       this.isTwo = false;
-      this.isZero = true;
+      this.isThree = false;
     } else if (cover.skin === 1) {
       this.isZero = false;
-      this.isTwo = false;
       this.isOne = true;
-    } else {
+      this.isTwo = false;
+      this.isThree = false;
+    } else if (cover.skin === 2) {
       this.isZero = false;
       this.isOne = false;
       this.isTwo = true;
+      this.isThree = false;
+    } else {
+      this.isZero = false;
+      this.isOne = false;
+      this.isTwo = false;
+      this.isThree = true;
     }
   },
 };
@@ -334,5 +356,9 @@ export default {
 .skinTwo,
 .skinTwo::before {
   background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1620747682861.png");
+}
+.skinThree,
+.skinThree::before {
+  background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1621263240811.png");
 }
 </style>

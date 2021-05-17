@@ -188,7 +188,7 @@ export default {
           clearTimeout(this.timeout);
           this.$router.push({
             name: "ReadPast",
-            params: { id: res.data.id, status: "FUTURE" },
+            params: { id: res.data.id, status: "PAST" },
           });
         },
         (err) => {
@@ -580,14 +580,14 @@ export default {
     }),
   },
   watch: {
-    interval: function () {
+    interval: function() {
       if (this.interval == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);
         return;
       }
     },
-    autoSaveKey: function () {
+    autoSaveKey: function() {
       if (this.autoSaveKey == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);

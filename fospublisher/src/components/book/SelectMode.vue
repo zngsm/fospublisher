@@ -1,6 +1,6 @@
 <template>
   <!-- 선택 버튼 -->
-  <div class="button-container writer-kwandong2">
+  <div class="button-container select-font">
     <button @click="goToCreate" class="button-each">
       <img
         class="iconImg"

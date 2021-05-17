@@ -114,4 +114,14 @@
 .button-each {
   width: 280px;
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.button-each:hover {
+  background-color: var(--color-hover);
+}
+
+.select-font {
+  font-family: GyeonggiBatang;
+  font-size: var(--font-large);
 }

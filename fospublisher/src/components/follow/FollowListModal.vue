@@ -6,7 +6,7 @@
       width="900"
     >
       <v-card
-        class="member-kukde-light py-2"
+        class="py-2"
         min-height="20vh"
       >
         <v-card-title>
@@ -22,37 +22,33 @@
               Following
             </v-card-title>
             <v-card
-              v-scroll.self="onScroll"
               class="overflow-y-auto mx-auto"
               height="450"
               max-width="450"
             >
               <v-list three-line>
                 <template v-for="(following, index) in followings">
-                  <v-divider
-                    v-if="following.divider"
-                    :key="index"
-                    :inset="following.inset"
-                  ></v-divider>
-
                   <v-list-item
-                    v-else
-                    :key="following.title"
+                    :key="index"
                   >
                     <v-list-item-avatar>
-                      <v-img :src="following.avatar"></v-img>
+                      <v-img :src="following.img"></v-img>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
                       <v-list-item-title class="d-flex justify-space-between">
-                        {{ following.title }}
-                        <v-btn small color="#231815" outlined @click="closeFollowListModal">
+                        {{ following.nickname }}
+                        <v-btn small color="#231815" outlined @click="unfollow(following.id)">
                           취소
                         </v-btn>
                       </v-list-item-title>
-                      <v-list-item-subtitle v-html="following.subtitle"></v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ following.introduce }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
+                  <v-divider
+                    :key="`divider-${index}`"
+                    v-if="index + 1 < followings.length"
+                  ></v-divider>
                 </template>
               </v-list>
             </v-card>
@@ -62,7 +58,6 @@
               Follower
             </v-card-title>
             <v-card
-              v-scroll.self="onScroll"
               class="overflow-y-auto mx-auto"
               height="450"
               max-width="450"
@@ -70,30 +65,33 @@
 
               <v-list three-line>
                 <template v-for="(follower, index) in followers">
-                  <v-divider
-                    v-if="follower.divider"
-                    :key="index"
-                    :inset="follower.inset"
-                  ></v-divider>
-
                   <v-list-item
-                    v-else
-                    :key="follower.title"
+                    :key="index"
                   >
                     <v-list-item-avatar>
-                      <v-img :src="follower.avatar"></v-img>
+                      <v-img :src="follower.img"></v-img>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
                       <v-list-item-title class="d-flex justify-space-between">
-                        {{ follower.title }}
-                        <v-btn small color="#231815" outlined @click="closeFollowListModal">
-                          팔로우
+                        {{ follower.nickname }}
+                        <v-btn 
+                          v-if="follower.each == false" 
+                          small 
+                          color="#231815" 
+                          outlined 
+                          @click="follow(follower.id)"
+                        >
+                          맞팔로우
                         </v-btn>
                       </v-list-item-title>
-                      <v-list-item-subtitle v-html="follower.subtitle"></v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ follower.introduce }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
+                  <v-divider
+                    :key="`divider-${index}`"
+                    v-if="index + 1 < followers.length"
+                  ></v-divider>
                 </template>
               </v-list>
             </v-card>
@@ -115,7 +113,7 @@
   </div>
 </template>
 <script>
-// import { followUser, unfollowUser, getFollowingList, getFollowerList } from "@/api/follow";
+import { getFollowerList, getFollowingList, unfollowUser, followUser } from "@/api/follow";
 
 export default {
   props: [
@@ -123,74 +121,65 @@ export default {
   ],
   data() {
     return {
-      followers: [
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          title: 'Brunch this weekend?',
-          subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          title: 'Summer BBQ',
-          subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Oui oui',
-          subtitle: '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Birthday gift',
-          subtitle: '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Recipe to try',
-          subtitle: '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-        },
-      ],
-      followings: [
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          title: 'Brunch this weekend?',
-          subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          title: 'Summer BBQ',
-          subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Oui oui',
-          subtitle: '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Birthday gift',
-          subtitle: '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Recipe to try',
-          subtitle: '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-        },
-      ],
+      followers: [],
+      followings: [],
     }
   },
   methods: {
     closeFollowListModal() {
       this.$emit('closeFollowListModal')
     },
+    follow(id) {
+      const user = {followingId: id}
+      followUser(
+        user,
+        (res) => {
+          console.log(res)
+          console.log('새로 받아오기')
+          this.fetchFollower()
+          this.fetchFollowing()
+        },
+        (error) => {
+          console.log(error)
+        }
+      )
+    },
+    unfollow(id) {
+      unfollowUser(
+        id,
+        () => {
+          this.fetchFollowing()
+        },
+        (error) => {
+          console.log(error)
+        }
+      )
+    },
+    fetchFollower() {
+      getFollowerList(
+        (res) => {
+          console.log(res.data)
+          this.followers = res.data
+        },
+        (error) => {
+          console.log(error)
+        }
+      )
+    },
+    fetchFollowing() {
+      getFollowingList(
+        (res) => {
+          this.followings = res.data
+        },
+        (error) => {
+          console.log(error)
+        }
+      )
+    }
+  },
+  created() {
+    this.fetchFollower()
+    this.fetchFollowing()
   },
 }
 </script>

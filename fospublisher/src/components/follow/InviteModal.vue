@@ -6,7 +6,7 @@
       width="500"
     >
       <v-card
-        class="member-kukde-light py-1"
+        class="py-1"
         min-height="20vh"
       >
         <v-card-title>
@@ -45,7 +45,13 @@
                     <v-list-item-content>
                       <v-list-item-title class="d-flex justify-space-between">
                         {{ user.username }}
-                        <v-btn small color="#231815" outlined @click="follow(user.username)">
+                        <v-btn 
+                          v-if="user.following == false" 
+                          small 
+                          color="#231815" 
+                          outlined 
+                          @click="follow(user.id)"
+                        >
                           팔로우
                         </v-btn>
                       </v-list-item-title>
@@ -101,12 +107,12 @@ export default {
         }
       )
     },
-    follow(username) {
-      const user = {followingId: username}
+    follow(id) {
+      const user = {followingId: id}
       followUser(
         user,
-        (res) => {
-          console.log(res)
+        () => {
+          this.searchUser()
         },
         (error) => {
           console.log(error)

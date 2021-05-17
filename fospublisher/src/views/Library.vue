@@ -1,6 +1,42 @@
 <template>
   <div>
     <Navbar />
+    <v-tabs
+      v-model="tab"
+      background-color="black"
+      class="pa-0"
+      centered
+      dark
+    >
+      <v-tabs-slider></v-tabs-slider>
+
+      <v-tab href="#tab-1">
+        첫 번째 서랍
+      </v-tab>
+
+      <v-tab href="#tab-2">
+        두 번째 서랍
+      </v-tab>
+
+      <v-tab href="#tab-3">
+        세 번째 서랍
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item
+        v-for="i in 3"
+        :key="i"
+        :value="'tab-' + i"
+      >
+        <v-card color="#f5f4ee" flat>
+          <!-- <v-card-text>{{ text }}</v-card-text> -->
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+
+
+
     <div class="slider">
       <input type="radio" name="testimonial" id="t-1">
       <input type="radio" name="testimonial" id="t-2">
@@ -11,7 +47,7 @@
         <label class="item book t-1" for="t-1">
           <div class="back"><img src="../assets/covers/AnyConv.com__diary.png" alt="picture"></div>
           <div class="page6 d-flex justify-center">
-            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+            <v-btn color="#231815" small outlined class="bookBtn">자서전 보러가기</v-btn>
           </div>
           <div class="page5"></div>
           <div class="page4"></div>
@@ -27,7 +63,7 @@
         <label class="item book t-2" for="t-2">
           <div class="back"><img src="../assets/covers/AnyConv.com__goldFrame.png" alt="picture"></div>
           <div class="page6 d-flex justify-center">
-            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+            <v-btn small color="#231815" outlined class="bookBtn">자서전 보러가기</v-btn>
           </div>
           <div class="page5"></div>
           <div class="page4"></div>
@@ -42,7 +78,7 @@
         <label class="item book t-3" for="t-3">
           <div class="back"><img src="../assets/covers/AnyConv.com__soft.png" alt="picture"></div>
           <div class="page6 d-flex justify-center">
-            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+            <v-btn small color="#231815" outlined class="bookBtn">자서전 보러가기</v-btn>
           </div>
           <div class="page5"></div>
           <div class="page4"></div>
@@ -57,7 +93,7 @@
         <label class="item book t-4" for="t-4">
           <div class="back"><img src="../assets/covers/flower.png" alt="picture"></div>
           <div class="page6 d-flex justify-center">
-            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+            <v-btn small color="#231815" outlined class="bookBtn">자서전 보러가기</v-btn>
           </div>
           <div class="page5"></div>
           <div class="page4"></div>
@@ -72,7 +108,7 @@
         <label class="item book t-5" for="t-5">
           <div class="back"><img src="../assets/covers/bagediary.png" alt="picture"></div>
           <div class="page6 d-flex justify-center">
-            <v-btn x-large color="#231815" outlined class="bookBtn px-15">자서전 보러가기</v-btn>
+            <v-btn small color="#231815" outlined class="bookBtn">자서전 보러가기</v-btn>
           </div>
           <div class="page5"></div>
           <div class="page4"></div>
@@ -98,10 +134,18 @@
 
 <script>
 import Navbar from "@/components/main/Navbar.vue";
+import { getEachFollowerList } from "@/api/follow";
+
 
 export default {
   components: {
     Navbar
+  },
+  data() {
+    return {
+      tab: null,
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    }
   },
   methods: {
     test(event) {
@@ -128,14 +172,20 @@ export default {
     
 
   },
+  created() {
+    getEachFollowerList(
+      (res) => {
+        console.log(res)
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
+  },
 }
 </script>
 <style scoped>
-/* .slider {
-  background-image: url(../assets/light/center4.png) !important;
-  background-size: 120%;
-  background-position: 0 720px;
-} */
+
 .slider {
   width: 100%;
 }
@@ -147,39 +197,31 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 1100px;
+  min-height: 600px;
   perspective: 1000px;
   overflow: hidden;
 }
 .testimonials .item {
-  /* top: 0; */
   position: absolute;
-  /* box-sizing: border-box; */
-  /* background-color: #0A0220; */
-  /* padding: 30px; */
-  /* width: 450px; */
   text-align: center;
   transition: transform 0.4s;
   user-select: none;
   cursor: pointer;
 }
 .testimonials .item img {
-  height: 500px;
+  height: 300px;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  width: 380px;
+  width: 230px;
   border-bottom-right-radius: 1em;
   border-top-right-radius: 1em;
-  /* border-radius: 50%; */
-  /* border: 13px solid #3B344D; */
   -webkit-box-reflect: below 5px linear-gradient(transparent, transparent, #0004);
 }
 .testimonials .item .front p {
   position: absolute;
-  top: 10%;
+  top: 15%;
   left: 30%;
-  font-size: 30px;
+  font-size: 20px;
   z-index: 10;
-  /* color: #ddd; */
 }
 
 .dots {
@@ -341,7 +383,7 @@ export default {
 .book {
   transform-style: preserve-3d;
   position: relative;
-  height: 500px;
+  height: 300px;
   cursor: pointer;
   backface-visibility: visible;
 }
@@ -349,8 +391,8 @@ export default {
 .front, .back, .page1, .page2, .page3, .page4, .page5, .page6 {
   transform-style: preserve-3d;
   position: absolute;
-  width: 360px;
-  height: 500px;
+  width: 210px;
+  height: 300px;
   top: 0; left: 0;
   transform-origin: left center;
   transition: transform .5s ease-in-out, box-shadow .35s ease-in-out;
@@ -393,7 +435,7 @@ export default {
 .book .bookBtn {
   z-index: 10;
   position: absolute;
-  top: 200px;
+  top: 120px;
   /* left: 150px; */
 }
 .bookHover:hover .front {

@@ -170,10 +170,7 @@ export default {
           ) {
             window
               .$(
-                `
-            <div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">
-            </div>
-            `
+                `<div class="html2pdf__page-break" position: relative;"></div>`
               )
               .insertBefore(childNodes[j]);
             break;
@@ -583,14 +580,14 @@ export default {
     }),
   },
   watch: {
-    interval: function() {
+    interval: function () {
       if (this.interval == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);
         return;
       }
     },
-    autoSaveKey: function() {
+    autoSaveKey: function () {
       if (this.autoSaveKey == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);

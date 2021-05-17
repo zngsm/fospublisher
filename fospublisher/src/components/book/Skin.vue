@@ -45,6 +45,10 @@ export default {
         skin: 2,
         value: "flower",
       },
+      {
+        skin: 3,
+        value: "goldFrame",
+      },
     ],
   }),
   methods: {

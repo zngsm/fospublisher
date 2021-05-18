@@ -27,7 +27,7 @@
       /><span>디자인</span>
     </button>
 
-    <button class="button-each">
+    <button class="button-each" @click="exportWord">
       <img
         class="iconImg"
         width="70px"
@@ -71,16 +71,25 @@
 <script>
 import InviteModal from "@/components/follow/InviteModal.vue";
 import FollowListModal from "@/components/follow/FollowListModal.vue";
+
 export default {
   data() {
     return {
       openInviteModal: false,
       openFollowListModal: false,
+      word: "안녕하세요!!! 테스트입니다!!!",
     };
   },
   components: {
     InviteModal,
     FollowListModal,
+    // Document,
+    // Paragraph,
+    // Packer,
+    // TextRun,
+    // saveAs,
+    // BorderStyle,
+    // WidthType,
   },
   methods: {
     goToCreate() {
@@ -94,6 +103,18 @@ export default {
         name: "Design",
         params: { bookInfo: bookInfo, status: status },
       });
+    },
+    exportWord() {
+      this.word = `<html xmln:0='urn:schemas-microsoft-com:office:office xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>EXPORT HTML TO WORD</title></head><body>${this.word}</body></html>`;
+      let source =
+        "data:application/vnd.ms-word;charset=utf-8," +
+        encodeURIComponent(this.word);
+      let fileDownload = document.createElement("a");
+      document.body.appendChild(fileDownload);
+      fileDownload.href = source;
+      fileDownload.download = "document.doc";
+      fileDownload.click();
+      document.body.removeChild(fileDownload);
     },
   },
 };

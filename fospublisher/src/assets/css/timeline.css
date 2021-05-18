@@ -13,7 +13,11 @@
   margin: 20px;
 }
 .timeline-header-title {
-  margin: 30px;
+  margin: 30px 20px;
+  font-size: var(--font-large);
+}
+.timeline-header-content {
+  margin: 0px 20px;
 }
 .timeline-body {
   width: 1372px;

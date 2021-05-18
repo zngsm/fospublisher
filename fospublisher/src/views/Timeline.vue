@@ -7,7 +7,7 @@
           일대기
         </div>
         <div class="timeline-header-content">
-          당신의 인생 여정을 한눈에 확인해보세요
+          ; 당신의 인생 여정을 한눈에 확인해보세요
         </div>
         <div class="timeline-header-option d-flex justify-content-between">
           <div class="timeline-header-btn d-flex align-center">

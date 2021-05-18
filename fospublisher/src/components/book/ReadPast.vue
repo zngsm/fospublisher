@@ -3,12 +3,7 @@
     <Navbar />
     <!-- 책클릭 -> 읽기모드 -->
     <div style="width:100%; height:60px;"><span></span></div>
-    <div
-      v-if="
-        this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
-      "
-      id="flipbook"
-    >
+    <div v-if="!this.$route.params.id" id="flipbook">
       <div class="hard d-flex">
         <div class="mx-auto my-auto" style="fontSize: 50px;">
           {{ bookInfo.cover.title }}
@@ -18,13 +13,14 @@
         <WriterInfo />
       </div>
       <div class="read-select">
-        <SelectMode @read="read" />
+        <SelectMode @read="read"></SelectMode>
       </div>
-      <div
+      <!-- <div
         v-if="
           this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
         "
-      >
+      > -->
+      <div>
         <h1>목차</h1>
         <v-expansion-panels flat hover style="width:400px;" class="mx-auto">
           <v-expansion-panel v-for="(year, i) in years" :key="i">
@@ -51,7 +47,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </div>
-      <!-- computed에서 v-for작업, html에는 v-if만 -->
+      <!-- 메인 -> 읽기모드  -->
       <div v-for="(item, idx) in bookInfo.content" :key="idx">
         <button @click="modifyChapter(item)">
           <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
@@ -86,14 +82,15 @@
       </div>
 
       <div class="hard"></div>
-      <!-- <div>
+      <div>
         <h1>{{ timechapter.title }}</h1>
       </div>
       <div>
         <p>{{ timechapter.content }}</p>
         <p v-html="timechapter.content"></p>
-      </div> -->
+      </div>
     </div>
+    <!-- </div>  -->
     <!-- <p>{{ temp }}</p> -->
     <v-dialog v-model="dialog" width="25vw">
       <MessageModal
@@ -105,8 +102,12 @@
 </template>
 
 <script>
-import { readPastChapter, deletePastChapter } from "@/api/past";
-import { readFutureChapter, deleteFutureChapter } from "@/api/future";
+import { readPastBook, readPastChapter, deletePastChapter } from "@/api/past";
+import {
+  readFutureBook,
+  readFutureChapter,
+  deleteFutureChapter,
+} from "@/api/future";
 import Navbar from "@/components/main/Navbar.vue";
 import WriterInfo from "../member/WriterInfo.vue";
 import SelectMode from "./SelectMode.vue";
@@ -115,39 +116,32 @@ import MessageModal from "../MessageModal.vue";
 export default {
   name: "ReadPast",
   components: { Navbar, WriterInfo, SelectMode, MessageModal },
-  props: {
-    bookInfo: {
-      type: Object,
-      default: () => {
-        return {
-          cover: {
-            id: 0,
-            page: 0,
-            title: "",
-            size: 0,
-            skin: 0,
-            font: 0,
-            skin_color: "",
-            font_color: "",
-          },
-          content: [
-            {
-              id: 0,
-              title: "",
-              content: "",
-              year: 0,
-              order: 0,
-              page: 0,
-              check: true,
-              createdAt: "",
-            },
-          ],
-        };
-      },
-    },
-  },
   data() {
     return {
+      bookInfo: {
+        cover: {
+          id: 0,
+          page: 0,
+          title: "",
+          size: 0,
+          skin: 0,
+          font: 0,
+          skin_color: "",
+          font_color: "",
+        },
+        content: [
+          {
+            id: 0,
+            title: "",
+            content: "",
+            year: 0,
+            order: 0,
+            page: 0,
+            check: true,
+            createdAt: "",
+          },
+        ],
+      },
       timechapter: {
         content: [
           {
@@ -267,7 +261,7 @@ export default {
           gradients: true,
           autoCenter: true,
         });
-        console.log("bookInfo.content");
+        console.log("bookInfo.content 갯수");
         console.log(this.bookInfo.content);
       } else {
         this.mainRead(1);
@@ -307,27 +301,54 @@ export default {
         );
       }
     },
-    getInfo() {
+    async getInfo() {
       if (this.$route.params.id) {
+        // 타임라인 진입 시
         console.log("timelineRead");
         this.timelineRead();
-      } else {
-        console.log("bookInfo에 info");
-        console.log(this.bookInfo);
-        if (
-          this.bookInfo.content.length == 0 ||
-          this.bookInfo.content[0].title !== ""
-        ) {
+      } else if (this.$route.params.status === "PAST") {
+        // 메인 -> 과거책으로 진입
+        await readPastBook(
+          (res) => {
+            console.log("mainRead");
+            console.log("책정보받기");
+            console.log(res.data);
+            this.bookInfo = res.data;
+            // this.$set(this.bookInfo, "content", res.data);
+            // console.log(this.bookInfo);
+          },
+          (err) => console.error(err)
+        );
+        if (this.bookInfo.list) {
           this.years = Object.keys(this.bookInfo.list);
         }
+
         this.mainRead(3);
+      } else if (this.$route.params.status === "FUTURE") {
+        // 메인 -> 미래책으로 진입
+        await readFutureBook(
+          (res) => {
+            console.log("mainRead");
+            console.log("책정보받기");
+            console.log(res.data);
+            this.bookInfo = res.data;
+            // this.$set(this.bookInfo, "content", res.data);
+            // console.log(this.bookInfo);
+          },
+          (err) => console.error(err)
+        );
+        if (this.bookInfo.list) {
+          this.years = Object.keys(this.bookInfo.list);
+        }
+
+        this.mainRead(3);
+      } else {
+        // 보관함에서 진입, woori가 코드 작성할 부분
       }
     },
   },
   mounted() {
-    setTimeout(() => {
-      this.getInfo();
-    }, 200);
+    this.getInfo();
   },
   created() {
     console.log(this.$route.params)

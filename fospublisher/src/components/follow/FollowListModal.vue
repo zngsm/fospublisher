@@ -133,9 +133,7 @@ export default {
       const user = {followingId: id}
       followUser(
         user,
-        (res) => {
-          console.log(res)
-          console.log('새로 받아오기')
+        () => {
           this.fetchFollower()
           this.fetchFollowing()
         },
@@ -148,6 +146,7 @@ export default {
       unfollowUser(
         id,
         () => {
+          this.fetchFollower()
           this.fetchFollowing()
         },
         (error) => {
@@ -158,7 +157,6 @@ export default {
     fetchFollower() {
       getFollowerList(
         (res) => {
-          console.log(res.data)
           this.followers = res.data
         },
         (error) => {

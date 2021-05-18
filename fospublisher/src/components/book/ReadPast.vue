@@ -329,6 +329,9 @@ export default {
       this.getInfo();
     }, 200);
   },
+  created() {
+    console.log(this.$route.params)
+  },
 };
 </script>
 

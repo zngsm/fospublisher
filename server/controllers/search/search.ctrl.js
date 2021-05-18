@@ -74,3 +74,18 @@ exports.search_username = async (req, res) => {
   });
   res.send(context);
 };
+
+exports.search_userinfo = async (req, res) => {
+  const user = req.params.userId;
+  await models.Users.findOne({
+    where: {
+      id: user,
+    },
+  })
+    .then((result) => {
+      res.status(200).json({ user: result });
+    })
+    .catch(() => {
+      res.status(404).send({ error: "존재하지 않는 유저입니다" });
+    });
+};

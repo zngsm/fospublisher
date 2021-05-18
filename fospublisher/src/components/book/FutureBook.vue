@@ -87,7 +87,7 @@ export default {
     sendBookInfo() {
       this.$router.push({
         name: "ReadPast",
-        params: { status: "Future" },
+        params: { status: "FUTURE" },
       });
     },
   },

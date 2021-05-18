@@ -1,58 +1,103 @@
 <template>
   <div
-    v-if="bookInfo"
     @click="sendBookInfo"
-    class="main-futureBook"
-    :style="{
-      backgroundColor: bookInfo.cover.skin_color,
-      fontColor: bookInfo.cover.font_color,
-      fontSize: fontSize,
+    class="main-pastBook"
+    :class="{
+      skinZero: isZero,
+      skinOne: isOne,
+      skinTwo: isTwo,
+      skinThree: isThree,
     }"
   >
-    <p>{{ bookInfo.cover.title }}</p>
+    <span
+      :class="{
+        'member-kukde-light': isKukde,
+        'member-kwandong': isKwandong,
+      }"
+      :style="{ color: coverInfo.font_color, fontSize: fontSize + 'px' }"
+      >{{ coverInfo.title }}</span
+    >
   </div>
 </template>
 
 <script>
-import { readFutureBook } from "@/api/future";
+import { getCoverInfo } from "@/api/future";
 export default {
   data: () => {
     return {
-      bookInfo: {
-        cover: {
-          page: 0,
-          title: "",
-          size: 0,
-          skin: 0,
-          font: 0,
-          font_color: "#000000",
-        },
-        content: [],
-        list: {},
-      },
+      coverInfo: {},
+      isZero: false,
+      isOne: false,
+      isTwo: false,
+      isThree: false,
       fontSize: null,
+      isKukde: false,
+      isKwandong: false,
     };
   },
   methods: {
-    getFontSize(size) {
-      if (size == 1) {
-        this.fontSize = "large";
-      } else if (size == 2) {
-        this.fontSize = "x-large";
+    convertSkinInfo() {
+      let skin = this.coverInfo.skin;
+      if (skin === 0) {
+        this.isZero = true;
+        this.isOne = false;
+        this.isTwo = false;
+        this.isThree = false;
+      } else if (skin === 1) {
+        this.isZero = false;
+        this.isOne = true;
+        this.isTwo = false;
+        this.isThree = false;
+      } else if (skin === 2) {
+        this.isZero = false;
+        this.isOne = false;
+        this.isTwo = true;
+        this.isThree = false;
+      } else {
+        this.isZero = false;
+        this.isOne = false;
+        this.isTwo = false;
+        this.isThree = true;
+      }
+    },
+    convertFontInfo() {
+      let font = this.coverInfo.font;
+      let size = this.coverInfo.size;
+      // 폰트 종류
+      if (font === 0) {
+        this.isKukde = true;
+        this.isKwandong = false;
+      } else {
+        this.isKukde = false;
+        this.isKwandong = true;
+      }
+      // 폰트 크기
+      if (size === 0) {
+        this.fontSize = 20;
+      } else if (size === 1) {
+        this.fontSize = 25;
+      } else if (size === 2) {
+        this.fontSize = 30;
+      } else if (size === 3) {
+        this.fontSize = 35;
+      } else {
+        this.fontSize = 40;
       }
     },
     sendBookInfo() {
       this.$router.push({
         name: "ReadPast",
-        params: { bookInfo: this.bookInfo, status: "FUTURE" },
+        params: { status: "Future" },
       });
     },
   },
   mounted() {
-    readFutureBook(
+    getCoverInfo(
       (res) => {
-        this.bookInfo = res.data;
-        this.getFontSize(res.data.cover.font);
+        this.coverInfo = res.data;
+        // sessionStorage.setItem("bookInfo", JSON.stringify(this.bookInfo));
+        this.convertSkinInfo();
+        this.convertFontInfo();
       },
       (err) => console.error(err)
     );

@@ -44,6 +44,14 @@ function updateFutureBook(data, success, fail) {
     .catch(fail);
 }
 
+// 표지 정보
+function getCoverInfo(success, fail) {
+  authInstance
+    .get("api/futures/cover/", {})
+    .then(success)
+    .catch(fail);
+}
+
 export {
   createFutureChapter,
   readFutureChapter,
@@ -51,4 +59,5 @@ export {
   deleteFutureChapter,
   readFutureBook,
   updateFutureBook,
+  getCoverInfo,
 };

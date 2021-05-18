@@ -72,6 +72,7 @@
                   v-if="isEdited"
                   body-content="회원정보 수정이 완료되었습니다."
                   @submit="changeMode"
+                  v-click-outside="changeMode"
                 />
               </v-dialog>
               <!-- End 회원정보수정 모달 -->

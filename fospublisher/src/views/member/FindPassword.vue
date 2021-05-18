@@ -43,10 +43,12 @@
                     v-if="isFailedFind"
                     body-content="회원정보를 찾을 수 없습니다.<br />답변이 기억나지 않는다면,<br />201publisher@gmail.com으로 문의바랍니다."
                     @submit="closeDialog"
+                    v-click-outside="closeDialog"
                   />
                   <message-modal
                     v-if="isEmpty"
                     body-content="입력이 올바르지 않습니다."
+                    v-click-outside="closeDialog"
                     @submit="closeDialog"
                   />
                 </v-dialog>

@@ -50,6 +50,7 @@
                     v-if="noData"
                     body-content="비밀번호를 다시 확인해주세요."
                     @submit="closeDialog"
+                    v-click-outside="closeDialog"
                   />
                 </v-dialog>
                 <!-- End  비밀번호 확인 모달 -->

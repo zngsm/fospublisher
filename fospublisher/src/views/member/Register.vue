@@ -181,6 +181,7 @@
                   v-if="isSuccessSignup"
                   body-content="회원가입에 성공했습니다. <br /> 로그인 페이지로 이동합니다."
                   @submit="moveToLogin"
+                  v-click-outside="moveToLogin"
                 />
               </v-dialog>
               <!-- End 회원가입 모달 -->

@@ -103,6 +103,7 @@
                 v-if="isSuccessChangePw"
                 body-content="변경이 완료되었습니다."
                 @submit="moveToLogin"
+                v-click-outside="moveToLogin"
               />
             </v-dialog>
             <!-- End  비밀번호 변경 모달 -->

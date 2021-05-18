@@ -59,6 +59,14 @@ function updatePastBook(data, success, fail) {
     .catch(fail);
 }
 
+// 표지 정보
+function getCoverInfo(success, fail) {
+  authInstance
+    .get("api/pasts/cover/", {})
+    .then(success)
+    .catch(fail);
+}
+
 export {
   getQuestion,
   getSelectedQuesion,
@@ -68,4 +76,5 @@ export {
   deletePastChapter,
   readPastBook,
   updatePastBook,
+  getCoverInfo,
 };

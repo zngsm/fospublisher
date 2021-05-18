@@ -34,7 +34,7 @@
       <div>
         <button
           class="navtab main-kukde-light"
-          @click="$router.push('library')"
+          @click="goToLibrary"
         >
           보관함
         </button>
@@ -64,21 +64,21 @@ export default {
       }
     },
     goToMain() {
-      this.$router.push("Main").catch((err) => {
+      this.$router.push("/main").catch((err) => {
         if (err.name === "NavigationDuplicated") {
           location.reload();
         }
       });
     },
     goToTimeline() {
-      this.$router.push("timeline").catch((err) => {
+      this.$router.push("/timeline").catch((err) => {
         if (err.name === "NavigationDuplicated") {
           location.reload();
         }
       });
     },
     goToLibrary() {
-      this.$router.push("").catch((err) => {
+      this.$router.push({name: "Library", params: {id: 1}}).catch((err) => {
         if (err.name === "NavigationDuplicated") {
           location.reload();
         }

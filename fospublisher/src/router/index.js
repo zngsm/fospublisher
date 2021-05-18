@@ -167,7 +167,7 @@ const routes = [
     component: Demo,
   },
   {
-    path: "/library",
+    path: "/library/:id",
     name: "Library",
     component: Library,
     beforeEnter(to, from, next) {

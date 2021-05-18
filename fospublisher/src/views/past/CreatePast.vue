@@ -227,6 +227,7 @@ export default {
           sessionStorage.clear();
           this.$router.push({
             name: "ReadPast",
+            status: "PAST",
             params: { id: this.chapId },
           });
         },
@@ -246,6 +247,7 @@ export default {
           sessionStorage.clear();
           this.$router.push({
             name: "ReadPast",
+            status: "FUTURE",
             params: { id: this.chapId },
           });
         },
@@ -416,6 +418,10 @@ export default {
         this.form.title = sessionStorage.getItem("title");
         this.form.content = sessionStorage.getItem("content");
         // 다시 분리하기
+        this.form.content.replace(
+          '<div class="html2pdf__page-break" position:="" relative;"=""></div>',
+          ""
+        );
         this.form.year = sessionStorage.getItem("year");
         if (this.status != "PAST") {
           this.form.month = sessionStorage.getItem("month");

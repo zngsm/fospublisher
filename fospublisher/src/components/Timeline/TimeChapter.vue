@@ -31,6 +31,7 @@
       </div>
       <div class="timeline-preview-content" v-else-if="!timeline.share">
         <v-icon>lock</v-icon>
+        나만 볼 수 있는 글 입니다
       </div>
       <div
         class="timeline-preview-content"

@@ -8,4 +8,11 @@ function searchUserId(user, success, fail) {
     .catch(fail);
 }
 
-export { searchUserId };
+function getAuthorInfo(userPk, success, fail) {
+  authInstance
+    .get(`api/search/userinfo/${userPk}`)
+    .then(success)
+    .catch(fail);
+}
+
+export { searchUserId, getAuthorInfo };

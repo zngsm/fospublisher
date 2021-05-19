@@ -1,7 +1,14 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="openInviteModal" persistent width="500">
-      <v-card class="py-1" min-height="20vh">
+    <v-dialog
+      v-model="openInviteModal"
+      v-click-outside="closeInviteModal"
+      width="500"
+    >
+      <v-card
+        class="py-1"
+        min-height="20vh"
+      >
         <v-card-title>
           <v-row class="justify-center" style="fontsize: 30px"> 초대 </v-row>
         </v-card-title>

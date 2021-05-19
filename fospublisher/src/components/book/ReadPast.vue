@@ -3,7 +3,7 @@
     <Navbar />
     <!-- 책클릭 -> 읽기모드 -->
     <div style="width:100%; height:60px;"><span></span></div>
-    <div v-if="!this.$route.params.id" id="flipbook">
+    <div v-if="!this.$route.params.id || this.$route.query.userId" id="flipbook">
       <div class="hard d-flex">
         <!-- <div class="mx-auto my-auto" style="fontSize: 50px;">
           {{ bookInfo.cover.title }}
@@ -12,7 +12,7 @@
       <div class="hard">
         <WriterInfo />
       </div>
-      <div class="read-select">
+      <div v-if="!this.$route.query.userId" class="read-select">
         <SelectMode
           @read="read"
           :cover="bookInfo.cover"
@@ -53,11 +53,11 @@
       </div>
       <!-- 메인 -> 읽기모드  -->
       <div v-for="(item, idx) in bookInfo.content" :key="idx">
-        <button @click="modifyChapter(item)">
+        <button v-if="!$route.query.userId" @click="modifyChapter(item)">
           <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
           <p>수정</p>
         </button>
-        <button @click="deleteModal(item.id, idx)">
+        <button v-if="!$route.query.userId" @click="deleteModal(item.id, idx)">
           <v-icon large color="black">mdi-delete-forever-outline</v-icon>
           <p>삭제</p>
         </button>
@@ -106,6 +106,7 @@
 </template>
 
 <script>
+import { getEachFollowerBook } from "@/api/follow";
 import { readPastBook, readPastChapter, deletePastChapter } from "@/api/past";
 import {
   readFutureBook,
@@ -317,7 +318,19 @@ export default {
 
         this.mainRead(3);
       } else {
-        // 보관함에서 진입, woori가 코드 작성할 부분
+        // 보관함에서 진입
+        await getEachFollowerBook(
+          this.$route.query.userId,
+          (res) => {
+            this.bookInfo = res.data;
+            this.years = Object.keys(res.data.list);
+            console.log(this.bookInfo)
+          },
+          (error) => {
+            console.log(error)
+          }
+        )
+        this.mainRead(3);
       }
     },
   },
@@ -327,6 +340,9 @@ export default {
       localStorage.setItem("read/status", this.$route.params.status);
     } else {
       this.status = localStorage.getItem("read/status");
+    }
+    if (this.$route.query.userId) {
+      this.status = localStorage.setItem("read/status", 'library');
     }
     this.getInfo();
   },

@@ -5,9 +5,9 @@
     <div style="width:100%; height:60px;"><span></span></div>
     <div v-if="!this.$route.params.id" id="flipbook">
       <div class="hard d-flex">
-        <div class="mx-auto my-auto" style="fontSize: 50px;">
+        <!-- <div class="mx-auto my-auto" style="fontSize: 50px;">
           {{ bookInfo.cover.title }}
-        </div>
+        </div> -->
       </div>
       <div class="hard">
         <WriterInfo />
@@ -118,30 +118,31 @@ export default {
   components: { Navbar, WriterInfo, SelectMode, MessageModal },
   data() {
     return {
-      bookInfo: {
-        cover: {
-          id: 0,
-          page: 0,
-          title: "",
-          size: 0,
-          skin: 0,
-          font: 0,
-          skin_color: "",
-          font_color: "",
-        },
-        content: [
-          {
-            id: 0,
-            title: "",
-            content: "",
-            year: 0,
-            order: 0,
-            page: 0,
-            check: true,
-            createdAt: "",
-          },
-        ],
-      },
+      bookInfo: {},
+      // bookInfo: {
+      //   cover: {
+      //     id: 0,
+      //     page: 0,
+      //     title: "",
+      //     size: 0,
+      //     skin: 0,
+      //     font: 0,
+      //     skin_color: "",
+      //     font_color: "",
+      //   },
+      //   content: [
+      //     {
+      //       id: 0,
+      //       title: "",
+      //       content: "",
+      //       year: 0,
+      //       order: 0,
+      //       page: 0,
+      //       check: true,
+      //       createdAt: "",
+      //     },
+      //   ],
+      // },
       timechapter: {
         content: [
           {
@@ -252,20 +253,15 @@ export default {
       this.mainRead(3);
     },
     mainRead(num) {
-      if (window.$("#flipbook")) {
+      setTimeout(() => {
         window.$("#flipbook").turn({
           width: 1026,
           height: 650,
           page: num,
-          // acceleration: true, touch device용
           gradients: true,
           autoCenter: true,
         });
-        console.log("bookInfo.content 갯수");
-        console.log(this.bookInfo.content);
-      } else {
-        this.mainRead(1);
-      }
+      }, 200); // 바뀐 bookInfo.content 반영을 위해 setTimeout
     },
     async timelineRead() {
       if (this.$route.params.status === "PAST") {
@@ -311,18 +307,21 @@ export default {
         await readPastBook(
           (res) => {
             console.log("mainRead");
-            console.log("책정보받기");
-            console.log(res.data);
-            this.bookInfo = res.data;
-            // this.$set(this.bookInfo, "content", res.data);
-            // console.log(this.bookInfo);
+
+            this.$set(this.bookInfo, "content", res.data.content);
+            // this.bookInfo = res.data;
+            console.log("응답 반영한 bookInfo");
+            console.log(this.bookInfo);
+            const bookInfo = this.bookInfo;
+            for (const item of bookInfo.content) {
+              console.log("title", item.title);
+            }
           },
           (err) => console.error(err)
         );
         if (this.bookInfo.list) {
           this.years = Object.keys(this.bookInfo.list);
         }
-
         this.mainRead(3);
       } else if (this.$route.params.status === "FUTURE") {
         // 메인 -> 미래책으로 진입
@@ -331,9 +330,6 @@ export default {
             console.log("mainRead");
             console.log("책정보받기");
             console.log(res.data);
-            this.bookInfo = res.data;
-            // this.$set(this.bookInfo, "content", res.data);
-            // console.log(this.bookInfo);
           },
           (err) => console.error(err)
         );
@@ -347,11 +343,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getInfo();
-  },
   created() {
-    console.log(this.$route.params)
+    this.getInfo();
   },
 };
 </script>

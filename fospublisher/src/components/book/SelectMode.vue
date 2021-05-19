@@ -73,6 +73,7 @@ import InviteModal from "@/components/follow/InviteModal.vue";
 import FollowListModal from "@/components/follow/FollowListModal.vue";
 
 export default {
+  props: { cover: Object },
   data() {
     return {
       openInviteModal: false,
@@ -98,10 +99,10 @@ export default {
     },
     goToDesign() {
       let status = this.$route.params.status;
-      let bookInfo = this.$route.params.bookInfo;
+      let cover = this.cover;
       this.$router.push({
         name: "Design",
-        params: { bookInfo: bookInfo, status: status },
+        params: { cover: cover, status: status },
       });
     },
     exportWord() {

@@ -8,7 +8,7 @@
 
 .main-pastBook-container {
   position: absolute;
-  width: 231.66px;
+  width: 242px;
   height: 327.24px;
   top: 230px;
   left: 550px;
@@ -16,7 +16,7 @@
 
 /* 커버 정보 */
 .main-pastBook {
-  width: 231.66px;
+  width: 242px;
   height: 327.24px;
   border: 1px solid black;
 }
@@ -32,18 +32,22 @@
 .skinZero,
 .skinZero::before {
   background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1620747619023.png");
+  background-size: 242px 327px;
 }
 .skinOne,
 .skinOne::before {
   background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1620747657994.png");
+  background-size: 242px 327px;
 }
 .skinTwo,
 .skinTwo::before {
   background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1620747682861.png");
+  background-size: 242px 327px;
 }
 .skinThree,
 .skinThree::before {
   background-image: url("https://autobiography.s3.ap-northeast-2.amazonaws.com/1621263240811.png");
+  background-size: 242px 327px;
 }
 
 .main-futureBook-container {

@@ -46,7 +46,6 @@
                     </div>
                     <v-menu
                       ref="menu"
-                      v-model="menu"
                       :close-on-content-click="false"
                       transition="scale-transition"
                       offset-y
@@ -252,7 +251,7 @@ export default {
     this.activeColor = this.color;
   },
   created() {
-    const cover = this.$route.params.bookInfo.cover;
+    const cover = this.$route.params.cover;
     this.id = cover.id;
     this.page = cover.page;
     this.title = cover.title;

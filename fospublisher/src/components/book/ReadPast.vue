@@ -13,7 +13,7 @@
         <WriterInfo />
       </div>
       <div class="read-select">
-        <SelectMode @read="read"></SelectMode>
+        <SelectMode @read="read" :cover="bookInfo.cover"></SelectMode>
       </div>
       <!-- <div
         v-if="
@@ -285,8 +285,8 @@ export default {
         await readPastBook(
           (res) => {
             console.log("mainRead");
-
-            this.$set(this.bookInfo, "content", res.data.content);
+            this.bookInfo = res.data;
+            // this.$set(this.bookInfo, "content", res.data.content);
           },
           (err) => console.error(err)
         );
@@ -303,6 +303,7 @@ export default {
             console.log("mainRead");
             console.log("책정보받기");
             console.log(res.data);
+            this.bookInfo = res.data;
           },
           (err) => console.error(err)
         );

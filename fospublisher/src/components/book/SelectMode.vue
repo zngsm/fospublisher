@@ -27,7 +27,7 @@
       /><span>디자인</span>
     </button>
 
-    <button class="button-each" @click="exportWord">
+    <button class="button-each" @click="openExportModal = true">
       <img
         class="iconImg"
         width="70px"
@@ -65,32 +65,38 @@
       :openFollowListModal="openFollowListModal"
       @closeFollowListModal="openFollowListModal = false"
     />
+
+    <ConfirmModal
+      v-if="openExportModal == true"
+      :openExportModal="openExportModal"
+      :headerTitle="'출품하기'"
+      :concept="'export'"
+      @closeModal="openExportModal = false"
+      @exportWord="exportWord"
+    />
   </div>
 </template>
 
 <script>
 import InviteModal from "@/components/follow/InviteModal.vue";
 import FollowListModal from "@/components/follow/FollowListModal.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 export default {
-  props: { cover: Object },
+  props: { cover: Object, book: Object },
   data() {
     return {
       openInviteModal: false,
       openFollowListModal: false,
-      word: "안녕하세요!!! 테스트입니다!!!",
+      openExportModal: false,
+      word: "",
+      contents: "",
     };
   },
   components: {
     InviteModal,
     FollowListModal,
-    // Document,
-    // Paragraph,
-    // Packer,
-    // TextRun,
-    // saveAs,
-    // BorderStyle,
-    // WidthType,
+    ConfirmModal,
   },
   methods: {
     goToCreate() {
@@ -106,14 +112,31 @@ export default {
       });
     },
     exportWord() {
-      this.word = `<html xmln:0='urn:schemas-microsoft-com:office:office xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>EXPORT HTML TO WORD</title></head><body>${this.word}</body></html>`;
+      this.openExportModal = false;
+      this.contents = `<br><br><br><p style="font-size: 56px; text-align:center;">${this.book.cover.title}</p>`;
+      this.contents += `<h2 style="text-align:center;page-break-before: always">목 차</h2> <br>`;
+      for (let year in this.book.list) {
+        for (let idx in this.book.list[year]) {
+          if (idx == 0) {
+            this.contents += `<h3>${year}`;
+          }
+          this.contents += `<h3 style="text-indent: 20px; word-break: break-all;">- ${this.book.list[year][idx]["title"]}</h3>`;
+        }
+      }
+      for (let content of this.book.content) {
+        this.contents += `<h2 style="text-align:center;page-break-before: always">${content.title}</h2> <br>`;
+        this.contents += `<p style="text-align:right">${content.year}년</p> <br>`;
+        this.contents += content.content;
+        this.contents += "<br>";
+      }
+      this.word = `<html xmln:0='urn:schemas-microsoft-com:office:office xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>EXPORT HTML TO WORD</title></head><body>${this.contents}</body></html>`;
       let source =
         "data:application/vnd.ms-word;charset=utf-8," +
         encodeURIComponent(this.word);
       let fileDownload = document.createElement("a");
       document.body.appendChild(fileDownload);
       fileDownload.href = source;
-      fileDownload.download = "document.doc";
+      fileDownload.download = `${this.book.cover.title}.doc`;
       fileDownload.click();
       document.body.removeChild(fileDownload);
     },

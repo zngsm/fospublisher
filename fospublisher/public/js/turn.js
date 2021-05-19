@@ -1883,7 +1883,7 @@
               data.wrapper.css({ width: size, height: size });
               data.fwrapper
                 .css({ width: size, height: size })
-                .children(":first-child")
+                .children(":first-child") // 첫번째 자식
                 .css({ width: width, height: height });
 
               data.fpage.css({ width: width, height: height });

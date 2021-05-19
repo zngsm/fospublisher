@@ -161,12 +161,12 @@ export default {
         .$('iframe[name="richTextField"]')
         .contents()
         .find("body")[0].childNodes;
-      var pageNum = Math.ceil((iframe.height() / 1044) * 1.1);
+      var pageNum = Math.ceil((iframe.height() / 584) * 1.1);
       for (var i = 1; i <= pageNum; i++) {
         for (var j = 0; j < childNodes.length; j++) {
           if (
-            childNodes[j].offsetTop <= 1044 * i &&
-            childNodes[j].offsetTop + childNodes[j].offsetHeight > 1044 * i
+            childNodes[j].offsetTop <= 584 * i &&
+            childNodes[j].offsetTop + childNodes[j].offsetHeight > 584 * i
           ) {
             window
               .$(
@@ -227,8 +227,7 @@ export default {
           sessionStorage.clear();
           this.$router.push({
             name: "ReadPast",
-            status: "PAST",
-            params: { id: this.chapId },
+            params: { id: this.chapId, status: "PAST" },
           });
         },
         (err) => {
@@ -247,7 +246,6 @@ export default {
           sessionStorage.clear();
           this.$router.push({
             name: "ReadPast",
-            status: "FUTURE",
             params: { id: this.chapId },
           });
         },
@@ -418,10 +416,6 @@ export default {
         this.form.title = sessionStorage.getItem("title");
         this.form.content = sessionStorage.getItem("content");
         // 다시 분리하기
-        this.form.content.replace(
-          '<div class="html2pdf__page-break" position:="" relative;"=""></div>',
-          ""
-        );
         this.form.year = sessionStorage.getItem("year");
         if (this.status != "PAST") {
           this.form.month = sessionStorage.getItem("month");

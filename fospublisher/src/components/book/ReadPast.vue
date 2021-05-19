@@ -3,18 +3,21 @@
     <Navbar />
     <!-- 책클릭 -> 읽기모드 -->
     <div style="width:100%; height:60px;"><span></span></div>
-    <div v-if="!this.$route.params.id || this.$route.query.userId" id="flipbook">
+    <div
+      v-if="!this.$route.params.id || this.$route.query.userId"
+      id="flipbook"
+    >
       <div class="hard" style="display: flex; justify-content: center;">
-        <div class="bookTitle"> 
+        <div class="bookTitle">
           {{ bookInfo.cover.title }}
         </div>
-        <img 
-          :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)" 
-          width="100%" 
+        <img
+          :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)"
+          width="100%"
           alt="picture"
-        >
+        />
       </div>
-      <div class="hard">
+      <div>
         <WriterInfo />
       </div>
       <div v-if="!this.$route.query.userId" class="read-select">
@@ -24,11 +27,6 @@
           :book="bookInfo"
         ></SelectMode>
       </div>
-      <!-- <div
-        v-if="
-          this.bookInfo.content.length == 0 || bookInfo.content[0].title !== ''
-        "
-      > -->
       <div>
         <h1>목차</h1>
         <v-expansion-panels flat hover style="width:400px;" class="mx-auto">
@@ -69,45 +67,44 @@
           <v-icon large color="black">mdi-delete-forever-outline</v-icon>
           <p>삭제</p>
         </button>
+
         <h1>{{ item.title }}</h1>
-        <p v-html="item.content"></p>
       </div>
       <div class="hard"></div>
       <div class="hard">
-        <img 
-          :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)" 
-          width="100%" 
-          alt="picture" 
+        <img
+          :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)"
+          width="100%"
+          alt="picture"
           class="lastImage"
-        >
+        />
       </div>
     </div>
     <!-- 타임라인 -> 읽기모드 -->
     <div v-else id="flipbook">
-      <div class="hard"></div>
       <div>
-        <button @click="modifyChapter(timechapter)">
-          <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
-          <p>수정</p>
-        </button>
-        <button @click="deleteModal(timechapter.id)">
-          <v-icon large color="black">mdi-delete-forever-outline</v-icon>
-          <p>삭제</p>
-        </button>
-        <h1>{{ timechapter.title }}</h1>
+        <div class="hard"></div>
       </div>
-      <div v-for="(item, idx) in temp" :key="idx">
-        <p v-html="item"></p>
+      <div>
+        <div>
+          <button @click="modifyChapter(timechapter)">
+            <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
+            <p>수정</p>
+          </button>
+          <button @click="deleteModal(timechapter.id)">
+            <v-icon large color="black">mdi-delete-forever-outline</v-icon>
+            <p>삭제</p>
+          </button>
+          <h1>{{ timechapter.title }}</h1>
+        </div>
+      </div>
+      <div>
+        <div v-for="(item, idx) in temp" :key="idx">
+          <p v-html="item"></p>
+        </div>
       </div>
 
       <div class="hard"></div>
-      <div>
-        <h1>{{ timechapter.title }}</h1>
-      </div>
-      <div>
-        <p>{{ timechapter.content }}</p>
-        <p v-html="timechapter.content"></p>
-      </div>
     </div>
     <!-- </div>  -->
     <!-- <p>{{ temp }}</p> -->
@@ -233,25 +230,8 @@ export default {
     },
     cutPage() {
       // 페이지네이션
-      console.log("info");
-      console.log(this.info);
-      this.temp = this.info.split(
-        '<div class="html2pdf__page-break" style="border-bottom: 1px dashed black; position: relative;">'
-      );
-      for (let i = 0; i < this.temp.length; i++) {
-        if (i % 2 === 1) {
-          // let erasePage = this.temp[i].replace(/PAGE([0-9]</div></div>)/g,"")
-          console.log("홀수");
-          console.log(this.temp[i]);
-
-          let erasePage = this.temp[i].replace(
-            `<di, style="-webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%); position: absolute; background-color: white; border: 1px solid black; border-radius: 3px; top: 50%; left: 50%; padding: 2px 10px; justify-content: center;"> PAGE ${i +
-              1}</div></div>`,
-            ""
-          );
-          this.temp[i] = erasePage;
-        }
-      }
+      // console.log("split전");
+      // console.log(this.info);
       this.mainRead(3);
     },
     mainRead(num) {
@@ -260,10 +240,31 @@ export default {
           width: 1026,
           height: 650,
           page: num,
+          pages: 45,
           gradients: true,
           autoCenter: true,
         });
-      }, 300); // 바뀐 bookInfo.content 반영을 위해 setTimeout
+      }, 100); // 바뀐 bookInfo.content 반영을 위해 setTimeout
+      // cutPage();
+      setTimeout(() => {
+        let titlePageNum = 6;
+
+        for (let i = 0; i < this.info.length; i++) {
+          // let titlePageNum = i + 6;
+          let chapterList = this.info[i].content.split(
+            '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
+          );
+          for (let j = 0; j < chapterList.length; j++) {
+            let page = titlePageNum + j;
+            // if (chapterList[j] === "") { // 공백인 장 지우기?
+            //   continue;
+            // }
+            let element = window.$("<div />").html(chapterList[j]);
+            window.$("#flipbook").turn("addPage", element, page);
+          }
+          titlePageNum = titlePageNum + chapterList.length + 1;
+        }
+      }, 200);
     },
     async timelineRead() {
       if (this.$route.params.status === "PAST") {
@@ -312,12 +313,13 @@ export default {
             console.log("mainRead");
             this.bookInfo = res.data;
             this.years = Object.keys(res.data.list);
+            this.info = res.data.content;
+            this.cutPage();
             // this.$set(this.bookInfo, "content", res.data.content);
           },
           (err) => console.error(err)
         );
         this.mainRead(3);
-
       } else if (this.status === "FUTURE") {
         // 메인 -> 미래책으로 진입
         console.log("미래읽기");
@@ -333,20 +335,19 @@ export default {
           (err) => console.error(err)
         );
         this.mainRead(3);
-
       } else {
         // 보관함에서 진입
         await getEachFollowerBook(
           this.$route.query.userId,
           (res) => {
             this.bookInfo = res.data;
-            console.log(this.bookInfo)
+            console.log(this.bookInfo);
             this.years = Object.keys(res.data.list);
           },
           (error) => {
-            console.log(error)
+            console.log(error);
           }
-        )
+        );
         this.mainRead(3);
       }
     },
@@ -359,7 +360,7 @@ export default {
       this.status = localStorage.getItem("read/status");
     }
     if (this.$route.query.userId) {
-      this.status = localStorage.setItem("read/status", 'library');
+      this.status = localStorage.setItem("read/status", "library");
     }
     this.getInfo();
   },
@@ -369,8 +370,8 @@ export default {
 <style scoped>
 @import "../../assets/css/ReadPast.css";
 .bookTitle {
-  position: absolute; 
-  top: 100px; 
+  position: absolute;
+  top: 100px;
   font-size: 30px;
 }
 .even > .lastImage {

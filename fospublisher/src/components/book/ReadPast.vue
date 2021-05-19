@@ -119,30 +119,6 @@ export default {
   data() {
     return {
       bookInfo: {},
-      // bookInfo: {
-      //   cover: {
-      //     id: 0,
-      //     page: 0,
-      //     title: "",
-      //     size: 0,
-      //     skin: 0,
-      //     font: 0,
-      //     skin_color: "",
-      //     font_color: "",
-      //   },
-      //   content: [
-      //     {
-      //       id: 0,
-      //       title: "",
-      //       content: "",
-      //       year: 0,
-      //       order: 0,
-      //       page: 0,
-      //       check: true,
-      //       createdAt: "",
-      //     },
-      //   ],
-      // },
       timechapter: {
         content: [
           {
@@ -157,6 +133,7 @@ export default {
           },
         ],
       },
+      status: null,
       currentId: null,
       currentIdx: null,
       dialog: false,
@@ -302,20 +279,14 @@ export default {
         // 타임라인 진입 시
         console.log("timelineRead");
         this.timelineRead();
-      } else if (this.$route.params.status === "PAST") {
+      } else if (this.status === "PAST") {
         // 메인 -> 과거책으로 진입
+        console.log("과거읽기");
         await readPastBook(
           (res) => {
             console.log("mainRead");
 
             this.$set(this.bookInfo, "content", res.data.content);
-            // this.bookInfo = res.data;
-            console.log("응답 반영한 bookInfo");
-            console.log(this.bookInfo);
-            const bookInfo = this.bookInfo;
-            for (const item of bookInfo.content) {
-              console.log("title", item.title);
-            }
           },
           (err) => console.error(err)
         );
@@ -323,8 +294,10 @@ export default {
           this.years = Object.keys(this.bookInfo.list);
         }
         this.mainRead(3);
-      } else if (this.$route.params.status === "FUTURE") {
+      } else if (this.status === "FUTURE") {
         // 메인 -> 미래책으로 진입
+        console.log("미래읽기");
+
         await readFutureBook(
           (res) => {
             console.log("mainRead");
@@ -344,6 +317,12 @@ export default {
     },
   },
   created() {
+    if (this.$route.params.status) {
+      this.status = this.$route.params.status;
+      localStorage.setItem("read/status", this.$route.params.status);
+    } else {
+      this.status = localStorage.getItem("read/status");
+    }
     this.getInfo();
   },
 };

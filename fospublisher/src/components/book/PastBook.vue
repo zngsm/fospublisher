@@ -73,15 +73,15 @@ export default {
       }
       // 폰트 크기
       if (size === 0) {
-        this.fontSize = 20;
+        this.fontSize = 20 * 0.6875;
       } else if (size === 1) {
-        this.fontSize = 25;
+        this.fontSize = 25 * 0.6875;
       } else if (size === 2) {
-        this.fontSize = 30;
+        this.fontSize = 30 * 0.6875;
       } else if (size === 3) {
-        this.fontSize = 35;
+        this.fontSize = 35 * 0.6875;
       } else {
-        this.fontSize = 40;
+        this.fontSize = 40 * 0.6875;
       }
     },
     sendBookInfo() {

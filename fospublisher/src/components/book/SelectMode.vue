@@ -1,6 +1,18 @@
 <template>
   <!-- 선택 버튼 -->
   <div class="button-container select-font">
+    <!-- <button
+      v-if="status == 'FUTURE'"
+      @click="openTodayModal = true"
+      class="button-each"
+    >
+      <img
+        class="iconImg"
+        src="https://img.icons8.com/carbon-copy/80/000000/today.png"
+        style="width:52px vertical-align:bottom"
+      />
+      <span>오늘의 기록</span>
+    </button> -->
     <button @click="goToCreate" class="button-each">
       <img
         class="iconImg"
@@ -27,7 +39,11 @@
       /><span>디자인</span>
     </button>
 
-    <button class="button-each" @click="openExportModal = true">
+    <button
+      v-if="status == 'PAST'"
+      class="button-each"
+      @click="openExportModal = true"
+    >
       <img
         class="iconImg"
         width="70px"
@@ -74,6 +90,13 @@
       @closeModal="openExportModal = false"
       @exportWord="exportWord"
     />
+
+    <SelectModal
+      v-if="openTodayModal == true"
+      :openTodayModal="openTodayModal"
+      @closeModal="openTodayModal = false"
+      @goToTodayFuture="goToTodayFuture"
+    />
   </div>
 </template>
 
@@ -81,14 +104,17 @@
 import InviteModal from "@/components/follow/InviteModal.vue";
 import FollowListModal from "@/components/follow/FollowListModal.vue";
 import ConfirmModal from "@/components/ConfirmModal.vue";
+import { mapState } from "vuex";
+import SelectModal from "../SelectModal.vue";
 
 export default {
-  props: { cover: Object, book: Object },
+  props: { cover: Object, book: Object, status: String },
   data() {
     return {
       openInviteModal: false,
       openFollowListModal: false,
       openExportModal: false,
+      openTodayModal: false,
       word: "",
       contents: "",
     };
@@ -97,8 +123,13 @@ export default {
     InviteModal,
     FollowListModal,
     ConfirmModal,
+    SelectModal,
   },
   methods: {
+    goToTodayFuture(id) {
+      console.log(id);
+      this.$emit("goToTodayFuture", id);
+    },
     goToCreate() {
       let status = this.$route.params.status;
       this.$router.push({ name: "CreatePast", params: { status: status } });
@@ -140,6 +171,11 @@ export default {
       fileDownload.click();
       document.body.removeChild(fileDownload);
     },
+  },
+  computed: {
+    ...mapState({
+      todayData: (state) => state.book.todayData,
+    }),
   },
 };
 </script>

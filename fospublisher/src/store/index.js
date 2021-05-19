@@ -5,6 +5,7 @@ import auth from "./auth";
 import error from "./error";
 import timeline from "./timeline";
 import question from "./question";
+import book from "./book";
 
 Vue.use(Vuex);
 
@@ -25,10 +26,10 @@ export default new Vuex.Store({
       commit("setUrl", { url });
     },
   },
-  modules: { auth, error, timeline, question },
+  modules: { auth, error, timeline, question, book },
   plugins: [
     createPersistedState({
-      paths: ["question"],
+      paths: ["question", "book"],
     }),
   ],
 });

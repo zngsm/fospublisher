@@ -52,6 +52,13 @@ function getCoverInfo(success, fail) {
     .catch(fail);
 }
 
+function checkFuture(data, success, fail) {
+  authInstance
+    .post("api/futures/check", data, {})
+    .then(success)
+    .catch(fail);
+}
+
 export {
   createFutureChapter,
   readFutureChapter,
@@ -60,4 +67,5 @@ export {
   readFutureBook,
   updateFutureBook,
   getCoverInfo,
+  checkFuture,
 };

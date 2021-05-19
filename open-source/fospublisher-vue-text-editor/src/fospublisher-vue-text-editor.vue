@@ -330,6 +330,7 @@
         <span :style="styleObject.tooltip" class="tooltip">전부 선택</span>
       </button>
       <button
+        v-if="styleObject.pdfButtonShow"
         :style="styleObject.toolButtonText"
         class="toolButtonText"
         @click="exportToPDF()"
@@ -338,6 +339,7 @@
         <span :style="styleObject.tooltip" class="tooltip">PDF 추출</span>
       </button>
       <button
+        v-if="styleObject.wordButtonShow"
         :style="styleObject.toolButtonText"
         class="toolButtonText"
         @click="exportToWord()"

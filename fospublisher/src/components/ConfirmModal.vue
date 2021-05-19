@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="text-center" v-click-outside="closeModal">
     <v-dialog v-model="openExportModal" persistent width="500">
       <v-card class="py-1" min-height="20vh">
         <v-card-title>

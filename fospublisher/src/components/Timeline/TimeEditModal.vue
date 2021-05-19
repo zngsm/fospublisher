@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-click-outside="changeEditMode">
     <v-card>
       <v-card-title>
         <span class="headline">순서편집</span>

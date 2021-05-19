@@ -13,7 +13,11 @@
         <WriterInfo />
       </div>
       <div class="read-select">
-        <SelectMode @read="read" :cover="bookInfo.cover"></SelectMode>
+        <SelectMode
+          @read="read"
+          :cover="bookInfo.cover"
+          :book="bookInfo"
+        ></SelectMode>
       </div>
       <!-- <div
         v-if="

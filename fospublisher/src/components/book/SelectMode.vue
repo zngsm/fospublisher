@@ -52,7 +52,11 @@
       /><span>출품</span>
     </button>
 
-    <button @click="openInviteModal = true" class="button-each">
+    <button
+      v-if="status == 'PAST'"
+      class="button-each"
+      @click="openInviteModal = true"
+    >
       <img
         class="iconImg"
         width="70px"
@@ -61,7 +65,11 @@
       /><span>유저검색</span>
     </button>
 
-    <button @click="openFollowListModal = true" class="button-each">
+    <button
+      v-if="status == 'PAST'"
+      class="button-each"
+      @click="openFollowListModal = true"
+    >
       <img
         class="iconImg"
         width="100px"

@@ -291,14 +291,13 @@ export default {
           (res) => {
             console.log("mainRead");
             this.bookInfo = res.data;
+            this.years = Object.keys(res.data.list);
             // this.$set(this.bookInfo, "content", res.data.content);
           },
           (err) => console.error(err)
         );
-        if (this.bookInfo.list) {
-          this.years = Object.keys(this.bookInfo.list);
-        }
         this.mainRead(3);
+        
       } else if (this.status === "FUTURE") {
         // 메인 -> 미래책으로 진입
         console.log("미래읽기");
@@ -309,14 +308,12 @@ export default {
             console.log("책정보받기");
             console.log(res.data);
             this.bookInfo = res.data;
+            this.years = Object.keys(res.data.list);
           },
           (err) => console.error(err)
         );
-        if (this.bookInfo.list) {
-          this.years = Object.keys(this.bookInfo.list);
-        }
-
         this.mainRead(3);
+
       } else {
         // 보관함에서 진입
         await getEachFollowerBook(
@@ -324,7 +321,6 @@ export default {
           (res) => {
             this.bookInfo = res.data;
             this.years = Object.keys(res.data.list);
-            console.log(this.bookInfo)
           },
           (error) => {
             console.log(error)

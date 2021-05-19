@@ -4,10 +4,15 @@
     <!-- 책클릭 -> 읽기모드 -->
     <div style="width:100%; height:60px;"><span></span></div>
     <div v-if="!this.$route.params.id || this.$route.query.userId" id="flipbook">
-      <div class="hard d-flex">
-        <!-- <div class="mx-auto my-auto" style="fontSize: 50px;">
+      <div class="hard" style="display: flex; justify-content: center;">
+        <div class="bookTitle"> 
           {{ bookInfo.cover.title }}
-        </div> -->
+        </div>
+        <img 
+          :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)" 
+          width="100%" 
+          alt="picture"
+        >
       </div>
       <div class="hard">
         <WriterInfo />
@@ -43,8 +48,11 @@
                     <b>{{ item.title }}</b>
                   </p>
                 </div>
-                <div>
+                <div v-if="!$route.query.userId">
                   <p>{{ item.pageStart + 5 }} 쪽</p>
+                </div>
+                <div v-else>
+                  <p>{{ item.pageStart + 4 }} 쪽</p>
                 </div>
               </div>
             </v-expansion-panel-content>
@@ -65,7 +73,14 @@
         <p v-html="item.content"></p>
       </div>
       <div class="hard"></div>
-      <div class="hard"></div>
+      <div class="hard">
+        <img 
+          :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)" 
+          width="100%" 
+          alt="picture" 
+          class="lastImage"
+        >
+      </div>
     </div>
     <!-- 타임라인 -> 읽기모드 -->
     <div v-else id="flipbook">
@@ -152,8 +167,13 @@ export default {
       window.$("#flipbook").turn("next");
     },
     goPage(p) {
-      let pageNum = p + 5;
-      window.$("#flipbook").turn("page", pageNum);
+      if (this.$route.query.userId) {
+        let pageNum = p + 4;
+        window.$("#flipbook").turn("page", pageNum);
+      } else {
+        let pageNum = p + 5;
+        window.$("#flipbook").turn("page", pageNum);
+      }
     },
     modifyChapter(data) {
       let chapter = data;
@@ -243,7 +263,7 @@ export default {
           gradients: true,
           autoCenter: true,
         });
-      }, 200); // 바뀐 bookInfo.content 반영을 위해 setTimeout
+      }, 300); // 바뀐 bookInfo.content 반영을 위해 setTimeout
     },
     async timelineRead() {
       if (this.$route.params.status === "PAST") {
@@ -297,7 +317,7 @@ export default {
           (err) => console.error(err)
         );
         this.mainRead(3);
-        
+
       } else if (this.status === "FUTURE") {
         // 메인 -> 미래책으로 진입
         console.log("미래읽기");
@@ -320,6 +340,7 @@ export default {
           this.$route.query.userId,
           (res) => {
             this.bookInfo = res.data;
+            console.log(this.bookInfo)
             this.years = Object.keys(res.data.list);
           },
           (error) => {
@@ -347,4 +368,13 @@ export default {
 
 <style scoped>
 @import "../../assets/css/ReadPast.css";
+.bookTitle {
+  position: absolute; 
+  top: 100px; 
+  font-size: 30px;
+}
+.even > .lastImage {
+  height: 100%;
+  transform: scaleX(-1);
+}
 </style>

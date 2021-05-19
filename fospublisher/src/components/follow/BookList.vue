@@ -10,7 +10,7 @@
           <div class="page6 d-flex justify-center">
             <div class="bookBtn">
               <div style="display: block;">{{ info.nickname }}님의</div>
-              <v-btn color="#231815" small outlined @click="goReadPast">자서전 보러가기</v-btn>
+              <v-btn color="#231815" small outlined @click="goReadPast(info.id)">자서전 보러가기</v-btn>
             </div>
           </div>
           <div class="page5" >
@@ -48,8 +48,12 @@ export default {
     }
   },
   methods: {
-    goReadPast() {
-
+    goReadPast(id) {
+      this.$router.push({name: "ReadPast", query: {userId: id}}).catch((err) => {
+        if (err.name === "NavigationDuplicated") {
+          location.reload();
+        }
+      });
     }
   },
   mounted() {

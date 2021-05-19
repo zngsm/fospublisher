@@ -3,7 +3,7 @@
     <v-col cols="10" class="align-center">
       <div v-if="!editMode" class="justify-center align-center text-center">
         <v-col>
-          <v-btn class="d-flex offset-9" fab x-large text @click="changeMode">
+          <v-btn v-if="!this.$route.query.userId" class="d-flex offset-9" fab x-large text @click="changeMode">
             <v-col>
               <v-icon x-large>mdi-file-document-edit-outline</v-icon>
               <p class="ma-0">수정하기</p>
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import { getAuthorInfo } from "@/api/search.js";
 import "../../assets/css/member.css";
 import AvatarSelect from "./AvatarSelect";
 import DatePicker from "./DatePicker";
@@ -126,20 +127,36 @@ export default {
     },
     // 유저 정보 조회
     getUserInfo() {
-      checkUserInfo(
-        (res) => {
-          if (res.status === 200) {
+      if (this.$route.query.userId) {
+        getAuthorInfo(
+          this.$route.query.userId,
+          (res) => {
             this.user = res.data.user;
             this.img = res.data.user.img;
             this.nickname = res.data.user.nickname;
             this.birthday = res.data.user.birthday;
             this.introduce = res.data.user.introduce;
+          },
+          (error) => {
+            console.log(error)
           }
-        },
-        () => {
-          return;
-        }
-      );
+        )
+      } else {
+        checkUserInfo(
+          (res) => {
+            if (res.status === 200) {
+              this.user = res.data.user;
+              this.img = res.data.user.img;
+              this.nickname = res.data.user.nickname;
+              this.birthday = res.data.user.birthday;
+              this.introduce = res.data.user.introduce;
+            }
+          },
+          () => {
+            return;
+          }
+        );
+      }
     },
     // 빈값 채우기
     fillData() {

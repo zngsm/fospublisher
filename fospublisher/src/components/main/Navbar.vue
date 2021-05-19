@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <div class="navbar">
+  <div class="navbar">
+    <div>
       <input type="checkbox" id="menuicon" />
       <label for="menuicon">
         <i
           v-if="!isQuestion"
           class="material-icons"
-          style="color:var(--color-dark);"
+          style="color: var(--color-dark)"
           @click="isQuestion = true"
           >expand_more
         </i>
@@ -22,9 +22,7 @@
       </div>
       <NavProfile />
       <div>
-        <button class="navtab main-kukde-light" @click="goToMain">
-          책장
-        </button>
+        <button class="navtab main-kukde-light" @click="goToMain">책장</button>
       </div>
       <div>
         <button class="navtab main-kukde-light" @click="goToTimeline">
@@ -32,10 +30,7 @@
         </button>
       </div>
       <div>
-        <button
-          class="navtab main-kukde-light"
-          @click="goToLibrary"
-        >
+        <button class="navtab main-kukde-light" @click="goToLibrary">
           보관함
         </button>
       </div>
@@ -78,7 +73,7 @@ export default {
       });
     },
     goToLibrary() {
-      this.$router.push({name: "Library", params: {id: 1}}).catch((err) => {
+      this.$router.push({ name: "Library", params: { id: 1 } }).catch((err) => {
         if (err.name === "NavigationDuplicated") {
           location.reload();
         }

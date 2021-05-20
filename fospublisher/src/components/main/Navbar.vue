@@ -7,12 +7,14 @@
           v-if="!isQuestion"
           class="material-icons"
           style="color: var(--color-dark)"
-          @click="isQuestion = true"
+          @click="onUnchecked"
           >expand_more
         </i>
-        <i v-if="isQuestion" class="material-icons" @click="isQuestion = false"
+        <i v-if="isQuestion" class="material-icons" @click="onChecked"
           >expand_less
         </i>
+        <!-- @click="isQuestion = true" -->
+        <!-- @click="isQuestion = false" -->
         <!-- <v-icon @click="displayQuestion" color="white" style="z-index:2"
           >mdi-chevron-double-up</v-icon
         >-->
@@ -79,12 +81,31 @@ export default {
         }
       });
     },
+    onUnchecked() {
+      this.isQuestion = true;
+      this.$store.commit("setIsQuestion", true);
+      this.$store.commit("setChecked", false);
+    },
+    onChecked() {
+      this.isQuestion = false;
+      this.$store.commit("setIsQuestion", false);
+      this.$store.commit("setChecked", true);
+    },
   },
   computed: {
     ...mapState({
       todayQuestion: (state) => state.question.todayQuestion,
       todayQuestionId: (state) => state.question.todayQuestionId,
     }),
+  },
+  mounted() {
+    this.isQuestion = this.$store.state.isQuestion;
+    document.getElementById("menuicon").checked = this.$store.state.checked;
+    // if (this.isQuestion === true) {
+    //   document.getElementById("menuicon").checked = false;
+    // } else {
+    //   document.getElementById("menuicon").checked = true;
+    // }
   },
 };
 </script>

@@ -36,18 +36,54 @@
           보관함
         </button>
       </div>
+
+      <div>
+        <button class="navtab main-kukde-light" @click="openInviteModal = true">
+          검색
+        </button>
+      </div>
+      <div>
+        <button
+          class="navtab main-kukde-light"
+          @click="openFollowListModal = true"
+        >
+          목록
+        </button>
+      </div>
     </div>
+    <div>
+      <button class="navtab-logo main-kukde-light" @click="goToMain">
+        <img src="@/assets/logo.png" style="width: 70px;" />
+      </button>
+    </div>
+    <InviteModal
+      v-if="openInviteModal == true"
+      :openInviteModal="openInviteModal"
+      @closeInviteModal="openInviteModal = false"
+    />
+
+    <FollowListModal
+      v-if="openFollowListModal == true"
+      :openFollowListModal="openFollowListModal"
+      @closeFollowListModal="openFollowListModal = false"
+    />
   </div>
 </template>
 
 <script>
+import InviteModal from "@/components/follow/InviteModal.vue";
+import FollowListModal from "@/components/follow/FollowListModal.vue";
 import NavProfile from "./NavProfile.vue";
 import { mapState } from "vuex";
 export default {
   name: "Navbar",
-  components: { NavProfile },
+  components: { InviteModal, FollowListModal, NavProfile },
   data() {
-    return { isQuestion: true };
+    return {
+      openInviteModal: false,
+      openFollowListModal: false,
+      isQuestion: true,
+    };
   },
   methods: {
     displayQuestion() {

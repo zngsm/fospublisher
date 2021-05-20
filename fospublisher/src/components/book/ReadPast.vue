@@ -69,7 +69,6 @@
         </button>
 
         <h1>{{ item.title }}</h1>
-        <p v-html="item.content"></p>
       </div>
       <div class="hard"></div>
       <!-- <div class="hard">

@@ -40,7 +40,7 @@
     </button>
 
     <button
-      v-if="status == 'PAST'"
+      v-if="this.$route.params.status === 'PAST'"
       class="button-each"
       @click="openExportModal = true"
     >
@@ -51,44 +51,6 @@
         alt="출품 아이콘"
       /><span>출품</span>
     </button>
-
-    <button
-      v-if="status == 'PAST'"
-      class="button-each"
-      @click="openInviteModal = true"
-    >
-      <img
-        class="iconImg"
-        width="70px"
-        src="@/assets/past/invite.png"
-        alt="유저검색 아이콘"
-      /><span>유저검색</span>
-    </button>
-
-    <button
-      v-if="status == 'PAST'"
-      class="button-each"
-      @click="openFollowListModal = true"
-    >
-      <img
-        class="iconImg"
-        width="100px"
-        src="@/assets/past/userIndex.png"
-        alt="유저목록 아이콘"
-      /><span>유저목록</span>
-    </button>
-
-    <InviteModal
-      v-if="openInviteModal == true"
-      :openInviteModal="openInviteModal"
-      @closeInviteModal="openInviteModal = false"
-    />
-
-    <FollowListModal
-      v-if="openFollowListModal == true"
-      :openFollowListModal="openFollowListModal"
-      @closeFollowListModal="openFollowListModal = false"
-    />
 
     <ConfirmModal
       v-if="openExportModal == true"
@@ -109,8 +71,6 @@
 </template>
 
 <script>
-import InviteModal from "@/components/follow/InviteModal.vue";
-import FollowListModal from "@/components/follow/FollowListModal.vue";
 import ConfirmModal from "@/components/ConfirmModal.vue";
 import { mapState } from "vuex";
 import SelectModal from "../SelectModal.vue";
@@ -119,8 +79,6 @@ export default {
   props: { cover: Object, book: Object, status: String },
   data() {
     return {
-      openInviteModal: false,
-      openFollowListModal: false,
       openExportModal: false,
       openTodayModal: false,
       word: "",
@@ -128,8 +86,6 @@ export default {
     };
   },
   components: {
-    InviteModal,
-    FollowListModal,
     ConfirmModal,
     SelectModal,
   },

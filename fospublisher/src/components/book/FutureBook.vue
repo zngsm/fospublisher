@@ -1,23 +1,27 @@
 <template>
-  <div
-    @click="sendBookInfo"
-    class="main-pastBook"
-    :class="{
-      skinZero: isZero,
-      skinOne: isOne,
-      skinTwo: isTwo,
-      skinThree: isThree,
-    }"
-  >
-    <span
-      :class="{
-        'member-kukde-light': isKukde,
-        'member-kwandong': isKwandong,
-      }"
-      :style="{ color: coverInfo.font_color, fontSize: fontSize + 'px' }"
-      >{{ coverInfo.title }}</span
-    >
-  </div>
+  <v-container fluid style="padding: 0;">
+    <div class="container" style="padding: 0;">
+      <div
+        @click="sendBookInfo"
+        class="main-pastBook"
+        :class="{
+          skinZero: isZero,
+          skinOne: isOne,
+          skinTwo: isTwo,
+          skinThree: isThree,
+        }"
+      >
+        <span
+          :class="{
+            'member-kukde-light': isKukde,
+            'member-kwandong': isKwandong,
+          }"
+          :style="{ color: coverInfo.font_color, fontSize: fontSize + 'px' }"
+          >{{ coverInfo.title }}</span
+        >
+      </div>
+    </div>
+  </v-container>
 </template>
 
 <script>

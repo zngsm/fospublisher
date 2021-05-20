@@ -47,6 +47,7 @@
       </form>
       <div class="create-right-btn">
         <v-checkbox
+          v-if="status == 'PAST'"
           v-model="form.share"
           label="자서전에 담기(임시저장글은 자서전에 포함되지 않습니다.)"
         ></v-checkbox>
@@ -119,7 +120,7 @@ export default {
         day: null,
         check: false,
         question: null,
-        share: true,
+        share: false,
       },
       interval: false,
       items: [],
@@ -340,9 +341,7 @@ export default {
         return;
       }
       // 쪼개기
-      console.log(this.form.content);
       this.insertPageBreak();
-      console.log(this.form.content);
 
       this.form.check = true;
       this.interval = false;
@@ -402,7 +401,10 @@ export default {
       }
       if (this.$route.params.status) {
         sessionStorage.setItem("status", this.$route.params.status);
-      } else {
+      } else if (
+        !this.$route.params.status &&
+        !sessionStorage.getItem("status")
+      ) {
         this.form.check = true;
         this.$router.push("Main");
       }
@@ -414,8 +416,13 @@ export default {
         this.questionChange = false;
         this.chapId = sessionStorage.getItem("chapId");
         this.form.title = sessionStorage.getItem("title");
-        this.form.content = sessionStorage.getItem("content");
-        // 다시 분리하기
+        let tempContent = sessionStorage.getItem("content");
+        let tempContentArray = tempContent.split(
+          '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
+        );
+        for (let i of tempContentArray) {
+          this.form.content += i;
+        }
         this.form.year = sessionStorage.getItem("year");
         if (this.status != "PAST") {
           this.form.month = sessionStorage.getItem("month");
@@ -423,12 +430,15 @@ export default {
           this.tmpMonth = this.form.month;
           this.tmpDay = this.form.day;
         } else {
-          this.form.share = sessionStorage.getItem("share");
+          this.form.share =
+            sessionStorage.getItem("share") == "false" ? false : true;
           this.form.question = sessionStorage.getItem("question");
         }
         this.tmpTitle = this.form.title;
         this.tmpContent = this.form.content;
         this.tmpYear = this.form.year;
+      } else {
+        this.form.share = true;
       }
     },
     addZero(num, cnt) {

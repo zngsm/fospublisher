@@ -13,11 +13,6 @@
         <i v-if="isQuestion" class="material-icons" @click="onChecked"
           >expand_less
         </i>
-        <!-- @click="isQuestion = true" -->
-        <!-- @click="isQuestion = false" -->
-        <!-- <v-icon @click="displayQuestion" color="white" style="z-index:2"
-          >mdi-chevron-double-up</v-icon
-        >-->
       </label>
       <div class="sidebar">
         <span>{{ todayQuestion }}</span>
@@ -137,11 +132,6 @@ export default {
   mounted() {
     this.isQuestion = this.$store.state.isQuestion;
     document.getElementById("menuicon").checked = this.$store.state.checked;
-    // if (this.isQuestion === true) {
-    //   document.getElementById("menuicon").checked = false;
-    // } else {
-    //   document.getElementById("menuicon").checked = true;
-    // }
   },
 };
 </script>

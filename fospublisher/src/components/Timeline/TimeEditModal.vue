@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 import { readTimlineEditMode } from "../../api/timeline.js";
 import { updateTimeline } from "../../api/timeline.js";
 
@@ -113,10 +113,10 @@ export default {
       updateTimeline(context, this.$emit("getTimeline"), (err) => {
         console.error(err);
       });
-      this.$store.commit("timeline/setEditMode", !this.edit);
+      this.$store.commit("timeline/setEditMode", false);
     },
     changeEditMode() {
-      this.$store.commit("timeline/setEditMode", !this.edit);
+      this.$store.commit("timeline/setEditMode", false);
     },
     all() {
       for (let i in this.years) {
@@ -140,9 +140,17 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      edit: (state) => state.timeline.edit,
-    }),
+    // ...mapState({
+    //   edit: (state) => state.timeline.edit,
+    // }),
+    edit: {
+      get() {
+        return this.$store.state.timeline.edit;
+      },
+      set() {
+        this.$store.commit("timeline/setEditMode", !this.edit);
+      },
+    },
   },
 };
 </script>

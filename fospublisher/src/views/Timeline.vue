@@ -38,7 +38,7 @@
         class="timeline-body"
       />
       <v-row justify="center">
-        <v-dialog v-model="edit" width="600px">
+        <v-dialog :value="edit" width="600px">
           <TimeEditModal v-if="edit" @getTimeline="getTimeline" />
         </v-dialog>
       </v-row>
@@ -85,7 +85,7 @@ export default {
       );
     },
     changeEditMode() {
-      this.$store.commit("timeline/setEditMode", !this.edit);
+      this.$store.commit("timeline/setEditMode", true);
     },
   },
   computed: {

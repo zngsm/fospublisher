@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Download from "../views/Download.vue";
 import Timeline from "../views/Timeline.vue";
 import Login from "../views/member/Login.vue";
 import FindPassword from "../views/member/FindPassword.vue";
@@ -177,6 +178,11 @@ const routes = [
         next({ name: "Login" });
       }
     },
+  },
+  {
+    path: "/download",
+    name: "Download",
+    component: Download,
   },
 ];
 

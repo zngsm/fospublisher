@@ -17,7 +17,7 @@
           alt="picture"
         />
       </div>
-      <div>
+      <div class="hard">
         <WriterInfo />
       </div>
       <div v-if="!this.$route.query.userId" class="read-select">
@@ -69,6 +69,7 @@
         </button>
 
         <h1>{{ item.title }}</h1>
+        <p v-html="item.content"></p>
       </div>
       <div class="hard"></div>
       <div class="hard">
@@ -162,7 +163,7 @@ export default {
       dialog: false,
       years: null,
       temp: ["", "", "", "", ""],
-      info: null,
+      info: '',
     };
   },
   methods: {
@@ -320,7 +321,7 @@ export default {
             this.bookInfo = res.data;
             this.years = Object.keys(res.data.list);
             this.info = res.data.content;
-            this.cutPage();
+            // this.cutPage();
             // this.$set(this.bookInfo, "content", res.data.content);
           },
           (err) => console.error(err)
@@ -347,7 +348,6 @@ export default {
           this.$route.query.userId,
           (res) => {
             this.bookInfo = res.data;
-            console.log(this.bookInfo);
             this.years = Object.keys(res.data.list);
           },
           (error) => {

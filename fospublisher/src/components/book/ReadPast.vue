@@ -8,7 +8,18 @@
       id="flipbook"
     >
       <div class="hard" style="display: flex; justify-content: center;">
-        <div class="bookTitle">
+        <div 
+          v-if="bookInfo.cover.font == 0"
+          class="bookTitle member-kukde-light"
+          :style="`color: ${bookInfo.cover.font_color}; fontSize: ${35 + 5 * bookInfo.cover.size}px;`"
+        >
+          {{ bookInfo.cover.title }}
+        </div>
+        <div 
+          v-else
+          class="bookTitle member-kwandong"
+          :style="`color: ${bookInfo.cover.font_color}; fontSize: ${35 + 5 * bookInfo.cover.size}px;`"
+        >
           {{ bookInfo.cover.title }}
         </div>
         <img
@@ -71,14 +82,14 @@
         <h1>{{ item.title }}</h1>
       </div>
       <div class="hard"></div>
-      <!-- <div class="hard">
+      <div class="hard">
         <img
           :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)"
           width="100%"
           alt="picture"
           class="lastImage"
         />
-      </div> -->
+      </div>
     </div>
     <!-- 타임라인 -> 읽기모드 -->
     <div v-else id="flipbook">
@@ -98,8 +109,10 @@
           <h1>{{ timechapter.title }}</h1>
         </div>
       </div>
-      <div v-for="(item, idx) in temp" :key="idx">
-        <p v-html="item"></p>
+      <div>
+        <div v-for="(item, idx) in temp" :key="idx">
+          <p v-html="item"></p>
+        </div>
       </div>
 
       <div class="hard"></div>
@@ -135,21 +148,11 @@ export default {
     return {
       bookInfo: {
         cover: {
-          title: "",
+          title: '',
           skin: 0,
-        },
-        content: [
-          {
-            id: 0,
-            title: "",
-            content: "",
-            year: 0,
-            order: 0,
-            page: 0,
-            check: true,
-            createdAt: "",
-          },
-        ],
+          font_color: '',
+          size: '',
+        }
       },
       timechapter: {
         content: [
@@ -171,7 +174,7 @@ export default {
       dialog: false,
       years: null,
       temp: ["", "", "", "", ""],
-      info: "",
+      info: '',
     };
   },
   methods: {
@@ -245,52 +248,41 @@ export default {
     },
     cutPage() {
       // 페이지네이션
-
-      // 메인-읽기가 아닌 경우, 페이지네이션
-      if (this.$route.params.id) {
-        this.temp = this.info.split(
-          '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
-        );
-        this.mainRead(3);
-      }
+      // console.log("split전");
+      // console.log(this.info);
+      this.mainRead(3);
     },
-    mainRead(num) {
-      setTimeout(() => {
-        console.log("mainRead-flipbook 제작");
+    async mainRead(num) {
+      await setTimeout(() => {
         window.$("#flipbook").turn({
           width: 1026,
           height: 650,
           page: num,
-          // pages: 45,
+          pages: 45,
           gradients: true,
           autoCenter: true,
         });
       }, 100); // 바뀐 bookInfo.content 반영을 위해 setTimeout
-      // 메인-읽기인 경우, 페이지네이션
-      if (!this.$route.params.id) {
-        setTimeout(() => {
-          console.log("mainRead-페이지네이션");
-
-          window.$("#flipbook").turn("pages", 45); // 전체페이지 설정
-          let titlePageNum = 6;
-
-          for (let i = 0; i < this.info.length; i++) {
-            // let titlePageNum = i + 6;
-            let chapterList = this.info[i].content.split(
-              '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
-            );
-            for (let j = 0; j < chapterList.length; j++) {
-              let page = titlePageNum + j;
-              // if (chapterList[j] === "") { // 공백인 장 지우기?
-              //   continue;
-              // }
-              let element = window.$("<div />").html(chapterList[j]);
-              window.$("#flipbook").turn("addPage", element, page);
-            }
-            titlePageNum = titlePageNum + chapterList.length + 1;
+      // cutPage();
+      setTimeout(() => {
+        let titlePageNum = 6;
+        
+        for (let i = 0; i < this.info.length; i++) {
+          // let titlePageNum = i + 6;
+          let chapterList = this.info[i].content.split(
+            '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
+          );
+          for (let j = 0; j < chapterList.length; j++) {
+            let page = titlePageNum + j;
+            // if (chapterList[j] === "") { // 공백인 장 지우기?
+            //   continue;
+            // }
+            let element = window.$("<div />").html(chapterList[j]);
+            window.$("#flipbook").turn("addPage", element, page);
           }
-        }, 200);
-      }
+          titlePageNum = titlePageNum + chapterList.length + 1;
+        }
+      }, 200);
     },
     async timelineRead() {
       if (this.$route.params.status === "PAST") {
@@ -302,15 +294,12 @@ export default {
             this.timechapter.id = this.$route.params.id;
             // content에서 pagebreak 제거
             this.info = res.data.content;
-            console.log("timelineRead의 info");
+            this.cutPage();
           },
           (err) => {
             console.error(err);
           }
         );
-        setTimeout(() => {
-          this.cutPage();
-        }, 200);
       } else {
         console.log("future");
         let id = this.$route.params.id;
@@ -339,7 +328,7 @@ export default {
         console.log("과거읽기");
         await readPastBook(
           (res) => {
-            console.log("과거자서전정보응답");
+            console.log("mainRead");
             this.bookInfo = res.data;
             this.years = Object.keys(res.data.list);
             this.info = res.data.content;
@@ -405,5 +394,8 @@ export default {
 .even > .lastImage {
   height: 100%;
   transform: scaleX(-1);
+}
+.odd > .lastImage {
+  height: 100%;
 }
 </style>

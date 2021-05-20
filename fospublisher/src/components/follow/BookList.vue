@@ -6,7 +6,9 @@
       <input type="radio" class="testimonial" name="testimonial" :id="`t-${bookNum}`" checked>
       <div class="testimonials">
         <label v-for="(info, index) in bookInfo" :key="index" :class="`item book t-${index + 1}`" :for="`t-${index + 1}`">
-          <div class="back"><img :src="require(`@/assets/covers/${info.book.skin}.png`)" alt="picture"></div>
+          <div class="back">
+            <img :src="require(`@/assets/covers/${info.book.skin}.png`)" alt="picture">
+          </div>
           <div class="page6 d-flex justify-center">
             <div class="bookBtn">
               <div style="display: block;">{{ info.nickname }}님의</div>
@@ -24,7 +26,20 @@
           <div class="page2"> </div>
           <div class="page1"></div>
           <div class="front">
-            <div>{{ info.book.title }}</div>
+            <div 
+              v-if="info.book.font == 0"
+              class="bookTitle member-kukde-light"
+              :style="`color: ${info.book.font_color}; fontSize: ${20 + 5 * info.book.size}px;`"
+            >
+              {{ info.book.title }}
+            </div>
+            <div
+              v-else
+              class="bookTitle member-kwandong"
+              :style="`color: ${info.book.font_color}; fontSize: ${20 + 5 * info.book.size}px;`"
+            >
+              {{ info.book.title }}
+            </div>
             <img :src="require(`@/assets/covers/${info.book.skin}.png`)" alt="picture">
           </div>
         </label>
@@ -44,7 +59,7 @@ export default {
   data() {
     return {
       bookNum: 1,
-      bookInfo: [],
+      bookInfo: {},
     }
   },
   methods: {

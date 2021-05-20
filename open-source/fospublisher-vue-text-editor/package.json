@@ -1,6 +1,6 @@
 {
   "name": "fospublisher-vue-text-editor",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "",
   "license": "MIT",
   "main": "dist/fospublisher-vue-text-editor.ssr.js",
@@ -51,6 +51,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JOWOORI11/fospublisher-vue-text-editor"
+    "url": "https://github.com/fospublisher201/fospublisher-vue-text-editor"
   }
 }

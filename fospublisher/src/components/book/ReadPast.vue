@@ -114,7 +114,7 @@
         <div class="hard"></div>
       </div>
       <div>
-        <div>
+        <div class="read-button-box">
           <button @click="modifyChapter(timechapter)">
             <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
             <p>수정</p>
@@ -123,9 +123,9 @@
             <v-icon large color="black">mdi-delete-forever-outline</v-icon>
             <p>삭제</p>
           </button>
-          <div class="read-title">
-            <h1>{{ timechapter.title }}</h1>
-          </div>
+        </div>
+        <div class="read-title-box">
+          <h1 class="read-title">{{ timechapter.title }}</h1>
         </div>
       </div>
       <div v-for="(item, idx) in temp" :key="idx">
@@ -211,7 +211,7 @@ export default {
     },
     modifyChapter(data) {
       let chapter = data;
-      let status = this.$route.params.status;
+      let status = localStorage.getItem("read/status");
       sessionStorage.setItem("title", chapter.title);
       sessionStorage.setItem("content", chapter.content);
       sessionStorage.setItem("year", chapter.year);

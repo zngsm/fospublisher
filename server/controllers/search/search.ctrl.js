@@ -18,31 +18,33 @@ exports.search_username = async (req, res) => {
   let followerList = requester.Followers.map((f) => {
     return f.username;
   });
-  await models.Users.findOne({
-    where: {
-      [Sequelize.Op.or]: [{ username: { [Sequelize.Op.like]: user } }],
-    },
-  }).then((result) => {
-    if (result) {
-      let userInfo = {
-        id: result.id,
-        username: result.username,
-        nickname: result.nickname,
-        img: result.img,
-        birthday: result.birthday,
-        introduce: result.introduce,
-        following: false,
-        follower: false,
-      };
-      if (followingList.includes(user)) {
-        userInfo["following"] = true;
+  if (requester.username != user) {
+    await models.Users.findOne({
+      where: {
+        [Sequelize.Op.or]: [{ username: { [Sequelize.Op.like]: user } }],
+      },
+    }).then((result) => {
+      if (result) {
+        let userInfo = {
+          id: result.id,
+          username: result.username,
+          nickname: result.nickname,
+          img: result.img,
+          birthday: result.birthday,
+          introduce: result.introduce,
+          following: false,
+          follower: false,
+        };
+        if (followingList.includes(user)) {
+          userInfo["following"] = true;
+        }
+        if (followerList.includes(user)) {
+          userInfo["follower"] = true;
+        }
+        context.push(userInfo);
       }
-      if (followerList.includes(user)) {
-        userInfo["follower"] = true;
-      }
-      context.push(userInfo);
-    }
-  });
+    });
+  }
 
   await models.Users.findAll({
     where: {
@@ -53,23 +55,25 @@ exports.search_username = async (req, res) => {
     },
   }).then((results) => {
     for (let result of results) {
-      let userInfo = {
-        id: result.id,
-        username: result.username,
-        nickname: result.nickname,
-        img: result.img,
-        birthday: result.birthday,
-        introduce: result.introduce,
-        following: false,
-        follower: false,
-      };
-      if (followingList.includes(result.username)) {
-        userInfo["following"] = true;
+      if (result.username != requester.username) {
+        let userInfo = {
+          id: result.id,
+          username: result.username,
+          nickname: result.nickname,
+          img: result.img,
+          birthday: result.birthday,
+          introduce: result.introduce,
+          following: false,
+          follower: false,
+        };
+        if (followingList.includes(result.username)) {
+          userInfo["following"] = true;
+        }
+        if (followerList.includes(result.username)) {
+          userInfo["follower"] = true;
+        }
+        context.push(userInfo);
       }
-      if (followerList.includes(result.username)) {
-        userInfo["follower"] = true;
-      }
-      context.push(userInfo);
     }
   });
   res.send(context);

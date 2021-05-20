@@ -40,7 +40,7 @@
     </button>
 
     <button
-      v-if="this.$route.params.status === 'PAST'"
+      v-if="currentStatus === 'PAST'"
       class="button-each"
       @click="openExportModal = true"
     >
@@ -83,6 +83,7 @@ export default {
       openTodayModal: false,
       word: "",
       contents: "",
+      currentStatus: "",
     };
   },
   components: {
@@ -135,6 +136,9 @@ export default {
       fileDownload.click();
       document.body.removeChild(fileDownload);
     },
+  },
+  created() {
+    this.currentStatus = localStorage.getItem("read/status");
   },
   computed: {
     ...mapState({

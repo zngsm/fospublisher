@@ -3,7 +3,14 @@
     <v-col cols="10" class="align-center">
       <div v-if="!editMode" class="justify-center align-center text-center">
         <v-col>
-          <v-btn v-if="!this.$route.query.userId" class="d-flex offset-9" fab x-large text @click="changeMode">
+          <v-btn
+            v-if="!this.$route.query.userId"
+            class="d-flex offset-9"
+            fab
+            x-large
+            text
+            @click="changeMode"
+          >
             <v-col>
               <v-icon x-large>mdi-file-document-edit-outline</v-icon>
               <p class="ma-0">수정하기</p>
@@ -113,6 +120,7 @@ export default {
   methods: {
     // 모드 수정
     changeMode() {
+      this.getUserInfo();
       this.editMode = !this.editMode;
       this.dialog = false;
       this.isEdited = false;
@@ -138,9 +146,9 @@ export default {
             this.introduce = res.data.user.introduce;
           },
           (error) => {
-            console.log(error)
+            console.log(error);
           }
-        )
+        );
       } else {
         checkUserInfo(
           (res) => {

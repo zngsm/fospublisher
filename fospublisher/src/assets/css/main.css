@@ -67,6 +67,9 @@
   height: 100vh;
   background-color: white;
   border-right: thick double brown;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .navtab {
@@ -80,7 +83,6 @@
 
 .navtab-logo {
   width: 100%;
-  margin-top: 360px;
 }
 
 .navlogo {

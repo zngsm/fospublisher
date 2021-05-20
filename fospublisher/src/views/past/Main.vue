@@ -136,12 +136,12 @@ export default {
 </script>
 
 <style>
-.pastBook {
+/* .pastBook {
   position: absolute;
   top: 210px;
   left: 50%;
   transform: translateX(-280px);
-}
+} */
 .main-future-new {
   position: absolute;
   width: 100%;

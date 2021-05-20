@@ -1,14 +1,7 @@
 <template>
   <div class="text-center">
-    <v-dialog
-      v-model="openInviteModal"
-      persistent
-      width="500"
-    >
-      <v-card
-        class="py-1"
-        min-height="20vh"
-      >
+    <v-dialog v-model="openInviteModal" persistent width="500">
+      <v-card class="py-1" min-height="20vh">
         <v-card-title>
           <v-row class="justify-center" style="fontsize: 30px"> 초대 </v-row>
         </v-card-title>
@@ -16,7 +9,7 @@
         <v-card-text>
           <v-row class="justify-center mx-1 mt-5 align-baseline">
             <v-text-field
-              label="유저 검색"
+              label="작가 검색"
               v-model="username"
               @keyup.enter="searchUser"
               class="mr-2"
@@ -119,5 +112,4 @@ export default {
   },
 };
 </script>
-<style>
-</style>
+<style></style>

@@ -75,9 +75,9 @@ export default {
     setTimeout(function() {
       document.getElementsByClassName('testimonial').forEach(function(item) {
         if (item.checked === true) {
-          console.log(document.getElementsByClassName(item.id))
-
-          document.getElementsByClassName(item.id)[0].classList.toggle('bookHover')
+          if (document.getElementsByClassName(item.id)[0]) {
+            document.getElementsByClassName(item.id)[0].classList.toggle('bookHover')
+          }
         }
         item.addEventListener('change', function(){
           document.getElementsByClassName('item').forEach(function(book) {
@@ -95,9 +95,10 @@ export default {
   created() {
     getEachFollowerList(
       (res) => {
-        this.bookNum = res.data[this.$route.params.id].length
-        this.bookInfo = res.data[this.$route.params.id]
-        console.log(this.bookInfo)
+        if (res.data[0] > 0) {
+          this.bookNum = res.data[this.$route.params.id].length
+          this.bookInfo = res.data[this.$route.params.id]
+        }
       },
       (error) => {
         console.log(error)

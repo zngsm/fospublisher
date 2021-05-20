@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="openFollowListModal"
-      v-click-outside="closeFollowListModal"
+      persistent
       width="900"
     >
       <v-card

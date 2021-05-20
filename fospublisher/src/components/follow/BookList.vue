@@ -62,6 +62,11 @@ export default {
       bookInfo: {},
     }
   },
+  computed: {
+    getBookListState() {
+      return this.$store.getters['book/getBookListState']
+    }
+  },
   methods: {
     goReadPast(id) {
       this.$router.push({name: "ReadPast", query: {userId: id}}).catch((err) => {
@@ -69,6 +74,19 @@ export default {
           location.reload();
         }
       });
+    },
+    getList() {
+      getEachFollowerList(
+        (res) => {
+          if (res.data[0] > 0) {
+            this.bookNum = res.data[this.$route.params.id].length
+            this.bookInfo = res.data[this.$route.params.id]
+          }
+        },
+        (error) => {
+          console.log(error)
+        }
+      )
     }
   },
   mounted() {
@@ -93,18 +111,16 @@ export default {
     
   },
   created() {
-    getEachFollowerList(
-      (res) => {
-        if (res.data[0] > 0) {
-          this.bookNum = res.data[this.$route.params.id].length
-          this.bookInfo = res.data[this.$route.params.id]
-        }
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
+    this.getList()
   },
+  watch: {
+    getBookListState() {
+      if (this.getBookListState == true) {
+        this.getList()
+        this.$store.dispatch('book/updateBookList')
+      }
+    }
+  }
 }
 </script>
 <style scoped>

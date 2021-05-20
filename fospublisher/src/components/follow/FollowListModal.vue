@@ -123,6 +123,11 @@ export default {
       followings: [],
     };
   },
+  computed: {
+    getBookListState() {
+      return this.$store.getters['book/getBookListState']
+    }
+  },
   methods: {
     closeFollowListModal() {
       this.$emit("closeFollowListModal");
@@ -134,6 +139,7 @@ export default {
         () => {
           this.fetchFollower();
           this.fetchFollowing();
+          this.$store.dispatch('book/updateBookList')
         },
         (error) => {
           console.log(error);
@@ -146,6 +152,7 @@ export default {
         () => {
           this.fetchFollower();
           this.fetchFollowing();
+          this.$store.dispatch('book/updateBookList')
         },
         (error) => {
           console.log(error);

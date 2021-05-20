@@ -4,6 +4,12 @@ export default {
     isNew: false,
     todayData: null,
     checkDay: null,
+    BookList: false,
+  },
+  getters: {
+    getBookListState(state) {
+      return state.BookList
+    }
   },
   mutations: {
     checkNew(state, status) {
@@ -15,6 +21,17 @@ export default {
     saveDay(state, status) {
       state.checkDay = status;
     },
+    updateBookList(state) {
+      if (state.BookList) {
+        state.BookList = false;
+      } else {
+        state.BookList = true;
+      }
+    },
   },
-  actions: {},
+  actions: {
+    updateBookList ({ commit }) {
+      commit('updateBookList')
+    }
+  },
 };

@@ -103,6 +103,7 @@ export default {
         user,
         () => {
           this.searchUser();
+          this.$store.dispatch('book/updateBookList')
         },
         (error) => {
           console.log(error);

@@ -46,11 +46,13 @@
         </button>
       </div>
     </div>
+
     <div>
-      <button class="navtab-logo main-kukde-light" @click="goToMain">
+      <button class="navtab-logo main-kukde-light" @click="moveToDownload">
         <img src="@/assets/logo.png" style="width: 70px;" />
       </button>
     </div>
+
     <InviteModal
       v-if="openInviteModal == true"
       :openInviteModal="openInviteModal"
@@ -121,6 +123,9 @@ export default {
       this.isQuestion = false;
       this.$store.commit("setIsQuestion", false);
       this.$store.commit("setChecked", true);
+    },
+    moveToDownload() {
+      this.$router.replace("/download");
     },
   },
   computed: {

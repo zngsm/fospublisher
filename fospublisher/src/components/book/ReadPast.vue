@@ -45,53 +45,58 @@
         ></SelectMode>
       </div>
       <div>
-        <h1>목차</h1>
-        <v-expansion-panels flat hover style="width:400px;" class="mx-auto">
-          <v-expansion-panel v-for="(year, i) in years" :key="i">
-            <v-expansion-panel-header>
-              {{ year }}
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <div
-                v-for="(item, idx) in bookInfo.list[year]"
-                :key="idx"
-                class="readpast-index"
-                @click="goPage(item.pageStart)"
-              >
-                <div>
-                  <p>
-                    <b
-                      style="display: inline-block;width: 200px; white-space:nowrap; text-overflow: ellipsis; overflow:hidden;"
-                      >{{ item.title }}</b
-                    >
-                  </p>
+        <div class="book-content">
+          <h1>목차</h1>
+          <v-expansion-panels flat hover style="width:400px;" class="mx-auto">
+            <v-expansion-panel v-for="(year, i) in years" :key="i">
+              <v-expansion-panel-header>
+                {{ year }}
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <div
+                  v-for="(item, idx) in bookInfo.list[year]"
+                  :key="idx"
+                  class="readpast-index"
+                  @click="goPage(item.pageStart)"
+                >
+                  <div>
+                    <p>
+                      <b
+                        style="display: inline-block;width: 200px; white-space:nowrap; text-overflow: ellipsis; overflow:hidden;"
+                        >{{ item.title }}</b
+                      >
+                    </p>
+                  </div>
+                  <div v-if="!$route.query.userId">
+                    <p>{{ item.pageStart + 5 }} 쪽</p>
+                  </div>
+                  <div v-else>
+                    <p>{{ item.pageStart + 4 }} 쪽</p>
+                  </div>
                 </div>
-                <div v-if="!$route.query.userId">
-                  <p>{{ item.pageStart + 5 }} 쪽</p>
-                </div>
-                <div v-else>
-                  <p>{{ item.pageStart + 4 }} 쪽</p>
-                </div>
-              </div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
       </div>
       <!-- 메인 -> 읽기모드  -->
-      <div
-        v-for="(item, idx) in bookInfo.content"
-        :key="idx"
-        style="width: 400px;"
-      >
-        <button v-if="!$route.query.userId" @click="modifyChapter(item)">
-          <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
-          <p>수정</p>
-        </button>
-        <button v-if="!$route.query.userId" @click="deleteModal(item.id, idx)">
-          <v-icon large color="black">mdi-delete-forever-outline</v-icon>
-          <p>삭제</p>
-        </button>
-        <h1>{{ item.title }}</h1>
+      <div v-for="(item, idx) in bookInfo.content" :key="idx">
+        <div class="read-button-box">
+          <button v-if="!$route.query.userId" @click="modifyChapter(item)">
+            <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
+            <p>수정</p>
+          </button>
+          <button
+            v-if="!$route.query.userId"
+            @click="deleteModal(item.id, idx)"
+          >
+            <v-icon large color="black">mdi-delete-forever-outline</v-icon>
+            <p>삭제</p>
+          </button>
+        </div>
+        <div class="read-title-box">
+          <h1 class="read-title">{{ item.title }}</h1>
+        </div>
       </div>
       <div class="hard"></div>
       <div class="hard">
@@ -118,11 +123,15 @@
             <v-icon large color="black">mdi-delete-forever-outline</v-icon>
             <p>삭제</p>
           </button>
-          <h1>{{ timechapter.title }}</h1>
+          <div class="read-title">
+            <h1>{{ timechapter.title }}</h1>
+          </div>
         </div>
       </div>
       <div v-for="(item, idx) in temp" :key="idx">
-        <p v-html="item"></p>
+        <div class="book-content">
+          <p v-html="item"></p>
+        </div>
       </div>
 
       <div class="hard"></div>
@@ -269,7 +278,7 @@ export default {
       setTimeout(() => {
         window.$("#flipbook").turn({
           width: 1026,
-          height: 650,
+          height: 670,
           page: num,
           // pages: 45,
           gradients: true,
@@ -289,7 +298,7 @@ export default {
         //   let totalPageNum = res.data.page + totalPageNum + chapterList.length
         // }
         setTimeout(() => {
-          window.$("#flipbook").turn("pages", 45); // 전체페이지 설정
+          window.$("#flipbook").turn("pages", 50); // 전체페이지 설정
           let titlePageNum = 6;
 
           for (let i = 0; i < this.info.length; i++) {
@@ -297,14 +306,25 @@ export default {
             let chapterList = this.info[i].content.split(
               '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
             );
+
             for (let j = 0; j < chapterList.length; j++) {
               let page = titlePageNum + j;
-              // if (chapterList[j] === "") { // 공백인 장 지우기?
-              //   continue;
-              // }
-              let element = window.$("<div />").html(chapterList[j]);
-              // element.addClass("book-content");
+              if (chapterList[j] === "") {
+                // 공백인 장 지우기?
+                continue;
+              }
+              let element = window
+                .$("<div />")
+                .html('<div class="book-content">' + chapterList[j] + "</div>");
+              // let element = window.$("<div />").html("");
+              // element.addClass(j);
               window.$("#flipbook").turn("addPage", element, page);
+              // let parent = document.getElementsByClassName(j);
+              // // parent.innerHTML = "<h1>가</h1>";
+              // let child = document.createElement("div");
+              // child.classList.add("child");
+              // child.innerHTML = chapterList[j];
+              // parent.append(child);
             }
             titlePageNum = titlePageNum + chapterList.length + 1;
           }

@@ -135,7 +135,13 @@ export default {
   components: { Navbar, WriterInfo, SelectMode, MessageModal },
   data() {
     return {
-      bookInfo: {},
+      bookInfo: {
+        cover: {
+          title: '',
+          skin: 0,
+        }
+
+      },
       timechapter: {
         content: [
           {

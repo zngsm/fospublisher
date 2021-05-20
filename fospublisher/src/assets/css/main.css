@@ -150,6 +150,7 @@ input[id="menuicon"] + label i {
 /* input 다음에 있는 label, label 다음에 있는 div 선택 */
 input[id="menuicon"]:checked + label + div {
   top: -30px;
+  display: none;
 }
 
 input[id="menuicon"] + label + i {

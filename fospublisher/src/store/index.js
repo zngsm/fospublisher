@@ -12,14 +12,24 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     url: null,
+    isQuestion: true,
+    checked: false,
   },
   getters: {
     getUrl: (state) => () => state.url,
+    getIsQuestion: (state) => () => state.isQuestion,
+    getChecked: (state) => () => state.checked
   },
   mutations: {
     setUrl(state, url) {
       state.url = url;
     },
+    setIsQuestion(state, isQuestion) {
+      state.isQuestion = isQuestion;
+    },
+    setChecked(state, checked) {
+      state.checked = checked;
+    }
   },
   actions: {
     setUrl({ commit }, url) {

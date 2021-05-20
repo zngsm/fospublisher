@@ -24,8 +24,7 @@
               <v-expansion-panel-content>
                 <v-list flat>
                   <v-list-item-group>
-                    {{ allData[year] }}
-                    <draggable v-model="allData[year]">
+                    <draggable :list="allData[year]" v-model="allData[year]">
                       <!-- <transition-group> -->
                       <div
                         class="v-list-item"

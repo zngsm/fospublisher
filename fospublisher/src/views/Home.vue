@@ -2,7 +2,10 @@
   <div ondragstart="return false" onselectstart="return false">
     <div class="home">
       <video muted autoplay loop>
-        <source src="../assets/video/Train.mp4" type="video/mp4" />
+        <source
+          src="https://autobiography.s3.ap-northeast-2.amazonaws.com/1621153837417.mp4"
+          type="video/mp4"
+        />
       </video>
       <div class="home-body">
         <div class="home-body-about">

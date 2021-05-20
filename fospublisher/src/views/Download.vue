@@ -233,7 +233,7 @@ export default {
     },
     goToAppDown() {
       window.location =
-        "https://autobiography.s3.ap-northeast-2.amazonaws.com/1621494671560.exe";
+        "https://autobiography.s3.ap-northeast-2.amazonaws.com/fospublisher+Setup+0.1.0.exe";
     },
   },
 };

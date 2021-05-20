@@ -34,7 +34,7 @@
 
       <div>
         <button class="navtab main-kukde-light" @click="openInviteModal = true">
-          검색
+          작가검색
         </button>
       </div>
       <div>
@@ -42,7 +42,7 @@
           class="navtab main-kukde-light"
           @click="openFollowListModal = true"
         >
-          목록
+          작가목록
         </button>
       </div>
     </div>

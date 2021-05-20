@@ -276,6 +276,7 @@ export default {
       this.activeFontSize = 40;
     }
     this.activeColor = cover.font_color;
+    this.skin = cover.skin;
     if (cover.skin === 0) {
       this.isZero = true;
       this.isOne = false;

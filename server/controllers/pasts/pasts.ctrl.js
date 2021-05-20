@@ -82,7 +82,7 @@ exports.get_pasts_chapter_read = async (req, res) => {
 // 챕터 update
 exports.put_pasts_edit = async (req, res) => {
   let body = await req.body;
-  let cutter = 'class="html2pdf__page-break-after"';
+  let cutter = 'html2pdf__page-break"';
   let chapterPage = body.content.split(cutter).length;
   const chapterId = req.params.chapter_id;
   const book = await models.BookPasts.findOne({

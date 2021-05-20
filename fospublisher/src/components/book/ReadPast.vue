@@ -78,7 +78,11 @@
         </v-expansion-panels>
       </div>
       <!-- 메인 -> 읽기모드  -->
-      <div v-for="(item, idx) in bookInfo.content" :key="idx">
+      <div
+        v-for="(item, idx) in bookInfo.content"
+        :key="idx"
+        style="width: 400px;"
+      >
         <button v-if="!$route.query.userId" @click="modifyChapter(item)">
           <v-icon large color="black">mdi-file-document-edit-outline</v-icon>
           <p>수정</p>
@@ -117,10 +121,8 @@
           <h1>{{ timechapter.title }}</h1>
         </div>
       </div>
-      <div>
-        <div v-for="(item, idx) in temp" :key="idx">
-          <p v-html="item"></p>
-        </div>
+      <div v-for="(item, idx) in temp" :key="idx">
+        <p v-html="item"></p>
       </div>
 
       <div class="hard"></div>
@@ -255,10 +257,13 @@ export default {
       this.dialog = false;
     },
     cutPage() {
-      // 페이지네이션
-      // console.log("split전");
-      // console.log(this.info);
-      this.mainRead(3);
+      // 메인-읽기가 아닌 경우, 페이지네이션
+      if (this.$route.params.id) {
+        this.temp = this.info.split(
+          '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
+        );
+        this.mainRead(3);
+      }
     },
     mainRead(num) {
       setTimeout(() => {
@@ -274,6 +279,15 @@ export default {
 
       // 메인-읽기인 경우, 페이지네이션
       if (!this.$route.params.id) {
+        // 총페이지수 계산하기
+        //   let totalPageNum = 5
+        // for (let i = 0; i < this.info.length; i++) {
+        //   // let titlePageNum = i + 6;
+        //   let chapterList = this.info[i].content.split(
+        //     '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
+        //   );
+        //   let totalPageNum = res.data.page + totalPageNum + chapterList.length
+        // }
         setTimeout(() => {
           window.$("#flipbook").turn("pages", 45); // 전체페이지 설정
           let titlePageNum = 6;
@@ -362,11 +376,13 @@ export default {
             console.log("책정보받기");
             console.log(res.data);
             this.bookInfo = res.data;
+            this.info = res.data.content;
             this.years = Object.keys(res.data.list);
+            this.mainRead(3);
           },
           (err) => console.error(err)
         );
-        this.mainRead(3);
+        // this.mainRead(3);
       } else {
         // 보관함에서 진입
         await getEachFollowerBook(

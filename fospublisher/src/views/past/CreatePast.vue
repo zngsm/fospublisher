@@ -162,12 +162,12 @@ export default {
         .$('iframe[name="richTextField"]')
         .contents()
         .find("body")[0].childNodes;
-      var pageNum = Math.ceil((iframe.height() / 584) * 1.1);
+      var pageNum = Math.ceil((iframe.height() / 468) * 1.1);
       for (var i = 1; i <= pageNum; i++) {
         for (var j = 0; j < childNodes.length; j++) {
           if (
-            childNodes[j].offsetTop <= 584 * i &&
-            childNodes[j].offsetTop + childNodes[j].offsetHeight > 584 * i
+            childNodes[j].offsetTop <= 520 * i &&
+            childNodes[j].offsetTop + childNodes[j].offsetHeight > 520 * i
           ) {
             window
               .$(

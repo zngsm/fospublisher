@@ -266,7 +266,7 @@ export default {
           width: 1026,
           height: 650,
           page: num,
-          pages: 45,
+          // pages: 45,
           gradients: true,
           autoCenter: true,
         });

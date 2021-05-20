@@ -71,10 +71,16 @@
 
 .navtab {
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .navtab:hover {
   background-color: #e3dac9;
+}
+
+.navtab-logo {
+  width: 100%;
+  margin-top: 250px;
 }
 
 .navlogo {

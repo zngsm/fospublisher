@@ -72,14 +72,14 @@
         <p v-html="item.content"></p>
       </div>
       <div class="hard"></div>
-      <div class="hard">
+      <!-- <div class="hard">
         <img
           :src="require(`@/assets/covers/${bookInfo.cover.skin}.png`)"
           width="100%"
           alt="picture"
           class="lastImage"
         />
-      </div>
+      </div> -->
     </div>
     <!-- 타임라인 -> 읽기모드 -->
     <div v-else id="flipbook">
@@ -99,10 +99,8 @@
           <h1>{{ timechapter.title }}</h1>
         </div>
       </div>
-      <div>
-        <div v-for="(item, idx) in temp" :key="idx">
-          <p v-html="item"></p>
-        </div>
+      <div v-for="(item, idx) in temp" :key="idx">
+        <p v-html="item"></p>
       </div>
 
       <div class="hard"></div>
@@ -138,10 +136,21 @@ export default {
     return {
       bookInfo: {
         cover: {
-          title: '',
+          title: "",
           skin: 0,
-        }
-
+        },
+        content: [
+          {
+            id: 0,
+            title: "",
+            content: "",
+            year: 0,
+            order: 0,
+            page: 0,
+            check: true,
+            createdAt: "",
+          },
+        ],
       },
       timechapter: {
         content: [
@@ -163,7 +172,7 @@ export default {
       dialog: false,
       years: null,
       temp: ["", "", "", "", ""],
-      info: '',
+      info: "",
     };
   },
   methods: {
@@ -237,41 +246,52 @@ export default {
     },
     cutPage() {
       // 페이지네이션
-      // console.log("split전");
-      // console.log(this.info);
-      this.mainRead(3);
+
+      // 메인-읽기가 아닌 경우, 페이지네이션
+      if (this.$route.params.id) {
+        this.temp = this.info.split(
+          '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
+        );
+        this.mainRead(3);
+      }
     },
     mainRead(num) {
       setTimeout(() => {
+        console.log("mainRead-flipbook 제작");
         window.$("#flipbook").turn({
           width: 1026,
           height: 650,
           page: num,
-          pages: 45,
+          // pages: 45,
           gradients: true,
           autoCenter: true,
         });
       }, 100); // 바뀐 bookInfo.content 반영을 위해 setTimeout
-      // cutPage();
-      setTimeout(() => {
-        let titlePageNum = 6;
+      // 메인-읽기인 경우, 페이지네이션
+      if (!this.$route.params.id) {
+        setTimeout(() => {
+          console.log("mainRead-페이지네이션");
 
-        for (let i = 0; i < this.info.length; i++) {
-          // let titlePageNum = i + 6;
-          let chapterList = this.info[i].content.split(
-            '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
-          );
-          for (let j = 0; j < chapterList.length; j++) {
-            let page = titlePageNum + j;
-            // if (chapterList[j] === "") { // 공백인 장 지우기?
-            //   continue;
-            // }
-            let element = window.$("<div />").html(chapterList[j]);
-            window.$("#flipbook").turn("addPage", element, page);
+          window.$("#flipbook").turn("pages", 45); // 전체페이지 설정
+          let titlePageNum = 6;
+
+          for (let i = 0; i < this.info.length; i++) {
+            // let titlePageNum = i + 6;
+            let chapterList = this.info[i].content.split(
+              '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
+            );
+            for (let j = 0; j < chapterList.length; j++) {
+              let page = titlePageNum + j;
+              // if (chapterList[j] === "") { // 공백인 장 지우기?
+              //   continue;
+              // }
+              let element = window.$("<div />").html(chapterList[j]);
+              window.$("#flipbook").turn("addPage", element, page);
+            }
+            titlePageNum = titlePageNum + chapterList.length + 1;
           }
-          titlePageNum = titlePageNum + chapterList.length + 1;
-        }
-      }, 200);
+        }, 200);
+      }
     },
     async timelineRead() {
       if (this.$route.params.status === "PAST") {
@@ -283,12 +303,15 @@ export default {
             this.timechapter.id = this.$route.params.id;
             // content에서 pagebreak 제거
             this.info = res.data.content;
-            this.cutPage();
+            console.log("timelineRead의 info");
           },
           (err) => {
             console.error(err);
           }
         );
+        setTimeout(() => {
+          this.cutPage();
+        }, 200);
       } else {
         console.log("future");
         let id = this.$route.params.id;
@@ -317,7 +340,7 @@ export default {
         console.log("과거읽기");
         await readPastBook(
           (res) => {
-            console.log("mainRead");
+            console.log("과거자서전정보응답");
             this.bookInfo = res.data;
             this.years = Object.keys(res.data.list);
             this.info = res.data.content;

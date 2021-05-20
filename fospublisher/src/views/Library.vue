@@ -50,7 +50,6 @@ export default {
     this.tab = this.$route.params.id
     getEachFollowerList(
       (res) => {
-        console.log(res)
         this.drawerNum = res.data.length - 1
       },
       (error) => {

@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="openInviteModal"
-      v-click-outside="closeInviteModal"
+      persistent
       width="500"
     >
       <v-card

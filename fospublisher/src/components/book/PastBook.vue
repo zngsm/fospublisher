@@ -1,6 +1,6 @@
 <template>
   <v-container fluid style="padding: 0;">
-    <div class="container" style="padding: 0;">
+    <div class="book-container" style="padding: 0;">
       <div
         @click="sendBookInfo"
         class="main-pastBook"

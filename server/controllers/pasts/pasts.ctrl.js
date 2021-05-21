@@ -4,7 +4,7 @@ const models = require("../../models");
 exports.post_pasts_write = async (req, res) => {
   // res.set({ "Access-Control-Allow-Credentials": true });
   let body = await req.body;
-  let cutter = 'class="html2pdf__page-break-after"';
+  let cutter = "html2pdf__page-break";
   let chapterPage = body.content.split(cutter).length;
   const book = await models.BookPasts.findOne({
     where: {

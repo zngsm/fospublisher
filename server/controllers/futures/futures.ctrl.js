@@ -3,7 +3,7 @@ const models = require("../../models");
 
 exports.post_futures_write = async (req, res) => {
   let body = await req.body;
-  let cutter = 'class="html2pdf__page-break-after"';
+  let cutter = "html2pdf__page-break";
   let chapterPage = body.content.split(cutter).length;
   const book = await models.BookFutures.findOne({
     where: {
@@ -84,7 +84,7 @@ exports.get_futures_chapter_read = async (req, res) => {
 
 exports.put_futures_edit = async (req, res) => {
   let body = await req.body;
-  let cutter = 'class="html2pdf__page-break-after"';
+  let cutter = "html2pdf__page-break";
   let chapterPage = body.content.split(cutter).length;
   const chapterId = req.params.chapter_id;
   const book = await models.BookFutures.findOne({

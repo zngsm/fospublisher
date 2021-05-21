@@ -17,7 +17,18 @@
       <!-- DB 나의 프로필 & 타일형 -->
       <div v-else>
         <v-avatar tile v-if="!isSelected" size="150px">
-          <img :src="origin" alt="프로필 사진" style="object-fit: cover" />
+          <img
+            v-if="!otherUser"
+            :src="origin"
+            alt="프로필 사진"
+            style="object-fit: cover"
+          />
+          <img
+            v-else
+            :src="otherImage"
+            alt="프로필 사진"
+            style="object-fit: cover"
+          />
         </v-avatar>
         <v-avatar tile v-else size="150px">
           <img :src="url" alt="프로필 사진" style="object-fit: cover" />
@@ -66,6 +77,16 @@ export default {
   name: "AvatarSelect",
   props: {
     editInfo: {
+      type: Boolean,
+      require: false,
+      default: false,
+    },
+    otherImage: {
+      type: String,
+      require: false,
+      default: null,
+    },
+    otherUser: {
       type: Boolean,
       require: false,
       default: false,

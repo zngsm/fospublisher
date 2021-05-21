@@ -16,7 +16,16 @@
               <p class="ma-0">수정하기</p>
             </v-col>
           </v-btn>
-          <avatar-select editInfo></avatar-select>
+          <avatar-select
+            v-if="!this.$route.query.userId"
+            editInfo
+          ></avatar-select>
+          <avatar-select
+            v-else
+            editInfo
+            otherUser
+            :otherImage="img"
+          ></avatar-select>
           <div>{{ nickname }}</div>
           <v-divider class="ma-3"></v-divider>
           <div v-html="addEnter" class="md-col-9 text-start ma-10">
@@ -145,8 +154,8 @@ export default {
             this.birthday = res.data.user.birthday;
             this.introduce = res.data.user.introduce;
           },
-          (error) => {
-            console.log(error);
+          () => {
+            return;
           }
         );
       } else {

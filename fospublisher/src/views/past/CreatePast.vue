@@ -167,8 +167,8 @@ export default {
       for (var i = 1; i <= pageNum; i++) {
         for (var j = 0; j < childNodes.length; j++) {
           if (
-            childNodes[j].offsetTop <= 520 * i &&
-            childNodes[j].offsetTop + childNodes[j].offsetHeight > 520 * i
+            childNodes[j].offsetTop <= 468 * i &&
+            childNodes[j].offsetTop + childNodes[j].offsetHeight > 468 * i
           ) {
             window
               .$(
@@ -598,14 +598,14 @@ export default {
     }),
   },
   watch: {
-    interval: function() {
+    interval: function () {
       if (this.interval == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);
         return;
       }
     },
-    autoSaveKey: function() {
+    autoSaveKey: function () {
       if (this.autoSaveKey == false) {
         clearInterval(this.timer);
         clearTimeout(this.timeout);

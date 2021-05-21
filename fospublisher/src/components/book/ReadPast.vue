@@ -223,8 +223,6 @@ export default {
       });
     },
     deleteModal(id, idx) {
-      console.log("delete");
-      console.log(id);
       this.dialog = true;
       this.currentId = id;
       this.currentIdx = idx;
@@ -232,8 +230,6 @@ export default {
     deleteChapter() {
       let id = this.currentId;
       let idx = this.currentIdx;
-      console.log("currentId", this.currentId);
-      console.log("id", id);
       if (this.$route.params.status === "FUTURE") {
         deleteFutureChapter(
           id,
@@ -289,16 +285,12 @@ export default {
       // 메인-읽기인 경우, 페이지네이션
       if (!this.$route.params.id) {
         // 총페이지수 계산하기
-        //   let totalPageNum = 5
-        // for (let i = 0; i < this.info.length; i++) {
-        //   // let titlePageNum = i + 6;
-        //   let chapterList = this.info[i].content.split(
-        //     '<div class="html2pdf__page-break" position:="" relative;"=""></div>'
-        //   );
-        //   let totalPageNum = res.data.page + totalPageNum + chapterList.length
-        // }
+        let totalPageNum = 5;
+        totalPageNum =
+          totalPageNum + this.info.length + this.bookInfo.cover.page;
+
         setTimeout(() => {
-          window.$("#flipbook").turn("pages", 50); // 전체페이지 설정
+          window.$("#flipbook").turn("pages", totalPageNum + 5); // 전체페이지 설정
           let titlePageNum = 6;
 
           for (let i = 0; i < this.info.length; i++) {
@@ -333,7 +325,6 @@ export default {
     },
     async timelineRead() {
       if (this.$route.params.status === "PAST") {
-        console.log("past");
         await readPastChapter(
           (this.timechapter.id = this.$route.params.id),
           (res) => {
@@ -348,14 +339,11 @@ export default {
           }
         );
       } else {
-        console.log("future");
         let id = this.$route.params.id;
         await readFutureChapter(
           id,
           (res) => {
             this.timechapter = res.data;
-            console.log("timechapter");
-            console.log(this.timechapter);
             this.info = res.data.content;
             this.cutPage();
           },
@@ -368,33 +356,22 @@ export default {
     async getInfo() {
       if (this.$route.params.id) {
         // 타임라인 진입 시
-        console.log("timelineRead");
         this.timelineRead();
       } else if (this.status === "PAST") {
         // 메인 -> 과거책으로 진입
-        console.log("과거읽기");
         await readPastBook(
           (res) => {
-            console.log("mainRead");
             this.bookInfo = res.data;
             this.years = Object.keys(res.data.list);
             this.info = res.data.content;
             this.mainRead(3);
-            // this.cutPage();
-            // this.$set(this.bookInfo, "content", res.data.content);
           },
           (err) => console.error(err)
         );
-        // this.mainRead(3);
       } else if (this.status === "FUTURE") {
         // 메인 -> 미래책으로 진입
-        console.log("미래읽기");
-
         await readFutureBook(
           (res) => {
-            console.log("mainRead");
-            console.log("책정보받기");
-            console.log(res.data);
             this.bookInfo = res.data;
             this.info = res.data.content;
             this.years = Object.keys(res.data.list);

@@ -1,18 +1,6 @@
 <template>
   <!-- 선택 버튼 -->
   <div class="button-container select-font">
-    <!-- <button
-      v-if="status == 'FUTURE'"
-      @click="openTodayModal = true"
-      class="button-each"
-    >
-      <img
-        class="iconImg"
-        src="https://img.icons8.com/carbon-copy/80/000000/today.png"
-        style="width:52px vertical-align:bottom"
-      />
-      <span>오늘의 기록</span>
-    </button> -->
     <button @click="goToCreate" class="button-each">
       <img
         class="iconImg"
@@ -92,7 +80,6 @@ export default {
   },
   methods: {
     goToTodayFuture(id) {
-      console.log(id);
       this.$emit("goToTodayFuture", id);
     },
     goToCreate() {
@@ -150,5 +137,4 @@ export default {
 
 <style scoped>
 @import "../../assets/css/font.css";
-/* @import "../../assets/css/ReadPast.css"; */
 </style>

@@ -17,10 +17,8 @@
             <div class="home-content">; 당신의 여정을 기록하세요</div>
           </div>
         </div>
-        <!-- <p class="home-body-question">{{ todayQuestion }}</p> -->
         <p class="typing" id="typingQuestion"></p>
         <v-btn class="home-body-btn" @click="start">지금 시작하기</v-btn>
-        <!-- <div class="home-body-btn" @click="start">지금 시작하기</div> -->
       </div>
     </div>
   </div>

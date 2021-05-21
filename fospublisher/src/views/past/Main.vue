@@ -87,7 +87,6 @@ export default {
         month: this.month,
         day: this.day,
       };
-      console.log(String(this.day).length);
       let date = `${this.year}-${
         String(this.month).length < 2 ? "0" + this.month : this.month
       }-${String(this.day).length < 2 ? "0" + this.day : this.day}`;

@@ -86,10 +86,8 @@ export default {
     displayQuestion() {
       let question = document.getElementById("question");
       if (question.style.display == "none") {
-        console.log('none -> "" ');
         question.style.display = "";
       } else {
-        console.log('"" -> none ');
         question.style.display = "none";
       }
     },

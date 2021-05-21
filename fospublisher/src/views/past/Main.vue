@@ -77,7 +77,7 @@ export default {
     closeTodayModal() {
       store.commit("book/checkNew", false);
     },
-    checkFuture() {
+    setFuture() {
       this.today = new Date();
       this.year = this.today.getFullYear();
       this.month = this.today.getMonth() + 1;
@@ -130,7 +130,7 @@ export default {
   // },
   mounted() {},
   created() {
-    this.checkFuture();
+    this.setFuture();
   },
 };
 </script>

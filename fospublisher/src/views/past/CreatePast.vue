@@ -36,7 +36,7 @@
             @changeDate="changeDate"
           />
         </div>
-        <div v-if="updateTime">{{ updateTime }} 임시저장되었습니다.</div>
+        <div v-if="updateTime">{{ nowTime }} 임시저장되었습니다.</div>
         <div class="create-editor">
           <Editor
             @updateContent="(val) => (form.content = val)"
@@ -138,6 +138,7 @@ export default {
       futureDate: null,
       dialog: false,
       alertMessage: null,
+      nowTime: null,
     };
   },
   methods: {
@@ -471,6 +472,13 @@ export default {
     },
     autoSave() {
       this.timer = setInterval(() => {
+        let today = new Date();
+        let hours = String(today.getHours()); // 시
+        let minutes = String(today.getMinutes()); // 분
+        let seconds = String(today.getSeconds());
+        this.nowTime = `${hours.lenght < 2 ? 0 + hours : hours}:${
+          minutes.length < 2 ? 0 + minutes : minutes
+        }:${seconds.length < 2 ? 0 + seconds : seconds}`;
         this.form.check = false;
         if (
           this.status == "PAST" &&
@@ -480,7 +488,7 @@ export default {
         ) {
           this.timeout = setTimeout(() => {
             this.tempStore();
-          }, 10000);
+          }, 5000);
         } else if (
           this.status != "PAST" &&
           this.form.title == this.tmpTitle &&
@@ -491,7 +499,7 @@ export default {
         ) {
           this.timeout = setTimeout(() => {
             this.tempStore();
-          }, 10000);
+          }, 5000);
         } else if (this.interval) {
           if (!this.chapId) {
             if (this.status == "PAST") {
@@ -509,21 +517,21 @@ export default {
         } else {
           clearInterval(this.timer);
         }
-      }, 30000);
+      }, 5000);
     },
     tempStore() {
       if (this.status == "PAST" && !this.form.year) {
         this.timeout = setTimeout(() => {
           this.tempStore();
-        }, 10000);
+        }, 5000);
       } else if (this.status != "PAST" && !this.futureDate) {
         this.timeout = setTimeout(() => {
           this.tempStore();
-        }, 10000);
+        }, 5000);
       } else if (!this.form.title && !this.form.content) {
         this.timeout = setTimeout(() => {
           this.tempStore();
-        }, 10000);
+        }, 5000);
       } else if (
         this.status == "PAST" &&
         this.form.title == this.tmpTitle &&
@@ -532,7 +540,7 @@ export default {
       ) {
         this.timeout = setTimeout(() => {
           this.tempStore();
-        }, 10000);
+        }, 5000);
       } else if (
         this.status != "PAST" &&
         this.form.title == this.tmpTitle &&
@@ -543,7 +551,7 @@ export default {
       ) {
         this.timeout = setTimeout(() => {
           this.tempStore();
-        }, 10000);
+        }, 5000);
       } else {
         this.interval = true;
         this.autoSave();

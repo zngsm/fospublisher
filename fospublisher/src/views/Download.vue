@@ -281,14 +281,8 @@ export default {
   width: 100%;
   top: 180px;
   z-index: 30;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
-/* .download-book {
-  position: absolute;
-  z-index: 30;
-} */
+
 .download-body-book {
   width: 300px;
   height: 450px;

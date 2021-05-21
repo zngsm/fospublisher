@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <sequential-entrance delay="100" fromBottom>
+      <sequential-entrance fromBottom>
         <router-view :key="$route.fullPath" />
       </sequential-entrance>
     </v-main>

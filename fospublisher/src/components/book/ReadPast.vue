@@ -46,7 +46,7 @@
       </div>
       <div>
         <div class="book-content">
-          <h1>목차</h1>
+          <h1 class="read-index-title">목차</h1>
           <v-expansion-panels flat hover style="width:400px;" class="mx-auto">
             <v-expansion-panel v-for="(year, i) in years" :key="i">
               <v-expansion-panel-header>

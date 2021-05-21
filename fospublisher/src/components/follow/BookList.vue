@@ -1,51 +1,84 @@
 <template>
   <div>
     <div class="slider">
-        
-      <input v-for="(num, index) in (bookNum - 1)" :key="index" type="radio" class="testimonial" name="testimonial" :id="`t-${num}`">
-      <input type="radio" class="testimonial" name="testimonial" :id="`t-${bookNum}`" checked>
+      <input
+        v-for="(num, index) in bookNum - 1"
+        :key="index"
+        type="radio"
+        class="testimonial"
+        name="testimonial"
+        :id="`t-${num}`"
+      />
+      <input
+        type="radio"
+        class="testimonial"
+        name="testimonial"
+        :id="`t-${bookNum}`"
+        checked
+      />
       <div class="testimonials">
-        <label v-for="(info, index) in bookInfo" :key="index" :class="`item book t-${index + 1}`" :for="`t-${index + 1}`">
+        <label
+          v-for="(info, index) in bookInfo"
+          :key="index"
+          :class="`item book t-${index + 1}`"
+          :for="`t-${index + 1}`"
+        >
           <div class="back">
-            <img :src="require(`@/assets/covers/${info.book.skin}.png`)" alt="picture">
+            <img
+              :src="require(`@/assets/covers/${info.book.skin}.png`)"
+              alt="picture"
+            />
           </div>
           <div class="page6 d-flex justify-center">
             <div class="bookBtn">
-              <div style="display: block;">{{ info.nickname }}님의</div>
-              <v-btn color="#231815" small outlined @click="goReadPast(info.id)">자서전 보러가기</v-btn>
+              <div style="display: block">{{ info.nickname }}님의</div>
+              <v-btn color="#231815" small outlined @click="goReadPast(info.id)"
+                >자서전 보러가기</v-btn
+              >
             </div>
           </div>
-          <div class="page5" >
+          <div class="page5">
             <v-list-item-avatar size="100px" class="profile">
               <v-img :src="info.img"></v-img>
             </v-list-item-avatar>
           </div>
           <div class="page4"></div>
-          
+
           <div class="page3"></div>
-          <div class="page2"> </div>
+          <div class="page2"></div>
           <div class="page1"></div>
           <div class="front">
-            <div 
+            <div
               v-if="info.book.font == 0"
               class="bookTitle member-kukde-light"
-              :style="`color: ${info.book.font_color}; fontSize: ${20 + 5 * info.book.size}px;`"
+              :style="`color: ${info.book.font_color}; fontSize: ${
+                20 + 5 * info.book.size
+              }px;`"
             >
               {{ info.book.title }}
             </div>
             <div
               v-else
               class="bookTitle member-kwandong"
-              :style="`color: ${info.book.font_color}; fontSize: ${20 + 5 * info.book.size}px;`"
+              :style="`color: ${info.book.font_color}; fontSize: ${
+                20 + 5 * info.book.size
+              }px;`"
             >
               {{ info.book.title }}
             </div>
-            <img :src="require(`@/assets/covers/${info.book.skin}.png`)" alt="picture">
+            <img
+              :src="require(`@/assets/covers/${info.book.skin}.png`)"
+              alt="picture"
+            />
           </div>
         </label>
-      </div> 
+      </div>
       <div class="dots">
-        <label v-for="(num, index) in bookNum" :key="index" :for="`t-${num}`"></label>
+        <label
+          v-for="(num, index) in bookNum"
+          :key="index"
+          :for="`t-${num}`"
+        ></label>
       </div>
     </div>
   </div>
@@ -54,77 +87,78 @@
 <script>
 import { getEachFollowerList } from "@/api/follow";
 
-
 export default {
   data() {
     return {
       bookNum: 1,
       bookInfo: {},
-    }
+    };
   },
   computed: {
     getBookListState() {
-      return this.$store.getters['book/getBookListState']
-    }
+      return this.$store.getters["book/getBookListState"];
+    },
   },
   methods: {
     goReadPast(id) {
-      this.$router.push({name: "ReadPast", query: {userId: id}}).catch((err) => {
-        if (err.name === "NavigationDuplicated") {
-          location.reload();
-        }
-      });
+      this.$router
+        .push({ name: "ReadPast", query: { userId: id } })
+        .catch((err) => {
+          if (err.name === "NavigationDuplicated") {
+            location.reload();
+          }
+        });
     },
     getList() {
       getEachFollowerList(
         (res) => {
           if (res.data[0] > 0) {
-            this.bookNum = res.data[this.$route.params.id].length
-            this.bookInfo = res.data[this.$route.params.id]
+            this.bookNum = res.data[this.$route.params.id].length;
+            this.bookInfo = res.data[this.$route.params.id];
           }
         },
         (error) => {
-          console.log(error)
+          console.log(error);
         }
-      )
-    }
+      );
+    },
   },
   mounted() {
-    setTimeout(function() {
-      document.getElementsByClassName('testimonial').forEach(function(item) {
+    setTimeout(function () {
+      document.getElementsByClassName("testimonial").forEach(function (item) {
         if (item.checked === true) {
           if (document.getElementsByClassName(item.id)[0]) {
-            document.getElementsByClassName(item.id)[0].classList.toggle('bookHover')
+            document
+              .getElementsByClassName(item.id)[0]
+              .classList.toggle("bookHover");
           }
         }
-        item.addEventListener('change', function(){
-          document.getElementsByClassName('item').forEach(function(book) {
+        item.addEventListener("change", function () {
+          document.getElementsByClassName("item").forEach(function (book) {
             if (book.classList[2] == item.id) {
-              book.classList.add('bookHover')
+              book.classList.add("bookHover");
             } else {
-              book.classList.remove('bookHover')
+              book.classList.remove("bookHover");
             }
-          })
+          });
         });
-      })
+      });
     }, 300);
-    
   },
   created() {
-    this.getList()
+    this.getList();
   },
   watch: {
     getBookListState() {
       if (this.getBookListState == true) {
-        this.getList()
-        this.$store.dispatch('book/updateBookList')
+        this.getList();
+        this.$store.dispatch("book/updateBookList");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style scoped>
-
 .slider {
   width: 100%;
 }
@@ -149,11 +183,12 @@ export default {
 }
 .testimonials .item img {
   height: 300px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 220px;
   border-bottom-right-radius: 1em;
   border-top-right-radius: 1em;
-  -webkit-box-reflect: below 5px linear-gradient(transparent, transparent, #0004);
+  -webkit-box-reflect: below 5px
+    linear-gradient(transparent, transparent, #0004);
 }
 .testimonials .item .front div {
   position: absolute;
@@ -174,7 +209,7 @@ export default {
   width: 5px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: #413B52;
+  background-color: #413b52;
   margin: 7px;
   transition: transform 0.2s, color 0.2s;
 }
@@ -318,7 +353,6 @@ export default {
   z-index: 4;
 }
 
-
 .book {
   transform-style: preserve-3d;
   position: relative;
@@ -327,29 +361,43 @@ export default {
   backface-visibility: visible;
 }
 
-.front, .back, .page1, .page2, .page3, .page4, .page5, .page6 {
+.front,
+.back,
+.page1,
+.page2,
+.page3,
+.page4,
+.page5,
+.page6 {
   transform-style: preserve-3d;
   position: absolute;
   width: 210px;
   height: 300px;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   transform-origin: left center;
-  transition: transform .5s ease-in-out, box-shadow .35s ease-in-out;
+  transition: transform 0.5s ease-in-out, box-shadow 0.35s ease-in-out;
   display: flex;
   justify-content: center;
 }
 
-.front, .page1, .page3, .page5 {
-  border-bottom-right-radius: .5em;
-  border-top-right-radius: .5em;
+.front,
+.page1,
+.page3,
+.page5 {
+  border-bottom-right-radius: 0.5em;
+  border-top-right-radius: 0.5em;
 }
 
-.back, .page2, .page4, .page6 {
-  border-bottom-right-radius: .5em;
-  border-top-right-radius: .5em;
+.back,
+.page2,
+.page4,
+.page6 {
+  border-bottom-right-radius: 0.5em;
+  border-top-right-radius: 0.5em;
 }
 
-.page1 { 
+.page1 {
   background: #efefef;
 }
 
@@ -385,37 +433,37 @@ export default {
 }
 .bookHover:hover .front {
   transform: rotateY(-160deg) scale(1.1);
-  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
 }
 
 .bookHover:hover .page1 {
   transform: rotateY(-150deg) scale(1.1);
-  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
 }
 
 .bookHover:hover .page2 {
   transform: rotateY(-30deg) scale(1.1);
-  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
 }
 
 .bookHover:hover .page3 {
   transform: rotateY(-140deg) scale(1.1);
-  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
 }
 
 .bookHover:hover .page4 {
   transform: rotateY(-40deg) scale(1.1);
-  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
 }
 
 .bookHover:hover .page5 {
   transform: rotateY(-130deg) scale(1.1);
-  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
 }
 
 .bookHover:hover .page6 {
   transform: rotateY(-50deg) scale(1.1);
-  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
 }
 
 .bookHover:hover .back {

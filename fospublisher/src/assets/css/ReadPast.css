@@ -20,7 +20,7 @@
   background-color: white;
   /* line-height: 300px;
   font-size: 20px; */
-  text-align: center;
+  text-align: left;
 }
 
 #flipbook .page-wrapper {
@@ -142,6 +142,11 @@
   margin: 0px 40px 35px 40px;
   border: 1px solid black;
 }
+
+.read-index-title {
+  text-align: center;
+}
+
 .read-title {
   margin-top: -75px;
 }

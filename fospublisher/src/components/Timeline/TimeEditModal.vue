@@ -44,7 +44,6 @@
                           ></v-list-item-title>
                         </v-list-item-content>
                       </div>
-                      <!-- </transition-group> -->
                     </draggable>
                   </v-list-item-group>
                 </v-list>
@@ -67,7 +66,6 @@
 </template>
 
 <script>
-// import { mapState } from "vuex";
 import { readTimlineEditMode } from "../../api/timeline.js";
 import { updateTimeline } from "../../api/timeline.js";
 
@@ -87,7 +85,6 @@ export default {
       selectYear: [],
       changedItems: [],
       test: "hey!!",
-      // drag
     };
   },
   mounted() {
@@ -101,7 +98,6 @@ export default {
       this.changedItems.push(title);
     },
     changeList() {
-      // console.log(this.allData);
       let context = {};
       for (let i of this.selectYear) {
         let selectedData = this.allData[i];
@@ -140,9 +136,6 @@ export default {
     },
   },
   computed: {
-    // ...mapState({
-    //   edit: (state) => state.timeline.edit,
-    // }),
     edit: {
       get() {
         return this.$store.state.timeline.edit;

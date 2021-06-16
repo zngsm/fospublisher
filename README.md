@@ -71,7 +71,7 @@
 
     미래의 특정 날짜에 해당하는 글을 쓰면, 그 날짜에 알림 기능
   
-  <img width="80%" src="https://autobiography.s3.ap-northeast-2.amazonaws.com/book.gif"/>
+  ![book](README.assets/book.gif)
 
 
 
@@ -82,7 +82,7 @@
   - 순서 편집 가능
   - 에피소드가 많을 경우, 토글버튼을 이용한 UI 변경 가능
 
-  <img width="80%" src="https://autobiography.s3.ap-northeast-2.amazonaws.com/timeline.gif"/>
+  ![timeline](README.assets/timeline.gif)
 
 - **공유기능**
 
